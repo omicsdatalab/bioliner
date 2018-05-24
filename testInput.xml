@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inputConfig>
+    <sequences>
+        <sequence>M1,M2,M3</sequence>
+        <sequence>M2,M3</sequence>
+    </sequences>
+    <steps>
+        <step>
+            <module>M1</module>
+            <input>
+                ["Inputfile:C/Desktop/file.txt","outputfile:C/Desktop/output.xml","threshold:0.5","validate:true"]
+            </input>
+        </step>
+        <step>
+            <module>M2</module>
+            <input>
+                ["Inputfile:C/Desktop/file2.txt","outputfile:C/Desktop/output2.xml","threshold:0.5","validate:true"]
+            </input>
+        </step>
+        <step>
+            <module>M3</module>
+            <input>
+                ["Inputfile:C/Desktop/file3.txt","outputfile:C/Desktop/output3.xml","threshold:0.5","validate:true"]
+            </input>
+        </step>
+    </steps>
+</inputConfig>

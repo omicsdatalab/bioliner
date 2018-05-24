@@ -1,0 +1,30 @@
+<xs:schema xmlns:xs = "http://www.w3.org/2001/XMLSchema">
+    <xs:element name="inputConfig">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sequences" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="sequence" minOccurs="1" maxOccurs="unbounded" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="steps" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="step" minOccurs="1" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="module" minOccurs="1" maxOccurs="1" type="xs:string"/>
+                                        <xs:element name="input" minOccurs="1" maxOccurs="1" type="xs:string"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="module" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
