@@ -1,6 +1,8 @@
 package omicsdatalab.bioliner;
 
+import omicsdatalab.bioliner.utils.FileUtils;
 import omicsdatalab.bioliner.validators.XmlValidator;
+import omicsdatalab.bioliner.utils.InputXmlParser;
 
 import java.io.*;
 import java.util.Scanner;
@@ -9,10 +11,17 @@ public class App {
     public static void main(String[] args) {
         printWelcomeMessage();
         printModuleOptions();
-        String inputFileName = getInputFilePath();
-        boolean validInputFile = validateInputFile(inputFileName);
+        String inputFilePath = FileUtils.getInputFilePath();
+        boolean validInputFile = FileUtils.validateInputFile(inputFilePath);
         System.out.println("Validating input file...");
         System.out.println("XML is valid?: " + validInputFile);
+//        if (validInputFile) {
+//            System.out.println("Parsing input file...");
+//            File inputFile = new File(inputFilePath);
+//            InputXmlParser.parseInputFile(inputFile);
+//        }
+
+
     }
 
     private static void printWelcomeMessage() {
@@ -42,33 +51,5 @@ public class App {
         System.out.println(" Output: y.xml");
         System.out.println(" Params:");
         System.out.println(" Example:");
-    }
-
-    private static String getInputFilePath() {
-        System.out.println("Please enter file path of your input xml file (including file extension): ");
-        Scanner scanner = new Scanner(System.in);
-        String inputFilePath = scanner.nextLine();
-        File inputFile = new File(inputFilePath);
-        boolean fileExists = inputFile.exists();
-        while(!fileExists) {
-            System.out.println(String.format("File path %s is invalid, please enter another file path:", inputFile.getAbsolutePath()));
-            inputFilePath = scanner.nextLine();
-            inputFile = new File(inputFilePath);
-            fileExists = inputFile.exists();
-        }
-        scanner.close();
-        return inputFilePath;
-    }
-
-    private static boolean validateInputFile(String filePath) {
-        try {
-            InputStream inputXmlStream = new FileInputStream(filePath);
-            InputStream inputXsdStream = App.class.getResourceAsStream("/schemas/inputSchema.xsd");
-            boolean validXml = XmlValidator.validateAgainstXSD(inputXmlStream, inputXsdStream);
-            return validXml;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 }
