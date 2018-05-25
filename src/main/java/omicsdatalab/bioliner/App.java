@@ -1,6 +1,6 @@
-package uk.ac.mmu.fawaz;
+package omicsdatalab.bioliner;
 
-import uk.ac.mmu.validators.XmlValidator;
+import omicsdatalab.bioliner.validators.XmlValidator;
 
 import java.io.*;
 import java.util.Scanner;

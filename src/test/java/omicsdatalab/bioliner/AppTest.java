@@ -1,4 +1,4 @@
-package uk.ac.mmu.fawaz;
+package omicsdatalab.bioliner;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

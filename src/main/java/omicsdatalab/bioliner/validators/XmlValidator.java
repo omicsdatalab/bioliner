@@ -1,4 +1,4 @@
-package uk.ac.mmu.validators;
+package omicsdatalab.bioliner.validators;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
