@@ -31,7 +31,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>omnicsdatalab.bioliner.App</mainClass>
+              <mainClass>omicsdatalab.bioliner.App</mainClass>
             </manifest>
           </archive>
         </configuration>
