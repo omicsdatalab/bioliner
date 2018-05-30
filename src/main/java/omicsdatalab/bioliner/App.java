@@ -5,6 +5,7 @@ import omicsdatalab.bioliner.validators.XmlValidator;
 import omicsdatalab.bioliner.utils.InputXmlParser;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
@@ -15,11 +16,26 @@ public class App {
         boolean validInputFile = FileUtils.validateInputFile(inputFilePath);
         System.out.println("Validating input file...");
         System.out.println("XML is valid?: " + validInputFile);
-//        if (validInputFile) {
-//            System.out.println("Parsing input file...");
-//            File inputFile = new File(inputFilePath);
-//            InputXmlParser.parseInputFile(inputFile);
-//        }
+        if (validInputFile) {
+            System.out.println("Parsing input file...");
+            File inputFile = new File(inputFilePath);
+            ArrayList<String> sequences = InputXmlParser.parseSequenceFromInputFile(inputFile);
+            for(String seq: sequences) {
+                System.out.println(seq);
+            }
+            ArrayList<Step> steps = InputXmlParser.parseStepsFromInputFile(inputFile);
+
+            for(Step step: steps) {
+                System.out.println(step.getModuleName());
+                System.out.println(step.getModuleExecutable());
+                String[] inputs = step.getInputs();
+                System.out.println("Inputs:");
+                for (int i = 0; i < inputs.length ; i++) {
+                    System.out.println("\t" + inputs[i]);
+                }
+                System.out.println();
+            }
+        }
 
 
     }
