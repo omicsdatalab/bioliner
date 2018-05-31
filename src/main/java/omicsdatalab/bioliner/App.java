@@ -1,23 +1,39 @@
 package omicsdatalab.bioliner;
 
 import omicsdatalab.bioliner.utils.FileUtils;
-import omicsdatalab.bioliner.validators.XmlValidator;
 import omicsdatalab.bioliner.utils.InputXmlParser;
+import omicsdatalab.bioliner.utils.LoggerUtils;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class App {
+    private static final Logger LOGGER = Logger.getLogger( App.class.getName() );
     public static void main(String[] args) {
+        LoggerUtils.configureLoggerFromConfigFile();
+        String uniqueRunName = LoggerUtils.getUniqueRunName();
+        try {
+            LoggerUtils.setUniqueLogName(uniqueRunName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
         printWelcomeMessage();
         printModuleOptions();
+
         String inputFilePath = FileUtils.getInputFilePath();
         boolean validInputFile = FileUtils.validateInputFile(inputFilePath);
-        System.out.println("Validating input file...");
+
+        System.out.println("Validating input XML file...");
+        LOGGER.log(Level.INFO, "Validating input XML file...");
         System.out.println("XML is valid?: " + validInputFile);
+
         if (validInputFile) {
             System.out.println("Parsing input file...");
+            LOGGER.log(Level.INFO, "Parsing input file...");
             File inputFile = new File(inputFilePath);
             ArrayList<String> sequences = InputXmlParser.parseSequenceFromInputFile(inputFile);
             for(String seq: sequences) {
@@ -35,9 +51,9 @@ public class App {
                 }
                 System.out.println();
             }
+        } else {
+            System.out.println("Input XML file was invalid.");
         }
-
-
     }
 
     private static void printWelcomeMessage() {

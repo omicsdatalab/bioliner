@@ -10,11 +10,17 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * Created by Josh on 25/05/2018.
+ * This class contains exclusively static methods that parse various element values
+ * from an Input XML file.
+ * @author Joshua Hazlewood
  */
 public class InputXmlParser {
+    private static final Logger LOGGER = Logger.getLogger( InputXmlParser.class.getName() );
+
     /**
      * Accepts a input xml file and parses out the contents of any sequence elements.
      * @param inputFile the file to be parsed.
@@ -41,7 +47,7 @@ public class InputXmlParser {
 
             return sequences;
         } catch (ParserConfigurationException | SAXException | IOException ex) {
-            ex.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error parsing sequence from input XML File!", ex);
             return new ArrayList<>();
         }
     }
@@ -63,7 +69,6 @@ public class InputXmlParser {
 
             for ( int i = 0; i < stepList.getLength(); i++) {
                 Node stepNode = stepList.item(i);
-                System.out.println("\nCurrent Element :" + stepNode.getNodeName());
 
                 if (stepNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element stepElement = (Element) stepNode;
@@ -78,7 +83,7 @@ public class InputXmlParser {
 
             return steps;
         } catch (ParserConfigurationException | SAXException | IOException ex) {
-            ex.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error parsing steps from input XML File!", ex);
             return new ArrayList<>();
         }
     }
@@ -88,6 +93,10 @@ public class InputXmlParser {
         String trimmedInput = input.substring(1, input.length() - 1);
         System.out.println("trimmed = " + trimmedInput);
         String[] inputs = trimmedInput.split(",");
+
+        for (int i = 0; i < inputs.length; i++) {
+            inputs[i] = inputs[i].substring(1, inputs[i].length() - 1);
+        }
 
         return inputs;
     }

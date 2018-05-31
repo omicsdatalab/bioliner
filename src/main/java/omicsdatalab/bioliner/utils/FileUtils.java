@@ -8,11 +8,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Josh on 25/05/2018.
  */
 public class FileUtils {
+    private static final Logger LOGGER = Logger.getLogger( FileUtils.class.getName() );
     /**
      * Creates input streams for the given input file and input schema. XLM Validator is then used to
      * check validity and the result is returned.
@@ -25,9 +28,10 @@ public class FileUtils {
             InputStream inputXmlStream = new FileInputStream(filePath);
             InputStream inputXsdStream = App.class.getResourceAsStream("/schemas/inputSchema.xsd");
             validInputFile = XmlValidator.validateAgainstXSD(inputXmlStream, inputXsdStream);
+            LOGGER.log(Level.INFO, "Valid input XML file.");
             return validInputFile;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, "Invalid input XML file.", e);
             validInputFile = false;
             return validInputFile;
         }
@@ -46,11 +50,13 @@ public class FileUtils {
         File inputFile = new File(inputFilePath);
         boolean fileExists = inputFile.exists();
         while(!fileExists) {
+            LOGGER.log(Level.FINE, "Specified input XML file does not exist", inputFilePath);
             System.out.println(String.format("File path %s is invalid, please enter another file path:", inputFile.getAbsolutePath()));
             inputFilePath = scanner.nextLine();
             inputFile = new File(inputFilePath);
             fileExists = inputFile.exists();
         }
+        LOGGER.log(Level.INFO, "Input XML file found.");
         scanner.close();
         return inputFilePath;
     }
