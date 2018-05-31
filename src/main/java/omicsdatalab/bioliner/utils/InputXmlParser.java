@@ -45,6 +45,7 @@ public class InputXmlParser {
                 }
             }
 
+            LOGGER.log(Level.INFO, "Sequences correctly parsed from input XML file.");
             return sequences;
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             LOGGER.log(Level.SEVERE, "Error parsing sequence from input XML File!", ex);
@@ -81,6 +82,7 @@ public class InputXmlParser {
                 }
             }
 
+            LOGGER.log(Level.INFO, "Steps correctly parsed from input XML file.");
             return steps;
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             LOGGER.log(Level.SEVERE, "Error parsing steps from input XML File!", ex);
