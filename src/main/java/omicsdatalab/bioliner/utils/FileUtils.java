@@ -16,6 +16,7 @@ import java.util.logging.Logger;
  */
 public class FileUtils {
     private static final Logger LOGGER = Logger.getLogger( FileUtils.class.getName() );
+
     /**
      * Creates input streams for the given input file and input schema. XLM Validator is then used to
      * check validity and the result is returned.
@@ -60,6 +61,5 @@ public class FileUtils {
         scanner.close();
         return inputFilePath;
     }
-
 
 }

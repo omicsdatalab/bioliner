@@ -2,7 +2,6 @@
 <inputConfig>
     <sequences>
         <sequence>M1,M2,M3</sequence>
-        <sequence>M1,M2,M3</sequence>
     </sequences>
     <steps>
         <step module="M1">
