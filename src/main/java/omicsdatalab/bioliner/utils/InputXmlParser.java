@@ -90,6 +90,12 @@ public class InputXmlParser {
         }
     }
 
+    /**
+     * This method parses individual parameter/value pairs from the string contained in
+     * <input> elements of the input.xml file
+     * @param input
+     * @return
+     */
     private static String[] parseInputsString(String input) {
         input = input.replaceAll("\\s","");
         String trimmedInput = input.substring(1, input.length() - 1);
