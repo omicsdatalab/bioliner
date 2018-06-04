@@ -90,6 +90,55 @@ public class InputXmlParser {
     }
 
     /**
+     * Accepts a input xml file and parses out the contents of a outputFolderPath element.
+     * @param inputFile
+     * @return A String containing the contents of the <outputFolder> element from an input xml file.
+     */
+    public static String parseOutputFolderPath(File inputFile) {
+        String outputFolderPath = "";
+
+        try {
+            DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document inputFileAsDoc = dBuilder.parse(inputFile);
+            inputFileAsDoc.getDocumentElement().normalize();
+
+            NodeList outputFolderList = inputFileAsDoc.getElementsByTagName("outputFolder");
+
+            outputFolderPath = outputFolderList.item(0).getTextContent();
+
+            LOGGER.log(Level.INFO, "Output Folder correctly parsed from input XML file.");
+            return outputFolderPath;
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            LOGGER.log(Level.SEVERE, "Error parsing workflows from input XML File!", ex);
+            return outputFolderPath;
+        }
+    }
+
+    /**
+     * Accepts a input xml file and parses out the contents of a uniqueId element.
+     * @param inputFile
+     * @return A String containing the contents of the <uniqueId> element from an input xml file.
+     */
+    public static String parseUniqueId(File inputFile) {
+        String uniqueId = "";
+
+        try {
+            DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document inputFileAsDoc = dBuilder.parse(inputFile);
+            inputFileAsDoc.getDocumentElement().normalize();
+
+            NodeList uniqueList = inputFileAsDoc.getElementsByTagName("uniqueId");
+            uniqueId = uniqueList.item(0).getTextContent();
+
+            LOGGER.log(Level.INFO, "UniqueId correctly parsed from input XML file.");
+            return uniqueId;
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            LOGGER.log(Level.SEVERE, "Error parsing UniqueId from input XML File!", ex);
+            return uniqueId;
+        }
+    }
+
+    /**
      * This method parses individual parameter/value pairs from the string contained in
      * <input> elements of the input.xml file
      * @param input

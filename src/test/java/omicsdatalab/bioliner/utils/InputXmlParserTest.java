@@ -12,7 +12,7 @@ class InputXmlParserTest {
 
     @Test
     void parseSingleWorkflowFromInputFile() {
-        String validInputXMLPath = LoggerUtils.class.getResource("/FileUtils/validInput.xml").getFile();
+        String validInputXMLPath = InputXmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
         ArrayList<String> sequencesFromFile = InputXmlParser.parseWorkflowFromInputFile(validInputXMLFile);
         ArrayList<String> expectedSequences = new ArrayList<>();
@@ -23,7 +23,7 @@ class InputXmlParserTest {
 
     @Test
     void parseMultipleWorkflowsFromInputFile() {
-        String validInputXMLPath = LoggerUtils.class.getResource("/FileUtils/multiSequenceInput.xml").getFile();
+        String validInputXMLPath = InputXmlParserTest.class.getResource("/FileUtils/multiSequenceInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
         ArrayList<String> sequencesFromFile = InputXmlParser.parseWorkflowFromInputFile(validInputXMLFile);
         ArrayList<String> expectedSequences = new ArrayList<>();
@@ -35,7 +35,7 @@ class InputXmlParserTest {
 
     @Test
     void parseModulesFromInputFile() {
-        String validInputXMLPath = LoggerUtils.class.getResource("/FileUtils/validInput.xml").getFile();
+        String validInputXMLPath = InputXmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
 
         String[] module1Inputs = {"Inputfile:C/Desktop/file.txt",
@@ -58,6 +58,28 @@ class InputXmlParserTest {
         expectedModules.add(step3);
 
         assertEquals(expectedModules, actualModules);
+    }
+
+    @Test
+    void parseOutputFolderPathFromInputFile() {
+        String validInputXMLPath = InputXmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
+        File validInputXMLFile = new File(validInputXMLPath);
+
+        String expectedOutputFolderPath = "C:\\Users\\Josh\\Desktop\\biolinerOutput";
+        String actualOutputFolderPath = InputXmlParser.parseOutputFolderPath(validInputXMLFile);
+
+        assertEquals(expectedOutputFolderPath, actualOutputFolderPath);
+    }
+
+    @Test
+    void parseUniqueIdFromInputFile() {
+        String validInputXMLPath = InputXmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
+        File validInputXMLFile = new File(validInputXMLPath);
+
+        String expectedUniqueId = "testRun1";
+        String actualUniqueId = InputXmlParser.parseUniqueId(validInputXMLFile);
+
+        assertEquals(expectedUniqueId, actualUniqueId);
     }
 
 }
