@@ -11,10 +11,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class InputXmlParserTest {
 
     @Test
-    void parseSingleSequenceFromInputFile() {
+    void parseSingleWorkflowFromInputFile() {
         String validInputXMLPath = LoggerUtils.class.getResource("/FileUtils/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
-        ArrayList<String> sequencesFromFile = InputXmlParser.parseSequenceFromInputFile(validInputXMLFile);
+        ArrayList<String> sequencesFromFile = InputXmlParser.parseWorkflowFromInputFile(validInputXMLFile);
         ArrayList<String> expectedSequences = new ArrayList<>();
 
         expectedSequences.add("M1,M2,M3");
@@ -22,10 +22,10 @@ class InputXmlParserTest {
     }
 
     @Test
-    void parseMultipleSequenceFromInputFile() {
+    void parseMultipleWorkflowsFromInputFile() {
         String validInputXMLPath = LoggerUtils.class.getResource("/FileUtils/multiSequenceInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
-        ArrayList<String> sequencesFromFile = InputXmlParser.parseSequenceFromInputFile(validInputXMLFile);
+        ArrayList<String> sequencesFromFile = InputXmlParser.parseWorkflowFromInputFile(validInputXMLFile);
         ArrayList<String> expectedSequences = new ArrayList<>();
 
         expectedSequences.add("M1,M2,M3");
@@ -34,30 +34,30 @@ class InputXmlParserTest {
     }
 
     @Test
-    void parseStepsFromInputFile() {
+    void parseModulesFromInputFile() {
         String validInputXMLPath = LoggerUtils.class.getResource("/FileUtils/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
 
-        String[] step1Inputs = {"Inputfile:C/Desktop/file.txt",
+        String[] module1Inputs = {"Inputfile:C/Desktop/file.txt",
                 "outputfile:C/Desktop/output.xml", "threshold:0.5", "validate:true"};
-        String[] step2Inputs = {"Inputfile:C/Desktop/file2.txt",
+        String[] module2Inputs = {"Inputfile:C/Desktop/file2.txt",
                 "outputfile:C/Desktop/output2.xml", "threshold:0.5", "validate:true"};
-        String[] step3Inputs = {"Inputfile:C/Desktop/file3.txt",
+        String[] module3Inputs = {"Inputfile:C/Desktop/file3.txt",
                 "outputfile:C/Desktop/output3.xml", "threshold:0.5", "validate:true"};
 
-        Module step1 = new Module("M1", "M1.jar", step1Inputs);
-        Module step2 = new Module("M2", "M2.jar", step2Inputs);
-        Module step3 = new Module("M3", "M3.jar", step3Inputs);
+        Module step1 = new Module("M1", module1Inputs);
+        Module step2 = new Module("M2", module2Inputs);
+        Module step3 = new Module("M3", module3Inputs);
 
-        ArrayList<Module> actualSteps = InputXmlParser.parseStepsFromInputFile(validInputXMLFile);
+        ArrayList<Module> actualModules = InputXmlParser.parseModulesFromInputFile(validInputXMLFile);
 
-        ArrayList<Module> expectedSteps = new ArrayList<>();
+        ArrayList<Module> expectedModules = new ArrayList<>();
 
-        expectedSteps.add(step1);
-        expectedSteps.add(step2);
-        expectedSteps.add(step3);
+        expectedModules.add(step1);
+        expectedModules.add(step2);
+        expectedModules.add(step3);
 
-        assertEquals(expectedSteps, actualSteps);
+        assertEquals(expectedModules, actualModules);
     }
 
 }

@@ -22,70 +22,69 @@ public class InputXmlParser {
     private static final Logger LOGGER = Logger.getLogger( InputXmlParser.class.getName() );
 
     /**
-     * Accepts a input xml file and parses out the contents of any sequence elements.
+     * Accepts a input xml file and parses out the contents of any workflow elements.
      * @param inputFile the file to be parsed.
      * @return An ArrayList<String> containing any sequences found in the file,
      *         or an empty ArrayList if none are found.
      */
-    public static ArrayList<String> parseSequenceFromInputFile(File inputFile) {
+    public static ArrayList<String> parseWorkflowFromInputFile(File inputFile) {
         try {
-            ArrayList<String> sequences = new ArrayList<>();
+            ArrayList<String> workflows = new ArrayList<>();
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document inputFileAsDoc = dBuilder.parse(inputFile);
             inputFileAsDoc.getDocumentElement().normalize();
 
-            NodeList seqList = inputFileAsDoc.getElementsByTagName("sequence");
+            NodeList workflowList = inputFileAsDoc.getElementsByTagName("workflow");
 
-            for (int temp = 0; temp < seqList.getLength(); temp++) {
-                Node seqNode = seqList.item(temp);
+            for (int temp = 0; temp < workflowList.getLength(); temp++) {
+                Node workflowNode = workflowList.item(temp);
 
-                if (seqNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element seqElement = (Element) seqNode;
-                    sequences.add(seqElement.getTextContent());
+                if (workflowNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element workflowElement = (Element) workflowNode;
+                    workflows.add(workflowElement.getTextContent());
                 }
             }
 
-            LOGGER.log(Level.INFO, "Sequences correctly parsed from input XML file.");
-            return sequences;
+            LOGGER.log(Level.INFO, "Workflows correctly parsed from input XML file.");
+            return workflows;
         } catch (ParserConfigurationException | SAXException | IOException ex) {
-            LOGGER.log(Level.SEVERE, "Error parsing sequence from input XML File!", ex);
+            LOGGER.log(Level.SEVERE, "Error parsing workflows from input XML File!", ex);
             return new ArrayList<>();
         }
     }
 
     /**
-     * Accepts a input xml file and parses out the contents of any step elements.
+     * Accepts a input xml file and parses out the contents of any Module elements.
      * @param inputFile the file to be parsed
-     * @return An ArrayList<Step> containing any steps found in the file,
+     * @return An ArrayList<Module> containing any modules found in the file,
      *         or an empty ArrayList if none are found.
      */
-    public static ArrayList<Module> parseStepsFromInputFile(File inputFile) {
+    public static ArrayList<Module> parseModulesFromInputFile(File inputFile) {
         try {
-            ArrayList<Module> steps = new ArrayList<>();
+            ArrayList<Module> modules = new ArrayList<>();
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document inputFileAsDoc = dBuilder.parse(inputFile);
             inputFileAsDoc.getDocumentElement().normalize();
 
-            NodeList stepList = inputFileAsDoc.getElementsByTagName("step");
+            NodeList modulesList = inputFileAsDoc.getElementsByTagName("module");
 
-            for ( int i = 0; i < stepList.getLength(); i++) {
-                Node stepNode = stepList.item(i);
+            for ( int i = 0; i < modulesList.getLength(); i++) {
+                Node moduleNode = modulesList.item(i);
 
-                if (stepNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element stepElement = (Element) stepNode;
-                    stepElement.normalize();
-                    String moduleName = stepElement.getAttribute("module");
-                    String moduleExecutable = stepElement.getElementsByTagName("module").item(0).getTextContent();
-                    String input = stepElement.getElementsByTagName("input").item(0).getTextContent();
+                if (moduleNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element moduleElement = (Element) moduleNode;
+                    moduleElement.normalize();
+                    String moduleName = moduleElement.getElementsByTagName("name").item(0).getTextContent();
+                    String input = moduleElement.getElementsByTagName("input").item(0).getTextContent();
                     String[] inputs = parseInputsString(input);
-                    steps.add(new Module(moduleName, moduleExecutable, inputs));
+                    modules.add(new Module(moduleName, inputs));
                 }
             }
 
-            LOGGER.log(Level.INFO, "Steps correctly parsed from input XML file.");
-            return steps;
+            LOGGER.log(Level.INFO, "Modules correctly parsed from input XML file.");
+            return modules;
         } catch (ParserConfigurationException | SAXException | IOException ex) {
-            LOGGER.log(Level.SEVERE, "Error parsing steps from input XML File!", ex);
+            LOGGER.log(Level.SEVERE, "Error parsing modules from input XML File!", ex);
             return new ArrayList<>();
         }
     }

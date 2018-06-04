@@ -16,6 +16,12 @@ public class Module {
         this.inputs = inputs;
     }
 
+    public Module(String moduleName, String[] inputs) {
+        this.moduleName = moduleName;
+        this.moduleExecutable = "";
+        this.inputs = inputs;
+    }
+
     public String getModuleName() {
         return moduleName;
     }
@@ -46,13 +52,13 @@ public class Module {
             return false;
         }
 
-        Module stepToCompare = (Module) other;
+        Module moduleToCompare = (Module) other;
 
-        boolean moduleNameEqual = this.moduleName.equals(stepToCompare.moduleName);
-        boolean moduleExecutableEqual = this.moduleExecutable.equals(stepToCompare.moduleExecutable);
-        boolean inputsEqual = Arrays.equals(this.inputs, stepToCompare.inputs);
+        boolean moduleNameEqual = this.moduleName.equals(moduleToCompare.moduleName);
+        boolean moduleExecutableEqual = this.moduleExecutable.equals(moduleToCompare.moduleExecutable);
+        boolean inputsEqual = Arrays.equals(this.inputs, moduleToCompare.inputs);
 
-        boolean stepsEqual = moduleNameEqual && moduleExecutableEqual && inputsEqual;
-        return stepsEqual;
+        boolean modulesEqual = moduleNameEqual && moduleExecutableEqual && inputsEqual;
+        return modulesEqual;
     }
 }

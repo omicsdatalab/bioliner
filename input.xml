@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inputConfig>
-    <sequences>
-        <sequence>M1,M2,M3</sequence>
-    </sequences>
-    <steps>
-        <step module="M1">
-            <module>M1.jar</module>
+    <workflows>
+        <workflow>M1,M2,M3</workflow>
+    </workflows>
+    <outputFolder>C:\Users\Josh\Desktop\biolinerOutput</outputFolder>
+    <uniqueId>testRun1</uniqueId>
+    <modules>
+        <module>
+            <name>M1</name>
             <input>
                 ["Inputfile:C/Desktop/file.txt","outputfile:C/Desktop/output.xml","threshold:0.5","validate:true"]
             </input>
-        </step>
-        <step module="M2">
-            <module>M2.jar</module>
+        </module>
+        <module>
+            <name>M2</name>
             <input>
                 ["Inputfile:C/Desktop/file2.txt","outputfile:C/Desktop/output2.xml","threshold:0.5","validate:true"]
             </input>
-        </step>
-        <step module="M3">
-            <module>M3.jar</module>
+        </module>
+        <module>
+            <name>M3</name>
             <input>
                 ["Inputfile:C/Desktop/file3.txt","outputfile:C/Desktop/output3.xml","threshold:0.5","validate:true"]
             </input>
-        </step>
-    </steps>
+        </module>
+    </modules>
 </inputConfig>
