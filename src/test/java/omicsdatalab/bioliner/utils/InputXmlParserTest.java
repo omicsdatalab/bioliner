@@ -1,6 +1,6 @@
 package omicsdatalab.bioliner.utils;
 
-import omicsdatalab.bioliner.Step;
+import omicsdatalab.bioliner.Module;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -45,13 +45,13 @@ class InputXmlParserTest {
         String[] step3Inputs = {"Inputfile:C/Desktop/file3.txt",
                 "outputfile:C/Desktop/output3.xml", "threshold:0.5", "validate:true"};
 
-        Step step1 = new Step("M1", "M1.jar", step1Inputs);
-        Step step2 = new Step("M2", "M2.jar", step2Inputs);
-        Step step3 = new Step("M3", "M3.jar", step3Inputs);
+        Module step1 = new Module("M1", "M1.jar", step1Inputs);
+        Module step2 = new Module("M2", "M2.jar", step2Inputs);
+        Module step3 = new Module("M3", "M3.jar", step3Inputs);
 
-        ArrayList<Step> actualSteps = InputXmlParser.parseStepsFromInputFile(validInputXMLFile);
+        ArrayList<Module> actualSteps = InputXmlParser.parseStepsFromInputFile(validInputXMLFile);
 
-        ArrayList<Step> expectedSteps = new ArrayList<>();
+        ArrayList<Module> expectedSteps = new ArrayList<>();
 
         expectedSteps.add(step1);
         expectedSteps.add(step2);

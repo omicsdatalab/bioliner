@@ -10,15 +10,15 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class App {
+public class Bioliner {
     private static String uniqueRunName;
     private static String inputFilePath;
     private static boolean validInputFile;
     private static File inputFile;
     private static ArrayList<String> sequences;
-    private static ArrayList<Step> steps;
+    private static ArrayList<Module> steps;
 
-    private static final Logger LOGGER = Logger.getLogger( App.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger(Bioliner.class.getName() );
 
     public static void main(String[] args) {
         LoggerUtils.configureLoggerFromConfigFile();

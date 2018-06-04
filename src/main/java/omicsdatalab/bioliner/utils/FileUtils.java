@@ -1,6 +1,6 @@
 package omicsdatalab.bioliner.utils;
 
-import omicsdatalab.bioliner.App;
+import omicsdatalab.bioliner.Bioliner;
 import omicsdatalab.bioliner.validators.XmlValidator;
 
 import java.io.File;
@@ -27,7 +27,7 @@ public class FileUtils {
         boolean validInputFile;
         try {
             InputStream inputXmlStream = new FileInputStream(filePath);
-            InputStream inputXsdStream = App.class.getResourceAsStream("/schemas/inputSchema.xsd");
+            InputStream inputXsdStream = Bioliner.class.getResourceAsStream("/schemas/inputSchema.xsd");
             validInputFile = XmlValidator.validateAgainstXSD(inputXmlStream, inputXsdStream);
             LOGGER.log(Level.INFO, "Valid input XML file.");
             return validInputFile;

@@ -1,6 +1,6 @@
 package omicsdatalab.bioliner.utils;
 
-import omicsdatalab.bioliner.Step;
+import omicsdatalab.bioliner.Module;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -59,9 +59,9 @@ public class InputXmlParser {
      * @return An ArrayList<Step> containing any steps found in the file,
      *         or an empty ArrayList if none are found.
      */
-    public static ArrayList<Step> parseStepsFromInputFile(File inputFile) {
+    public static ArrayList<Module> parseStepsFromInputFile(File inputFile) {
         try {
-            ArrayList<Step> steps = new ArrayList<>();
+            ArrayList<Module> steps = new ArrayList<>();
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document inputFileAsDoc = dBuilder.parse(inputFile);
             inputFileAsDoc.getDocumentElement().normalize();
@@ -78,7 +78,7 @@ public class InputXmlParser {
                     String moduleExecutable = stepElement.getElementsByTagName("module").item(0).getTextContent();
                     String input = stepElement.getElementsByTagName("input").item(0).getTextContent();
                     String[] inputs = parseInputsString(input);
-                    steps.add(new Step(moduleName, moduleExecutable, inputs));
+                    steps.add(new Module(moduleName, moduleExecutable, inputs));
                 }
             }
 

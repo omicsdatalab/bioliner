@@ -5,12 +5,12 @@ import java.util.Arrays;
 /**
  * Created by Josh on 25/05/2018.
  */
-public class Step {
+public class Module {
     private String moduleName;
     private String moduleExecutable;
     private String[] inputs;
 
-    public Step(String moduleName, String moduleExecutable, String[] inputs) {
+    public Module(String moduleName, String moduleExecutable, String[] inputs) {
         this.moduleName = moduleName;
         this.moduleExecutable = moduleExecutable;
         this.inputs = inputs;
@@ -42,11 +42,11 @@ public class Step {
 
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Step)) {
+        if (!(other instanceof Module)) {
             return false;
         }
 
-        Step stepToCompare = (Step) other;
+        Module stepToCompare = (Module) other;
 
         boolean moduleNameEqual = this.moduleName.equals(stepToCompare.moduleName);
         boolean moduleExecutableEqual = this.moduleExecutable.equals(stepToCompare.moduleExecutable);
