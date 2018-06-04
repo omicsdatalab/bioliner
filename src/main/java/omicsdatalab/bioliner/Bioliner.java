@@ -23,12 +23,6 @@ public class Bioliner {
 
     public static void main(String[] args) {
         LoggerUtils.configureLoggerFromConfigFile();
-        try {
-            LoggerUtils.setUniqueLogName(uniqueRunName);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
 
         MessageUtils.printWelcomeMessage();
         MessageUtils.printModuleOptions();
@@ -45,6 +39,17 @@ public class Bioliner {
             LOGGER.log(Level.INFO, "Parsing input file...");
             inputFile = new File(inputFilePath);
             parseInputFile(inputFile);
+            if (!outputFolderPath.equals("")) {
+                boolean createdOrExists = FileUtils.setOutputDirectory(outputFolderPath);
+                if (createdOrExists) {
+                    try{
+                        LoggerUtils.setUniqueLogName(uniqueRunName, outputFolderPath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(createdOrExists);
+            }
         } else {
             System.out.println("Input XML file was invalid.");
         }

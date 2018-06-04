@@ -3,7 +3,7 @@
     <workflows>
         <workflow>M1,M2,M3</workflow>
     </workflows>
-    <outputFolder>C:\Users\Josh\Desktop\biolinerOutput</outputFolder>
+    <outputFolder>./logs</outputFolder>
     <uniqueId>testRun1</uniqueId>
     <modules>
         <module>

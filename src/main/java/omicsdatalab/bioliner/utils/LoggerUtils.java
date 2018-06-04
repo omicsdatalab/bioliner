@@ -35,9 +35,9 @@ public class LoggerUtils {
      * @param logName the name of the log
      * @throws IOException if the FileHandler fails to create the log file.
      */
-    public static void setUniqueLogName(String logName) throws IOException {
+    public static void setUniqueLogName(String logName, String filepath) throws IOException {
         DateFormat timestamp = new SimpleDateFormat("yyyyMMddhhmmss");
-        String formattedLogName = String.format("%s_%s.log", logName, timestamp.format(new Date()));
+        String formattedLogName = String.format("%s\\%s_%s.log", filepath, logName, timestamp.format(new Date()));
         FileHandler fh = new FileHandler(formattedLogName);
         LOGGER.getLogger("").addHandler(fh);
     }

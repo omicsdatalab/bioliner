@@ -62,4 +62,21 @@ public class FileUtils {
         return inputFilePath;
     }
 
+    /**
+     * This method checks if the specified directory exists, and creates it if not.
+     * @param folderPath
+     * @return boolean specifying if the directory already exists, or was created.
+     */
+    public static boolean setOutputDirectory(String folderPath) {
+        boolean createdOrAlreadyExists = true;
+        File directory = new File(folderPath);
+        if (directory.isAbsolute()) {
+            System.out.println(String.format("%s is absolute", folderPath));
+        }
+        if (! directory.exists()) {
+            createdOrAlreadyExists = directory.mkdirs();
+        }
+        return createdOrAlreadyExists;
+    }
+
 }
