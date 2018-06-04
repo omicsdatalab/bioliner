@@ -12,17 +12,17 @@ import java.util.logging.Logger;
 
 public class Bioliner {
     private static String uniqueRunName;
+    private static String outputFolderPath;
     private static String inputFilePath;
     private static boolean validInputFile;
     private static File inputFile;
-    private static ArrayList<String> sequences;
-    private static ArrayList<Module> steps;
+    private static ArrayList<String> workflows;
+    private static ArrayList<Module> modules;
 
     private static final Logger LOGGER = Logger.getLogger(Bioliner.class.getName() );
 
     public static void main(String[] args) {
         LoggerUtils.configureLoggerFromConfigFile();
-        uniqueRunName = LoggerUtils.getUniqueRunName();
         try {
             LoggerUtils.setUniqueLogName(uniqueRunName);
         } catch (IOException e) {
@@ -44,10 +44,18 @@ public class Bioliner {
             System.out.println("Parsing input file...");
             LOGGER.log(Level.INFO, "Parsing input file...");
             inputFile = new File(inputFilePath);
-            sequences = InputXmlParser.parseSequenceFromInputFile(inputFile);
-            steps = InputXmlParser.parseStepsFromInputFile(inputFile);
+            parseInputFile(inputFile);
         } else {
             System.out.println("Input XML file was invalid.");
         }
+    }
+
+    private static void parseInputFile(File inputFile) {
+        workflows = InputXmlParser.parseWorkflowFromInputFile(inputFile);
+        outputFolderPath = InputXmlParser.parseOutputFolderPath(inputFile);
+        modules = InputXmlParser.parseModulesFromInputFile(inputFile);
+        uniqueRunName = InputXmlParser.parseUniqueId(inputFile);
+        System.out.println(uniqueRunName);
+        System.out.println(outputFolderPath);
     }
 }
