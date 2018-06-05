@@ -1,5 +1,6 @@
 package omicsdatalab.bioliner.utils;
 
+import omicsdatalab.bioliner.DefinedModule;
 import omicsdatalab.bioliner.Module;
 import org.junit.jupiter.api.Test;
 
@@ -8,13 +9,13 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InputXmlParserTest {
+class XmlParserTest {
 
     @Test
     void parseSingleWorkflowFromInputFile() {
-        String validInputXMLPath = InputXmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
+        String validInputXMLPath = XmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
-        ArrayList<String> sequencesFromFile = InputXmlParser.parseWorkflowFromInputFile(validInputXMLFile);
+        ArrayList<String> sequencesFromFile = XmlParser.parseWorkflowFromInputFile(validInputXMLFile);
         ArrayList<String> expectedSequences = new ArrayList<>();
 
         expectedSequences.add("M1,M2,M3");
@@ -23,9 +24,9 @@ class InputXmlParserTest {
 
     @Test
     void parseMultipleWorkflowsFromInputFile() {
-        String validInputXMLPath = InputXmlParserTest.class.getResource("/FileUtils/multiSequenceInput.xml").getFile();
+        String validInputXMLPath = XmlParserTest.class.getResource("/FileUtils/multiSequenceInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
-        ArrayList<String> sequencesFromFile = InputXmlParser.parseWorkflowFromInputFile(validInputXMLFile);
+        ArrayList<String> sequencesFromFile = XmlParser.parseWorkflowFromInputFile(validInputXMLFile);
         ArrayList<String> expectedSequences = new ArrayList<>();
 
         expectedSequences.add("M1,M2,M3");
@@ -35,7 +36,7 @@ class InputXmlParserTest {
 
     @Test
     void parseModulesFromInputFile() {
-        String validInputXMLPath = InputXmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
+        String validInputXMLPath = XmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
 
         String[] module1Inputs = {"Inputfile:C/Desktop/file.txt",
@@ -49,7 +50,7 @@ class InputXmlParserTest {
         Module step2 = new Module("M2", module2Inputs);
         Module step3 = new Module("M3", module3Inputs);
 
-        ArrayList<Module> actualModules = InputXmlParser.parseModulesFromInputFile(validInputXMLFile);
+        ArrayList<Module> actualModules = XmlParser.parseModulesFromInputFile(validInputXMLFile);
 
         ArrayList<Module> expectedModules = new ArrayList<>();
 
@@ -62,24 +63,45 @@ class InputXmlParserTest {
 
     @Test
     void parseOutputFolderPathFromInputFile() {
-        String validInputXMLPath = InputXmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
+        String validInputXMLPath = XmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
 
         String expectedOutputFolderPath = "C:\\Users\\Josh\\Desktop\\biolinerOutput";
-        String actualOutputFolderPath = InputXmlParser.parseOutputFolderPath(validInputXMLFile);
+        String actualOutputFolderPath = XmlParser.parseOutputFolderPath(validInputXMLFile);
 
         assertEquals(expectedOutputFolderPath, actualOutputFolderPath);
     }
 
     @Test
     void parseUniqueIdFromInputFile() {
-        String validInputXMLPath = InputXmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
+        String validInputXMLPath = XmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
 
         String expectedUniqueId = "testRun1";
-        String actualUniqueId = InputXmlParser.parseUniqueId(validInputXMLFile);
+        String actualUniqueId = XmlParser.parseUniqueId(validInputXMLFile);
 
         assertEquals(expectedUniqueId, actualUniqueId);
+    }
+
+    @Test
+    void parseModulesFromConfigFile() {
+        ArrayList<DefinedModule> actualModules = XmlParser.parseModulesFromConfigFile("/config/validModules.xml");
+
+        ArrayList<DefinedModule> expectedModules = new ArrayList<>();
+        DefinedModule m1 = new DefinedModule("M1", "description1", "input1.txt",
+                "output1.txt","-param 1 param2 -param2 param2", "example1");
+
+        DefinedModule m2 = new DefinedModule("M2", "description2", "input2.txt",
+                "output2.txt","-param 1 param2 -param2 param2", "example2");
+
+        DefinedModule m3 = new DefinedModule("M3", "description3", "input3.txt",
+                "-param 1 param2 -param2 param2", "example3");
+
+        expectedModules.add(m1);
+        expectedModules.add(m2);
+        expectedModules.add(m3);
+
+        assertEquals(expectedModules, actualModules);
     }
 
 }

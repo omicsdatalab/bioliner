@@ -1,5 +1,6 @@
 package omicsdatalab.bioliner.utils;
 
+import omicsdatalab.bioliner.DefinedModule;
 import omicsdatalab.bioliner.Module;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -9,6 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,8 +20,8 @@ import java.util.logging.Logger;
  * from an Input XML file.
  * @author Joshua Hazlewood
  */
-public class InputXmlParser {
-    private static final Logger LOGGER = Logger.getLogger( InputXmlParser.class.getName() );
+public class XmlParser {
+    private static final Logger LOGGER = Logger.getLogger( XmlParser.class.getName() );
 
     /**
      * Accepts a input xml file and parses out the contents of any workflow elements.
@@ -135,6 +137,56 @@ public class InputXmlParser {
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             LOGGER.log(Level.SEVERE, "Error parsing UniqueId from input XML File!", ex);
             return uniqueId;
+        }
+    }
+
+    /**
+     * Accepts a path to a input xml file and parses out the contents of any Module elements.
+     * @param resourceFilePath the file path of the resource file to be parsed
+     * @return An ArrayList<DefinedModule> containing any modules found in the file,
+     *         or an empty ArrayList if none are found.
+     */
+    public static ArrayList<DefinedModule> parseModulesFromConfigFile(String resourceFilePath) {
+
+        InputStream input = XmlParser.class.getResourceAsStream(resourceFilePath);
+
+        try {
+            ArrayList<DefinedModule> modules = new ArrayList<>();
+            DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document inputFileAsDoc = dBuilder.parse(input);
+            inputFileAsDoc.getDocumentElement().normalize();
+
+            NodeList modulesList = inputFileAsDoc.getElementsByTagName("module");
+            System.out.println(modulesList.getLength());
+            for ( int i = 0; i < modulesList.getLength(); i++) {
+                Node moduleNode = modulesList.item(i);
+                if (moduleNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element moduleElement = (Element) moduleNode;
+                    moduleElement.normalize();
+                    String name = moduleElement.getElementsByTagName("name").item(0).getTextContent();
+                    String description = moduleElement.getElementsByTagName("description").item(0).getTextContent();
+                    String inputFile = moduleElement.getElementsByTagName("inputFile").item(0).getTextContent();
+                    String outputFile;
+                    try {
+                        outputFile = moduleElement.getElementsByTagName("outputFile").item(0).getTextContent();
+                    } catch (NullPointerException e) {
+                        outputFile = null;
+                    }
+                    String params = moduleElement.getElementsByTagName("params").item(0).getTextContent();
+                    String examples = moduleElement.getElementsByTagName("examples").item(0).getTextContent();
+                    if (outputFile == null) {
+                        modules.add(new DefinedModule(name, description, inputFile, params, examples));
+                    } else {
+                        modules.add(new DefinedModule(name, description, inputFile, outputFile, params, examples));
+                    }
+                }
+            }
+            LOGGER.log(Level.INFO, "Defined Modules correctly parsed from input XML file.");
+            return modules;
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            LOGGER.log(Level.SEVERE, "Error parsing modules from input XML File!", ex);
+            System.out.println("Error parsing here");
+            return new ArrayList<>();
         }
     }
 

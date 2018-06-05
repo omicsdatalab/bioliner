@@ -1,6 +1,12 @@
 package omicsdatalab.bioliner.utils;
 
+import omicsdatalab.bioliner.DefinedModule;
+
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
 public class MessageUtils {
+    private static final Logger LOGGER = Logger.getLogger( MessageUtils.class.getName() );
     public static void printWelcomeMessage() {
         System.out.println("-----------------------------------------");
         System.out.println("-----------Welcome to Bioliner-----------");
@@ -8,24 +14,16 @@ public class MessageUtils {
 
     }
 
-    public static void printModuleOptions() {
-        System.out.println("Here are the modules:");
-        System.out.println("M1:");
-        System.out.println(" Input: x.xml");
-        System.out.println(" Output: y.xml");
-        System.out.println(" Params:");
-        System.out.println(" Example:");
-        System.out.println();
-        System.out.println("M2:");
-        System.out.println(" Input: x.csv");
-        System.out.println(" Output: y.csv");
-        System.out.println(" Params:");
-        System.out.println(" Example:");
-        System.out.println();
-        System.out.println("M3:");
-        System.out.println(" Input: x.xml");
-        System.out.println(" Output: y.xml");
-        System.out.println(" Params:");
-        System.out.println(" Example:");
+    public static void printModuleOptions(ArrayList<DefinedModule> modules) {
+        System.out.println("Modules: ");
+        for (DefinedModule module: modules) {
+            System.out.println(String.format("%s:", module.getName()));
+            System.out.println(String.format("  Input: %s", module.getInputFile()));
+            System.out.println(String.format("  Description: %s", module.getDescription()));
+            System.out.println(String.format("  Output: %s", module.getOutputFile()));
+            System.out.println(String.format("  Params: %s", module.getParams()));
+            System.out.println(String.format("  Example: %s", module.getExamples()));
+            System.out.println();
+        }
     }
 }
