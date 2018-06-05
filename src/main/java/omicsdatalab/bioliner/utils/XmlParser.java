@@ -55,6 +55,7 @@ public class XmlParser {
         }
     }
 
+
     /**
      * Accepts a input xml file and parses out the contents of any Module elements.
      * @param inputFile the file to be parsed
@@ -157,7 +158,7 @@ public class XmlParser {
             inputFileAsDoc.getDocumentElement().normalize();
 
             NodeList modulesList = inputFileAsDoc.getElementsByTagName("module");
-            
+
             for ( int i = 0; i < modulesList.getLength(); i++) {
                 Node moduleNode = modulesList.item(i);
                 if (moduleNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -166,14 +167,19 @@ public class XmlParser {
                     String name = moduleElement.getElementsByTagName("name").item(0).getTextContent();
                     String description = moduleElement.getElementsByTagName("description").item(0).getTextContent();
                     String inputFile = moduleElement.getElementsByTagName("inputFile").item(0).getTextContent();
+
+                    boolean outputFileExists = moduleElement.getElementsByTagName("outputFile").getLength() > 0;
                     String outputFile;
-                    try {
+
+                    if (outputFileExists) {
                         outputFile = moduleElement.getElementsByTagName("outputFile").item(0).getTextContent();
-                    } catch (NullPointerException e) {
+                    } else {
                         outputFile = null;
                     }
+
                     String params = moduleElement.getElementsByTagName("params").item(0).getTextContent();
                     String examples = moduleElement.getElementsByTagName("examples").item(0).getTextContent();
+
                     if (outputFile == null) {
                         modules.add(new DefinedModule(name, description, inputFile, params, examples));
                     } else {

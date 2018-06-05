@@ -85,7 +85,7 @@ class XmlParserTest {
 
     @Test
     void parseModulesFromConfigFile() {
-        ArrayList<DefinedModule> actualModules = XmlParser.parseModulesFromConfigFile("/config/validModules.xml");
+        ArrayList<DefinedModule> actualModules = XmlParser.parseModulesFromConfigFile("/FileUtils/validModules.xml");
 
         ArrayList<DefinedModule> expectedModules = new ArrayList<>();
         DefinedModule m1 = new DefinedModule("M1", "description1", "input1.txt",

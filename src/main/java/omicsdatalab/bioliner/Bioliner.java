@@ -16,6 +16,7 @@ public class Bioliner {
     private static String inputFilePath;
     private static final String definedModulesResourcePath = "/config/modules.xml";
     private static boolean validInputFile;
+    private static boolean validModulesFile;
     private static File inputFile;
     private static ArrayList<String> workflows;
     private static ArrayList<Module> modules;
@@ -31,10 +32,11 @@ public class Bioliner {
         MessageUtils.printModuleOptions(definedModules);
 
         inputFilePath = FileUtils.getInputFilePath();
-        LOGGER.log(Level.INFO, "Validating input XML file...");
+        LOGGER.log(Level.INFO, "Validating XML files...");
+        validModulesFile = FileUtils.validateModulesFile(definedModulesResourcePath);
         validInputFile = FileUtils.validateInputFile(inputFilePath);
 
-        if (validInputFile) {
+        if (validInputFile && validModulesFile) {
             LOGGER.log(Level.INFO, "Parsing input file...");
             inputFile = new File(inputFilePath);
             parseInputFile(inputFile);
