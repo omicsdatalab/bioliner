@@ -157,7 +157,7 @@ public class XmlParser {
             inputFileAsDoc.getDocumentElement().normalize();
 
             NodeList modulesList = inputFileAsDoc.getElementsByTagName("module");
-            System.out.println(modulesList.getLength());
+            
             for ( int i = 0; i < modulesList.getLength(); i++) {
                 Node moduleNode = modulesList.item(i);
                 if (moduleNode.getNodeType() == Node.ELEMENT_NODE) {
