@@ -4,6 +4,7 @@
         <name>M1</name>
         <description>description1</description>
         <inputFile>input1.txt</inputFile>
+        <outputFile_required>true</outputFile_required>
         <outputFile>output1.txt</outputFile>
         <params>-param 1 param2 -param2 param2</params>
         <command>example1</command>
@@ -12,6 +13,7 @@
         <name>M2</name>
         <description>description2</description>
         <inputFile>input2.txt</inputFile>
+        <outputFile_required>true</outputFile_required>
         <outputFile>output2.txt</outputFile>
         <params>-param 1 param2 -param2 param2</params>
         <command>example2</command>
@@ -20,6 +22,7 @@
         <name>M3</name>
         <description>description3</description>
         <inputFile>input3.txt</inputFile>
+        <outputFile_required>true</outputFile_required>
         <params>-param 1 param2 -param2 param2</params>
         <command>example3</command>
     </module>

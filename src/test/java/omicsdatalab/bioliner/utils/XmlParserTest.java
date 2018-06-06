@@ -89,13 +89,15 @@ class XmlParserTest {
 
         ArrayList<DefinedModule> expectedModules = new ArrayList<>();
         DefinedModule m1 = new DefinedModule("M1", "description1", "input1.txt",
-                "output1.txt","-param 1 param2 -param2 param2", "example1");
+                true, "output1.txt","-param 1 param2 -param2 param2",
+                "example1");
 
         DefinedModule m2 = new DefinedModule("M2", "description2", "input2.txt",
-                "output2.txt","-param 1 param2 -param2 param2", "example2");
+                true, "output2.txt","-param 1 param2 -param2 param2",
+                "example2");
 
         DefinedModule m3 = new DefinedModule("M3", "description3", "input3.txt",
-                "-param 1 param2 -param2 param2", "example3");
+                false,"-param 1 param2 -param2 param2", "example3");
 
         expectedModules.add(m1);
         expectedModules.add(m2);

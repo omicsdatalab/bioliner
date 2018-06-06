@@ -164,11 +164,15 @@ public class XmlParser {
                 if (moduleNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element moduleElement = (Element) moduleNode;
                     moduleElement.normalize();
+
                     String name = moduleElement.getElementsByTagName("name").item(0).getTextContent();
                     String description = moduleElement.getElementsByTagName("description").item(0).getTextContent();
                     String inputFile = moduleElement.getElementsByTagName("inputFile").item(0).getTextContent();
-
+                    String outputFileRequiredStr = moduleElement.getElementsByTagName("outputFile_required")
+                            .item(0).getTextContent();
+                    boolean outputFileRequired = Boolean.parseBoolean(outputFileRequiredStr);
                     boolean outputFileExists = moduleElement.getElementsByTagName("outputFile").getLength() > 0;
+
                     String outputFile;
 
                     if (outputFileExists) {
@@ -181,9 +185,9 @@ public class XmlParser {
                     String command = moduleElement.getElementsByTagName("command").item(0).getTextContent();
 
                     if (outputFile == null) {
-                        modules.add(new DefinedModule(name, description, inputFile, params, command));
+                        modules.add(new DefinedModule(name, description, inputFile, outputFileRequired, params, command));
                     } else {
-                        modules.add(new DefinedModule(name, description, inputFile, outputFile, params, command));
+                        modules.add(new DefinedModule(name, description, inputFile, outputFileRequired, outputFile, params, command));
                     }
                 }
             }
