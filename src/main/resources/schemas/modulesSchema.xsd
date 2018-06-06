@@ -10,7 +10,7 @@
                             <xs:element name="inputFile" minOccurs="1" maxOccurs="1" type="xs:string"/>
                             <xs:element name="outputFile" minOccurs="0" maxOccurs="1" type="xs:string"/>
                             <xs:element name="params" minOccurs="1" maxOccurs="1" type="xs:string"/>
-                            <xs:element name="examples" minOccurs="1" maxOccurs="1" type="xs:string"/>
+                            <xs:element name="command" minOccurs="1" maxOccurs="1" type="xs:string"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>

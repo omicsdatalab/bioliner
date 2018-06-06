@@ -6,7 +6,7 @@
         <inputFile>input1.txt</inputFile>
         <outputFile>output1.txt</outputFile>
         <params>-param 1 param2 -param2 param2</params>
-        <examples>example1</examples>
+        <command>example1</command>
     </module>
     <module>
         <name>M2</name>
@@ -14,13 +14,13 @@
         <inputFile>input2.txt</inputFile>
         <outputFile>output2.txt</outputFile>
         <params>-param 1 param2 -param2 param2</params>
-        <examples>example2</examples>
+        <command>example2</command>
     </module>
     <module>
         <name>M3</name>
         <description>description3</description>
         <inputFile>input3.txt</inputFile>
         <params>-param 1 param2 -param2 param2</params>
-        <examples>example3</examples>
+        <command>example3</command>
     </module>
 </modules>

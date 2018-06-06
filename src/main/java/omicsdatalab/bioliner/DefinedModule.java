@@ -6,26 +6,26 @@ public class DefinedModule {
     private String inputFile;
     private String outputFile;
     private String params;
-    private String examples;
+    private String command;
 
     public DefinedModule(String name, String description, String inputFile, String outputFile,
-                         String params, String examples) {
+                         String params, String command) {
         this.name = name;
         this.description = description;
         this.inputFile = inputFile;
         this.outputFile = outputFile;
         this.params = params;
-        this.examples = examples;
+        this.command = command;
     }
 
     public DefinedModule(String name, String description, String inputFile, String params,
-                         String examples) {
+                         String command) {
         this.name = name;
         this.description = description;
         this.inputFile = inputFile;
         this.outputFile = "N/A";
         this.params = params;
-        this.examples = examples;
+        this.command = command;
     }
 
 
@@ -69,12 +69,12 @@ public class DefinedModule {
         this.params = params;
     }
 
-    public String getExamples() {
-        return examples;
+    public String getCommand() {
+        return command;
     }
 
-    public void setExamples(String examples) {
-        this.examples = examples;
+    public void setCommand(String command) {
+        this.command = command;
     }
 
     @Override
@@ -90,10 +90,10 @@ public class DefinedModule {
         boolean inputFileEqualEqual = this.inputFile.equals(moduleToCompare.inputFile);
         boolean outputFileEqual = this.outputFile.equals(moduleToCompare.outputFile);
         boolean paramsEqual = this.params.equals(moduleToCompare.params);
-        boolean examplesEqual = this.examples.equals(moduleToCompare.examples);
+        boolean commandEqual = this.command.equals(moduleToCompare.command);
 
         boolean modulesEqual = nameEqual && descriptionEqual && inputFileEqualEqual
-                && outputFileEqual && paramsEqual && examplesEqual;
+                && outputFileEqual && paramsEqual && commandEqual;
         return modulesEqual;
     }
 }

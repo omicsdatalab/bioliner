@@ -22,7 +22,7 @@ public class MessageUtils {
             System.out.println(String.format("  Description: %s", module.getDescription()));
             System.out.println(String.format("  Output: %s", module.getOutputFile()));
             System.out.println(String.format("  Params: %s", module.getParams()));
-            System.out.println(String.format("  Example: %s", module.getExamples()));
+            System.out.println(String.format("  Example: %s", module.getCommand()));
             System.out.println();
         }
     }

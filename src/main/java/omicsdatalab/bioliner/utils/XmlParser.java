@@ -178,12 +178,12 @@ public class XmlParser {
                     }
 
                     String params = moduleElement.getElementsByTagName("params").item(0).getTextContent();
-                    String examples = moduleElement.getElementsByTagName("examples").item(0).getTextContent();
+                    String command = moduleElement.getElementsByTagName("command").item(0).getTextContent();
 
                     if (outputFile == null) {
-                        modules.add(new DefinedModule(name, description, inputFile, params, examples));
+                        modules.add(new DefinedModule(name, description, inputFile, params, command));
                     } else {
-                        modules.add(new DefinedModule(name, description, inputFile, outputFile, params, examples));
+                        modules.add(new DefinedModule(name, description, inputFile, outputFile, params, command));
                     }
                 }
             }
