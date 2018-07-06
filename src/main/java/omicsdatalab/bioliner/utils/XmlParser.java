@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -31,24 +32,22 @@ public class XmlParser {
      */
     public static ArrayList<String> parseWorkflowFromInputFile(File inputFile) {
         try {
-            ArrayList<String> workflows = new ArrayList<>();
+            String workflowString;
+            ArrayList<String> workflow = new ArrayList<>();
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document inputFileAsDoc = dBuilder.parse(inputFile);
             inputFileAsDoc.getDocumentElement().normalize();
 
             NodeList workflowList = inputFileAsDoc.getElementsByTagName("workflow");
 
-            for (int temp = 0; temp < workflowList.getLength(); temp++) {
-                Node workflowNode = workflowList.item(temp);
-
-                if (workflowNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element workflowElement = (Element) workflowNode;
-                    workflows.add(workflowElement.getTextContent());
-                }
+            workflowString = workflowList.item(0).getTextContent();
+            String[] workflowArray = workflowString.split(",");
+            for (int i = 0; i < workflowArray.length; i ++) {
+                workflow.add(workflowArray[i]);
             }
 
-            LOGGER.log(Level.INFO, "Workflows correctly parsed from input XML file.");
-            return workflows;
+            LOGGER.log(Level.INFO, "Workflow correctly parsed from input XML file.");
+            return workflow;
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             LOGGER.log(Level.SEVERE, "Error parsing workflows from input XML File!", ex);
             return new ArrayList<>();
@@ -143,13 +142,15 @@ public class XmlParser {
 
     /**
      * Accepts a path to a input xml file and parses out the contents of any Module elements.
-     * @param resourceFilePath the file path of the resource file to be parsed
+     * @param input the file path of the resource file to be parsed
      * @return An ArrayList<DefinedModule> containing any modules found in the file,
      *         or an empty ArrayList if none are found.
      */
-    public static ArrayList<DefinedModule> parseModulesFromConfigFile(String resourceFilePath) {
+    public static ArrayList<DefinedModule> parseModulesFromConfigFile(File input) {
 
-        InputStream input = XmlParser.class.getResourceAsStream(resourceFilePath);
+//        InputStream input = XmlParser.class.getClass().getResourceAsStream(resourceFilePath);
+//        System.out.println(new File("."). getAbsolutePath());
+//        InputStream input = XmlParser.class.getClass().getClassLoader().getResourceAsStream(resourceFilePath);
 
         try {
             ArrayList<DefinedModule> modules = new ArrayList<>();
@@ -195,7 +196,6 @@ public class XmlParser {
             return modules;
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             LOGGER.log(Level.SEVERE, "Error parsing modules from input XML File!", ex);
-            System.out.println("Error parsing here");
             return new ArrayList<>();
         }
     }

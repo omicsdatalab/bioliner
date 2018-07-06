@@ -12,26 +12,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class XmlParserTest {
 
     @Test
-    void parseSingleWorkflowFromInputFile() {
+    void parseWorkflowFromInputFile() {
         String validInputXMLPath = XmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
-        ArrayList<String> sequencesFromFile = XmlParser.parseWorkflowFromInputFile(validInputXMLFile);
-        ArrayList<String> expectedSequences = new ArrayList<>();
+        ArrayList<String> sequenceFromFile = XmlParser.parseWorkflowFromInputFile(validInputXMLFile);
+        ArrayList<String> expectedSequence = new ArrayList<>();
 
-        expectedSequences.add("M1,M2,M3");
-        assertEquals(expectedSequences, sequencesFromFile);
-    }
-
-    @Test
-    void parseMultipleWorkflowsFromInputFile() {
-        String validInputXMLPath = XmlParserTest.class.getResource("/FileUtils/multiSequenceInput.xml").getFile();
-        File validInputXMLFile = new File(validInputXMLPath);
-        ArrayList<String> sequencesFromFile = XmlParser.parseWorkflowFromInputFile(validInputXMLFile);
-        ArrayList<String> expectedSequences = new ArrayList<>();
-
-        expectedSequences.add("M1,M2,M3");
-        expectedSequences.add("M2,M4");
-        assertEquals(expectedSequences, sequencesFromFile);
+        expectedSequence.add("M1");
+        expectedSequence.add("M2");
+        expectedSequence.add("M3");
+        assertEquals(expectedSequence, sequenceFromFile);
     }
 
     @Test
@@ -85,7 +75,8 @@ class XmlParserTest {
 
     @Test
     void parseModulesFromConfigFile() {
-        ArrayList<DefinedModule> actualModules = XmlParser.parseModulesFromConfigFile("/FileUtils/validModules.xml");
+        File modulesFile = new File(XmlParserTest.class.getResource("/FileUtils/validModules.xml").getFile());
+        ArrayList<DefinedModule> actualModules = XmlParser.parseModulesFromConfigFile(modulesFile);
 
         ArrayList<DefinedModule> expectedModules = new ArrayList<>();
         DefinedModule m1 = new DefinedModule("M1", "description1", "input1.txt",

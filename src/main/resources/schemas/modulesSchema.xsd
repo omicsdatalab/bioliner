@@ -6,6 +6,7 @@
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element name="name" minOccurs="1" maxOccurs="1" type="xs:string"/>
+                            <xs:element name="category" minOccurs="1" maxOccurs="1" type="xs:string"/>
                             <xs:element name="description" minOccurs="1" maxOccurs="1" type="xs:string"/>
                             <xs:element name="inputFile" minOccurs="1" maxOccurs="1" type="xs:string"/>
                             <xs:element name="outputFile_required" minOccurs="1" maxOccurs="1" type="xs:boolean"/>

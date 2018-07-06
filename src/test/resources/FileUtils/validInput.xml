@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inputConfig>
-    <workflows>
-        <workflow>M1,M2,M3</workflow>
-    </workflows>
+    <workflow>M1,M2,M3</workflow>
     <outputFolder>C:\Users\Josh\Desktop\biolinerOutput</outputFolder>
     <uniqueId>testRun1</uniqueId>
     <modules>
