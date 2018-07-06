@@ -29,16 +29,21 @@ class XmlParserTest {
         String validInputXMLPath = XmlParserTest.class.getResource("/FileUtils/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
 
-        String[] module1Inputs = {"Inputfile:C/Desktop/file.txt",
-                "outputfile:C/Desktop/output.xml", "threshold:0.5", "validate:true"};
-        String[] module2Inputs = {"Inputfile:C/Desktop/file2.txt",
-                "outputfile:C/Desktop/output2.xml", "threshold:0.5", "validate:true"};
-        String[] module3Inputs = {"Inputfile:C/Desktop/file3.txt",
-                "outputfile:C/Desktop/output3.xml", "threshold:0.5", "validate:true"};
+        String module1InputFile = "C/Desktop/file.txt";
+        String module1OutputFile = "C/Desktop/output.txt";
+        String[] module1Params = {"-param1", "value1", "-param2", "value2", "-param3", "value3"};
 
-        Module step1 = new Module("M1", module1Inputs);
-        Module step2 = new Module("M2", module2Inputs);
-        Module step3 = new Module("M3", module3Inputs);
+        String module2InputFile = "C/Desktop/output.txt";
+        String module2OutputFile = "C/Desktop/output2.txt";
+        String[] module2Params = {"-param1", "value1", "-param2", "value2", "-param3", "value3"};
+
+        String module3InputFile = "C/Desktop/output2.txt";
+        String module3OutputFile = "C/Desktop/output3.txt";
+        String[] module3Params = {"-param1", "value1", "-param2", "value2", "-param3", "value3"};
+
+        Module step1 = new Module("M1", module1InputFile, module1OutputFile, module1Params);
+        Module step2 = new Module("M2", module2InputFile, module2OutputFile, module2Params);
+        Module step3 = new Module("M3", module3InputFile, module3OutputFile, module3Params);
 
         ArrayList<Module> actualModules = XmlParser.parseModulesFromInputFile(validInputXMLFile);
 

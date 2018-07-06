@@ -79,7 +79,10 @@ public class XmlParser {
                     String moduleName = moduleElement.getElementsByTagName("name").item(0).getTextContent();
                     String input = moduleElement.getElementsByTagName("input").item(0).getTextContent();
                     String[] inputs = parseInputsString(input);
-                    modules.add(new Module(moduleName, inputs));
+                    String inputFilePath = parseInputOrOutputFilePath(inputs[0]);
+                    String outputFilePath = parseInputOrOutputFilePath(inputs[1]);
+                    String[] params = parseParams(inputs[2]);
+                    modules.add(new Module(moduleName, inputFilePath, outputFilePath, params));
                 }
             }
 
@@ -207,9 +210,8 @@ public class XmlParser {
      * @return
      */
     private static String[] parseInputsString(String input) {
-        input = input.replaceAll("\\s","");
+        input = input.trim();
         String trimmedInput = input.substring(1, input.length() - 1);
-        System.out.println("trimmed = " + trimmedInput);
         String[] inputs = trimmedInput.split(",");
 
         for (int i = 0; i < inputs.length; i++) {
@@ -217,5 +219,16 @@ public class XmlParser {
         }
 
         return inputs;
+    }
+
+    private static String parseInputOrOutputFilePath(String input) {
+        String[] parts = input.split(":");
+        String inputFilePath = parts[1];
+        return inputFilePath;
+    }
+
+    private static String[] parseParams(String paramString) {
+        String[] params = paramString.split(" ");
+        return params;
     }
 }

@@ -10,19 +10,19 @@
         <module>
             <name>M1</name>
             <input>
-                ["Inputfile:C/Desktop/file.txt","outputfile:C/Desktop/output.xml","threshold:0.5","validate:true"]
+                ["Inputfile:C/Desktop/file.txt","outputfile:C/Desktop/output.xml","-param1 value1 -param2 value2"]
             </input>
         </module>
         <module>
             <name>M2</name>
             <input>
-                ["Inputfile:C/Desktop/file2.txt","outputfile:C/Desktop/output2.xml","threshold:0.5","validate:true"]
+                ["Inputfile:C/Desktop/file2.txt","outputfile:C/Desktop/output2.xml","-param1 value1 -param2 value2"]
             </input>
         </module>
         <module>
             <name>M3</name>
             <input>
-                ["Inputfile:C/Desktop/file3.txt","outputfile:C/Desktop/output3.xml","threshold:0.5","validate:true"]
+                ["Inputfile:C/Desktop/file3.txt","outputfile:C/Desktop/output3.xml","-param1 value1 -param2 value2"]
             </input>
         </module>
     </modules>

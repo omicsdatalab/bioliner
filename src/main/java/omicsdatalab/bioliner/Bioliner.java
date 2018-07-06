@@ -53,6 +53,17 @@ public class Bioliner {
             LOGGER.log(Level.INFO, "Parsing input file...");
             inputFile = new File(inputFilePath);
             parseInputFile(inputFile);
+            for (Module m: modules) {
+                System.out.println(String.format("Module %s", m.getModuleName()));
+                System.out.println(String.format("Input file :%s", m.getInputFile()));
+                System.out.println(String.format("Output file :%s", m.getOutputFile()));
+                System.out.println("Params:");
+                String[] params = m.getParams();
+                System.out.println(params.length);
+                for (int i = 0; i < params.length; i++) {
+                    System.out.println(params[i]);
+                }
+            }
 
             if (!outputFolderPath.equals("")) {
                 boolean createdOrExists = FileUtils.setOutputDirectory(outputFolderPath);

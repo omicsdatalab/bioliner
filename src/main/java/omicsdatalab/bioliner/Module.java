@@ -8,18 +8,21 @@ import java.util.Arrays;
 public class Module {
     private String moduleName;
     private String moduleExecutable;
-    private String[] inputs;
+    private String inputFile;
+    private String outputFile;
+    private String[] params;
 
     public Module(String moduleName, String moduleExecutable, String[] inputs) {
         this.moduleName = moduleName;
         this.moduleExecutable = moduleExecutable;
-        this.inputs = inputs;
     }
 
-    public Module(String moduleName, String[] inputs) {
+    public Module(String moduleName, String inputFile, String outputFile, String[] params) {
         this.moduleName = moduleName;
         this.moduleExecutable = "";
-        this.inputs = inputs;
+        this.inputFile = inputFile;
+        this.outputFile = outputFile;
+        this.params = params;
     }
 
     public String getModuleName() {
@@ -38,12 +41,28 @@ public class Module {
         this.moduleExecutable = moduleExecutable;
     }
 
-    public String[] getInputs() {
-        return inputs;
+    public String getInputFile() {
+        return inputFile;
     }
 
-    public void setInputs(String[] inputs) {
-        this.inputs = inputs;
+    public void setInputFile(String inputFile) {
+        this.inputFile = inputFile;
+    }
+
+    public String getOutputFile() {
+        return outputFile;
+    }
+
+    public void setOutputFile(String outputFile) {
+        this.outputFile = outputFile;
+    }
+
+    public String[] getParams() {
+        return params;
+    }
+
+    public void setParams(String[] params) {
+        this.params = params;
     }
 
     @Override
@@ -56,9 +75,11 @@ public class Module {
 
         boolean moduleNameEqual = this.moduleName.equals(moduleToCompare.moduleName);
         boolean moduleExecutableEqual = this.moduleExecutable.equals(moduleToCompare.moduleExecutable);
-        boolean inputsEqual = Arrays.equals(this.inputs, moduleToCompare.inputs);
+        boolean inputFileEqual = this.inputFile.equals(moduleToCompare.inputFile);
+        boolean outputFileEqual = this.outputFile.equals(moduleToCompare.outputFile);
+        boolean paramsEqual = Arrays.equals(this.params, moduleToCompare.params);
 
-        boolean modulesEqual = moduleNameEqual && moduleExecutableEqual && inputsEqual;
+        boolean modulesEqual = moduleNameEqual && moduleExecutableEqual && inputFileEqual && outputFileEqual && paramsEqual;
         return modulesEqual;
     }
 }
