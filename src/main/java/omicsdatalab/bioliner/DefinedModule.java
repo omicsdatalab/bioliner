@@ -4,28 +4,34 @@ public class DefinedModule {
     private String name;
     private String description;
     private String inputFile;
+    private String inputParam;
     private boolean outputFileRequired;
     private String outputFile;
+    private String outputParam;
     private String params;
     private String command;
 
-    public DefinedModule(String name, String description, String inputFile, boolean outputFileRequired,
-                         String outputFile, String params, String command) {
+    public DefinedModule(String name, String description, String inputFile, String inputParam, boolean outputFileRequired,
+                         String outputFile, String outputParam, String params, String command) {
         this.name = name;
         this.description = description;
         this.inputFile = inputFile;
+        this.inputParam = inputParam;
         this.outputFileRequired = outputFileRequired;
         this.outputFile = outputFile;
+        this.outputParam = outputParam;
         this.params = params;
         this.command = command;
     }
 
-    public DefinedModule(String name, String description, String inputFile, boolean outputFileRequired, String params,
+    public DefinedModule(String name, String description, String inputFile, String inputParam, boolean outputFileRequired, String params,
                          String command) {
         this.name = name;
         this.description = description;
         this.inputFile = inputFile;
+        this.inputParam = inputParam;
         this.outputFileRequired = outputFileRequired;
+        this.outputParam = "";
         this.outputFile = "N/A";
         this.params = params;
         this.command = command;
@@ -86,6 +92,22 @@ public class DefinedModule {
 
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    public String getInputParam() {
+        return inputParam;
+    }
+
+    public void setInputParam(String inputParam) {
+        this.inputParam = inputParam;
+    }
+
+    public String getOutputParam() {
+        return outputParam;
+    }
+
+    public void setOutputParam(String outputParam) {
+        this.outputParam = outputParam;
     }
 
     @Override

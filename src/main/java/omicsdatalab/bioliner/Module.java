@@ -10,7 +10,10 @@ public class Module {
     private String moduleExecutable;
     private String inputFile;
     private String outputFile;
+    private boolean outputFileRequired;
     private String[] params;
+    private String inputParam;
+    private String outputParam;
 
     public Module(String moduleName, String moduleExecutable, String[] inputs) {
         this.moduleName = moduleName;
@@ -65,6 +68,30 @@ public class Module {
         this.params = params;
     }
 
+    public String getInputParam() {
+        return inputParam;
+    }
+
+    public void setInputParam(String inputParam) {
+        this.inputParam = inputParam;
+    }
+
+    public String getOutputParam() {
+        return outputParam;
+    }
+
+    public void setOutputParam(String outputParam) {
+        this.outputParam = outputParam;
+    }
+
+    public boolean isOutputFileRequired() {
+        return outputFileRequired;
+    }
+
+    public void setOutputFileRequired(boolean outputFileRequired) {
+        this.outputFileRequired = outputFileRequired;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof Module)) {
@@ -82,4 +109,5 @@ public class Module {
         boolean modulesEqual = moduleNameEqual && moduleExecutableEqual && inputFileEqual && outputFileEqual && paramsEqual;
         return modulesEqual;
     }
+
 }

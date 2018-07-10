@@ -1,9 +1,6 @@
 package omicsdatalab.bioliner;
 
-import omicsdatalab.bioliner.utils.FileUtils;
-import omicsdatalab.bioliner.utils.XmlParser;
-import omicsdatalab.bioliner.utils.LoggerUtils;
-import omicsdatalab.bioliner.utils.MessageUtils;
+import omicsdatalab.bioliner.utils.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -15,7 +12,6 @@ public class Bioliner {
     private static String outputFolderPath;
     private static String inputFilePath;
     private static String modulesFilePath;
-    private static final String definedModulesResourcePath = "/config/modules.xml";
     private static boolean validInputFile;
     private static boolean validModulesFile;
     private static File inputFile;
@@ -53,17 +49,6 @@ public class Bioliner {
             LOGGER.log(Level.INFO, "Parsing input file...");
             inputFile = new File(inputFilePath);
             parseInputFile(inputFile);
-            for (Module m: modules) {
-                System.out.println(String.format("Module %s", m.getModuleName()));
-                System.out.println(String.format("Input file :%s", m.getInputFile()));
-                System.out.println(String.format("Output file :%s", m.getOutputFile()));
-                System.out.println("Params:");
-                String[] params = m.getParams();
-                System.out.println(params.length);
-                for (int i = 0; i < params.length; i++) {
-                    System.out.println(params[i]);
-                }
-            }
 
             if (!outputFolderPath.equals("")) {
                 boolean createdOrExists = FileUtils.setOutputDirectory(outputFolderPath);
@@ -75,6 +60,13 @@ public class Bioliner {
                     }
                 }
             }
+
+            for (Module m: modules) {
+                populateMissingModuleFields(m);
+                System.out.println(BiolinerUtil.getCommandString(m));
+            }
+
+
         }
     }
 
@@ -84,4 +76,22 @@ public class Bioliner {
         modules = XmlParser.parseModulesFromInputFile(inputFile);
         uniqueRunName = XmlParser.parseUniqueId(inputFile);
     }
+
+    private static void populateMissingModuleFields(Module m) {
+        for (int i = 0; i < definedModules.size(); i++) {
+            if(m.getModuleName().equals(definedModules.get(i).getName())) {
+                m.setInputParam(definedModules.get(i).getInputParam());
+                m.setModuleExecutable(definedModules.get(i).getCommand());
+                if (definedModules.get(i).isOutputFileRequired()) {
+                    m.setOutputFileRequired(true);
+                    m.setOutputParam(definedModules.get(i).getOutputParam());
+                } else {
+                    m.setOutputFileRequired(false);
+                    m.setOutputParam(definedModules.get(i).getOutputParam());
+                }
+                break;
+            }
+        }
+    }
+
 }
