@@ -1,7 +1,8 @@
 package omicsdatalab.bioliner.utils;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,5 +52,46 @@ public class LoggerUtils {
         Scanner scanner = new Scanner(System.in);
         String uniqueRunName = scanner.nextLine();
         return uniqueRunName;
+    }
+
+    public static void writeOutputToLogFile(InputStream input, String outputFolderPath, String uniqueRunName) {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+
+        Path outputPath = Paths.get(outputFolderPath).resolve(uniqueRunName + "_" + "moduleOutput.log");
+
+        try {
+            inputStream = input;
+            outputStream = new FileOutputStream(new File(outputPath.toString()), true);
+
+            int read;
+            byte[] bytes = new byte[1024];
+
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    // outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
     }
 }

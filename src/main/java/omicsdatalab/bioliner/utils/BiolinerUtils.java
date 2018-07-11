@@ -2,7 +2,11 @@ package omicsdatalab.bioliner.utils;
 
 import omicsdatalab.bioliner.Module;
 
-public class BiolinerUtil {
+import java.io.File;
+import java.nio.file.Path;
+
+
+public class BiolinerUtils {
 
     /**
      * Takes a Module and generates a command string to be executed by ProcessBuilder. String generated is
@@ -10,7 +14,7 @@ public class BiolinerUtil {
      * @param m
      * @return
      */
-    public static String getCommandString(Module m) {
+    public static String getCommandString(Module m, Path toolsDir, String outputFolderPath) {
         String command = m.getModuleExecutable();
         String[] params = m.getParams();
         String inputParam = m.getInputParam();
@@ -18,6 +22,13 @@ public class BiolinerUtil {
         String[] commandWithParamsArray = command.split(params[0]);
         String commandOnly = commandWithParamsArray[0];
         String commandString = "";
+        String[] commandArray = commandOnly.split(" ");
+        String jarName = commandArray[2];
+        jarName = addPathToExecutable(jarName, toolsDir);
+        commandArray[2] = jarName;
+        commandOnly = String.join(" ", commandArray);
+        String fullOutputFilePath = addOutputFolderPathToOutputFileName(m.getOutputFile(), outputFolderPath);
+        m.setOutputFile(fullOutputFilePath);
 
         if (inputParam.equals("") && outputParam.equals("") && m.isOutputFileRequired()) {
             String[] commandOnlyArray = commandOnly.split(" ");
@@ -71,8 +82,25 @@ public class BiolinerUtil {
                 }
             }
             String paramString = String.join(" ", params);
-            commandString = commandOnly + paramString;
+            commandString = commandOnly + " " + paramString;
         }
         return commandString;
+    }
+
+    private static String addPathToExecutable(String executable, Path toolsDir) {
+        String executableWithPath;
+        if(executable.startsWith("\"") && executable.endsWith("\"")) {
+            executable = executable.substring(1, executable.length() - 1);
+            System.out.println(executable);
+            executableWithPath = "\"" + toolsDir.resolve(executable).toString() + "\"";
+        } else {
+            executableWithPath = "\"" + toolsDir.resolve(executable).toString() + "\"";
+        }
+        return executableWithPath;
+    }
+
+    private static String addOutputFolderPathToOutputFileName(String outputFile, String outputFolderPath) {
+        String fullPath = outputFolderPath + File.separator + outputFile;
+        return fullPath;
     }
 }

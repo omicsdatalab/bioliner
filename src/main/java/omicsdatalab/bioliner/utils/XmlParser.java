@@ -228,8 +228,15 @@ public class XmlParser {
     }
 
     private static String parseInputOrOutputFilePath(String input) {
-        String[] parts = input.split(":");
-        String inputFilePath = parts[1];
+        String[] parts = input.split(":", 2);
+        String inputFilePath;
+
+        try {
+            inputFilePath = parts[1];
+        } catch (Exception e) {
+            inputFilePath = "";
+        }
+
         return inputFilePath;
     }
 

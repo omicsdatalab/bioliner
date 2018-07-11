@@ -3,6 +3,9 @@ package omicsdatalab.bioliner;
 import omicsdatalab.bioliner.utils.*;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,9 +64,54 @@ public class Bioliner {
                 }
             }
 
+            Path p1 = Paths.get(getDirectoryOfJar());
+            Path toolsDir = p1.getParent().resolve("tools");
+
             for (Module m: modules) {
                 populateMissingModuleFields(m);
-                System.out.println(BiolinerUtil.getCommandString(m));
+                File inputFile = new File(m.getInputFile());
+                boolean inputFileExists = validateFileExists(inputFile);
+
+                if(inputFileExists) {
+                    String msg = String.format("Input file at path %s for module %s is a valid input file.",
+                            m.getInputFile(), m.getModuleName());
+                    LOGGER.log(Level.INFO, msg);
+
+                    String outputFile = m.getOutputFile();
+                    Path outputFolder = Paths.get(outputFolderPath);
+                    String modifiedOutputFile = outputFolder.resolve(outputFile).toString();
+                    System.out.format("Full output file path %s ", modifiedOutputFile);
+                    outputFolder = outputFolder.resolve(outputFile);
+                    System.out.println(outputFolder.toString());
+
+                } else {
+                    String errMsg = String.format("Input file at path %s for module %s is not a valid input file.",
+                            m.getInputFile(), m.getModuleName());
+                    LOGGER.log(Level.SEVERE, errMsg);
+                    break;
+                }
+
+                String command = BiolinerUtils.getCommandString(m, toolsDir, outputFolderPath);
+                String[] commandArray = command.split(" ");
+                System.out.println(command);
+                ProcessBuilder pb = new ProcessBuilder();
+                pb.command(commandArray);
+
+
+                try {
+                    Process p = pb.start();
+
+                    LoggerUtils.writeOutputToLogFile(p.getInputStream(), outputFolderPath, uniqueRunName);
+                    try {
+                        p.waitFor();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String msg = String.format("Module %s has finished", m.getModuleName());
+                LOGGER.log(Level.INFO, msg);
             }
 
 
@@ -91,6 +139,20 @@ public class Bioliner {
                 }
                 break;
             }
+        }
+    }
+
+    private static boolean validateFileExists(File file) {
+        boolean fileExists = file.exists() && file.isFile();
+        return fileExists;
+    }
+
+    private static String getDirectoryOfJar() {
+        try {
+            return new File(Bioliner.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return "";
         }
     }
 
