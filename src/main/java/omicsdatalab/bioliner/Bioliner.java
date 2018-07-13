@@ -15,6 +15,7 @@ public class Bioliner {
     private static String outputFolderPath;
     private static String inputFilePath;
     private static String modulesFilePath;
+    private static String timeStamp;
     private static boolean validInputFile;
     private static boolean validModulesFile;
     private static File inputFile;
@@ -26,6 +27,7 @@ public class Bioliner {
     private static final Logger LOGGER = Logger.getLogger(Bioliner.class.getName() );
 
     public static void main(String[] args) {
+        timeStamp = LoggerUtils.getTimeStamp();
         LoggerUtils.configureLoggerFromConfigFile();
         if (args.length > 1) {
             inputFilePath = args[0];
@@ -57,7 +59,7 @@ public class Bioliner {
                 boolean createdOrExists = FileUtils.setOutputDirectory(outputFolderPath);
                 if (createdOrExists) {
                     try{
-                        LoggerUtils.setUniqueLogName(uniqueRunName, outputFolderPath);
+                        LoggerUtils.setUniqueLogName(uniqueRunName, outputFolderPath, timeStamp);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -67,53 +69,64 @@ public class Bioliner {
             Path p1 = Paths.get(getDirectoryOfJar());
             Path toolsDir = p1.getParent().resolve("tools");
 
+
             for (Module m: modules) {
                 populateMissingModuleFields(m);
+
+                String logMsg = String.format("Starting Module %s", m.getModuleName());
+                LOGGER.log(Level.INFO, logMsg);
+
                 File inputFile = new File(m.getInputFile());
                 boolean inputFileExists = validateFileExists(inputFile);
 
                 if(inputFileExists) {
-                    String msg = String.format("Input file at path %s for module %s is a valid input file.",
-                            m.getInputFile(), m.getModuleName());
+                    String msg = String.format("Input file is a valid input file. Filepath: %s",
+                            m.getInputFile());
                     LOGGER.log(Level.INFO, msg);
-
-                    String outputFile = m.getOutputFile();
-                    Path outputFolder = Paths.get(outputFolderPath);
-                    String modifiedOutputFile = outputFolder.resolve(outputFile).toString();
-                    System.out.format("Full output file path %s ", modifiedOutputFile);
-                    outputFolder = outputFolder.resolve(outputFile);
-                    System.out.println(outputFolder.toString());
-
                 } else {
-                    String errMsg = String.format("Input file at path %s for module %s is not a valid input file.",
-                            m.getInputFile(), m.getModuleName());
+                    String errMsg = String.format("Input file is not a valid input file. Filepath: %s",
+                            m.getInputFile());
                     LOGGER.log(Level.SEVERE, errMsg);
                     break;
                 }
 
                 String command = BiolinerUtils.getCommandString(m, toolsDir, outputFolderPath);
                 String[] commandArray = command.split(" ");
-                System.out.println(command);
                 ProcessBuilder pb = new ProcessBuilder();
+                pb.redirectErrorStream(true);
                 pb.command(commandArray);
-
 
                 try {
                     Process p = pb.start();
+                    LoggerUtils.writeOutputToLogFile(p.getInputStream(), outputFolderPath, uniqueRunName, timeStamp);
 
-                    LoggerUtils.writeOutputToLogFile(p.getInputStream(), outputFolderPath, uniqueRunName);
                     try {
                         p.waitFor();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        if(p != null) {
+                            p.destroy();
+                        }
+                        String errMsg = String.format("Module %s has encountered an error.", m.getModuleName());
+                        LOGGER.log(Level.SEVERE, errMsg, e);
+                        break;
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    String errMsg = String.format("Module %s has encountered an error.", m.getModuleName());
+                    LOGGER.log(Level.SEVERE, errMsg, e);
+                    break;
+                }
+
+                if(m.isOutputFileRequired()) {
+                    File outputFile = new File(m.getOutputFile());
+                    boolean outputFileWasCreated = validateFileExists(outputFile);
+                    if(outputFileWasCreated) {
+                        String msg = String.format("Output File %s has been successfully created.", m.getOutputFile());
+                        LOGGER.log(Level.INFO, msg);
+                    }
                 }
                 String msg = String.format("Module %s has finished", m.getModuleName());
                 LOGGER.log(Level.INFO, msg);
             }
-
 
         }
     }

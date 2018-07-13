@@ -12,7 +12,7 @@ public class BiolinerUtils {
      * Takes a Module and generates a command string to be executed by ProcessBuilder. String generated is
      *  based on the module's inputParam, outputParam and outputRequired.
      * @param m
-     * @return
+     * @return Command String ready for a process to execute.
      */
     public static String getCommandString(Module m, Path toolsDir, String outputFolderPath) {
         String command = m.getModuleExecutable();
@@ -103,4 +103,5 @@ public class BiolinerUtils {
         String fullPath = outputFolderPath + File.separator + outputFile;
         return fullPath;
     }
+
 }

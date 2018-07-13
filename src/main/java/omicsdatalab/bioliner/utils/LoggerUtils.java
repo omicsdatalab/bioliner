@@ -1,6 +1,7 @@
 package omicsdatalab.bioliner.utils;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -36,11 +37,16 @@ public class LoggerUtils {
      * @param logName the name of the log
      * @throws IOException if the FileHandler fails to create the log file.
      */
-    public static void setUniqueLogName(String logName, String filepath) throws IOException {
-        DateFormat timestamp = new SimpleDateFormat("yyyyMMddhhmmss");
-        String formattedLogName = String.format("%s\\%s_%s.log", filepath, logName, timestamp.format(new Date()));
+    public static void setUniqueLogName(String logName, String filepath, String timeStamp) throws IOException {
+        String formattedLogName = String.format("%s\\%s_%s.log", filepath, logName, timeStamp);
         FileHandler fh = new FileHandler(formattedLogName);
         LOGGER.getLogger("").addHandler(fh);
+    }
+
+    public static String getTimeStamp() {
+        DateFormat timestampSDF = new SimpleDateFormat("yyyyMMddhhmmss");
+        String timestamp = timestampSDF.format(new Date());
+        return timestamp;
     }
 
     /**
@@ -54,11 +60,11 @@ public class LoggerUtils {
         return uniqueRunName;
     }
 
-    public static void writeOutputToLogFile(InputStream input, String outputFolderPath, String uniqueRunName) {
+    public static void writeOutputToLogFile(InputStream input, String outputFolderPath, String uniqueRunName, String timestamp) {
         InputStream inputStream = null;
         OutputStream outputStream = null;
 
-        Path outputPath = Paths.get(outputFolderPath).resolve(uniqueRunName + "_" + "moduleOutput.log");
+        Path outputPath = Paths.get(outputFolderPath).resolve(uniqueRunName + "_" + "moduleOutput" + "_" + timestamp + ".log");
 
         try {
             inputStream = input;
@@ -85,13 +91,13 @@ public class LoggerUtils {
             }
             if (outputStream != null) {
                 try {
-                    // outputStream.flush();
                     outputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
             }
+
         }
     }
 }
