@@ -51,19 +51,7 @@ class XmlParserTest {
         expectedModules.add(step1);
         expectedModules.add(step2);
         expectedModules.add(step3);
-        System.out.println("ACTUAL M'S");
-        for (Modules m: actualModules) {
-            System.out.println("START M");
-            printModuleDetails(m);
-            System.out.println("END M");
-        }
 
-        System.out.println("EXPECTED M's");
-        for (Modules m: expectedModules) {
-            System.out.println("START M");
-            printModuleDetails(m);
-            System.out.println("END M");
-        }
         assertEquals(expectedModules, actualModules);
     }
 
@@ -114,21 +102,6 @@ class XmlParserTest {
         expectedModules.add(m3);
 
         assertEquals(expectedModules, actualModules);
-    }
-
-    private void printModuleDetails(Modules m) {
-        System.out.println(m.getName());
-        System.out.println(m.getDescription());
-        System.out.println(m.getInputFile());
-        System.out.println(m.getInputParam());
-        System.out.println(m.isOutputFileRequired());
-        System.out.println(m.getOutputFile());
-        System.out.println(m.getOutputParam());
-        String[] params = m.getParams();
-        for (int i=0; i < params.length; i++ ) {
-            System.out.println(params[i]);
-        }
-        System.out.println(m.getCommand());
     }
 
 }
