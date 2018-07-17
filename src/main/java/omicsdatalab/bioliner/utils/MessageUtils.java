@@ -26,4 +26,12 @@ public class MessageUtils {
             System.out.println();
         }
     }
+
+    public static void showUsage() {
+        System.out.println("Usage:");
+        System.out.println("Start a workflow:");
+        System.out.println("\t" + "java -jar bioliner.jar run <input file> <modules file>");
+        System.out.println("List modules:");
+        System.out.println("\t" + "java -jar bioliner.jar modules");
+    }
 }

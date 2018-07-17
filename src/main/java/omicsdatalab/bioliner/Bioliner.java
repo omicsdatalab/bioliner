@@ -28,13 +28,30 @@ public class Bioliner {
     private static final Logger LOGGER = Logger.getLogger(Bioliner.class.getName() );
 
     public static void main(String[] args) {
+        String command;
+        if (args.length == 1 || args.length == 3) {
+            command = args[0];
+            executeCommand(command, args);
+        } else {
+            MessageUtils.showUsage();
+            System.exit(1);
+        }
+    }
+
+    private static void executeCommand(String command, String[] args) {
+        if(command.toLowerCase().equals("run")) {
+            inputFilePath = args[1];
+            modulesFilePath = args[2];
+            startWorkflow(inputFilePath, modulesFilePath);
+        } else if (command.toLowerCase().equals("modules")) {
+            System.out.println("Module options here");
+        }
+    }
+
+    public static void startWorkflow(String inputFilePath, String modulesFilePath) {
         final ModuleValidators validators = ModuleValidators.getInstance();
         timeStamp = LoggerUtils.getTimeStamp();
         LoggerUtils.configureLoggerFromConfigFile();
-        if (args.length > 1) {
-            inputFilePath = args[0];
-            modulesFilePath = args[1];
-        }
 
         modulesFile = new File(modulesFilePath);
         inputFile = new File(modulesFilePath);
@@ -161,7 +178,6 @@ public class Bioliner {
         boolean fileExists = file.exists() && file.isFile();
         return fileExists;
     }
-
     private static String getDirectoryOfJar() {
         try {
             return new File(Bioliner.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
