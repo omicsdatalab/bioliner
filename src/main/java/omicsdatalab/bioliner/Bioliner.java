@@ -1,6 +1,7 @@
 package omicsdatalab.bioliner;
 
 import omicsdatalab.bioliner.utils.*;
+import omicsdatalab.bioliner.validators.ModuleValidators;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -27,6 +28,7 @@ public class Bioliner {
     private static final Logger LOGGER = Logger.getLogger(Bioliner.class.getName() );
 
     public static void main(String[] args) {
+        final ModuleValidators validators = ModuleValidators.getInstance();
         timeStamp = LoggerUtils.getTimeStamp();
         LoggerUtils.configureLoggerFromConfigFile();
         if (args.length > 1) {
