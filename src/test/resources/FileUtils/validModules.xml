@@ -9,7 +9,7 @@
         <outputFile_required>true</outputFile_required>
         <outputFile>output1.txt</outputFile>
         <outputParam>-outputFile</outputParam>
-        <params>-param 1 param2 -param2 param2</params>
+        <params>-param1 value1 -param2 value2</params>
         <command>example1</command>
     </module>
     <module>
@@ -21,7 +21,7 @@
         <outputFile_required>true</outputFile_required>
         <outputFile>output2.txt</outputFile>
         <outputParam>-output</outputParam>
-        <params>-param 1 param2 -param2 param2</params>
+        <params>-param1 value1 -param2 value2</params>
         <command>example2</command>
     </module>
     <module>
@@ -32,7 +32,7 @@
         <inputParam></inputParam>
         <outputFile_required>false</outputFile_required>
         <outputParam></outputParam>
-        <params>-param 1 param2 -param2 param2</params>
+        <params>-param1 value1 -param2 value2</params>
         <command>example3</command>
     </module>
 </modules>

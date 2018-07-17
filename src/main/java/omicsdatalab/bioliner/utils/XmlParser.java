@@ -1,7 +1,6 @@
 package omicsdatalab.bioliner.utils;
 
-import omicsdatalab.bioliner.DefinedModule;
-import omicsdatalab.bioliner.Module;
+import omicsdatalab.bioliner.Modules;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -9,9 +8,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,12 +55,12 @@ public class XmlParser {
     /**
      * Accepts a input xml file and parses out the contents of any Module elements.
      * @param inputFile the file to be parsed
-     * @return An ArrayList<Module> containing any modules found in the file,
+     * @return An ArrayList<Modules> containing any modules found in the file,
      *         or an empty ArrayList if none are found.
      */
-    public static ArrayList<Module> parseModulesFromInputFile(File inputFile) {
+    public static ArrayList<Modules> parseModulesFromInputFile(File inputFile) {
         try {
-            ArrayList<Module> modules = new ArrayList<>();
+            ArrayList<Modules> modules = new ArrayList<>();
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document inputFileAsDoc = dBuilder.parse(inputFile);
             inputFileAsDoc.getDocumentElement().normalize();
@@ -82,7 +79,7 @@ public class XmlParser {
                     String inputFilePath = parseInputOrOutputFilePath(inputs[0]);
                     String outputFilePath = parseInputOrOutputFilePath(inputs[1]);
                     String[] params = parseParams(inputs[2]);
-                    modules.add(new Module(moduleName, inputFilePath, outputFilePath, params));
+                    modules.add(new Modules(moduleName, inputFilePath, outputFilePath, params));
                 }
             }
 
@@ -149,14 +146,14 @@ public class XmlParser {
      * @return An ArrayList<DefinedModule> containing any modules found in the file,
      *         or an empty ArrayList if none are found.
      */
-    public static ArrayList<DefinedModule> parseModulesFromConfigFile(File input) {
+    public static ArrayList<Modules> parseModulesFromConfigFile(File input) {
 
 //        InputStream input = XmlParser.class.getClass().getResourceAsStream(resourceFilePath);
 //        System.out.println(new File("."). getAbsolutePath());
 //        InputStream input = XmlParser.class.getClass().getClassLoader().getResourceAsStream(resourceFilePath);
 
         try {
-            ArrayList<DefinedModule> modules = new ArrayList<>();
+            ArrayList<Modules> modules = new ArrayList<>();
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document inputFileAsDoc = dBuilder.parse(input);
             inputFileAsDoc.getDocumentElement().normalize();
@@ -189,15 +186,16 @@ public class XmlParser {
                         outputParam = "";
                     }
 
-                    String params = moduleElement.getElementsByTagName("params").item(0).getTextContent();
+                    String rawParams = moduleElement.getElementsByTagName("params").item(0).getTextContent();
+                    String[] parsedParams = parseParams(rawParams);
                     String command = moduleElement.getElementsByTagName("command").item(0).getTextContent();
 
                     if (outputFile == null) {
-                        modules.add(new DefinedModule(name, description, inputFile, inputParam, outputFileRequired,
-                                params, command));
+                        modules.add(new Modules(name, description, inputFile, inputParam, outputFileRequired,
+                                parsedParams, command));
                     } else {
-                        modules.add(new DefinedModule(name, description, inputFile, inputParam, outputFileRequired,
-                                outputFile, outputParam, params, command));
+                        modules.add(new Modules(name, description, inputFile, inputParam, outputFileRequired,
+                                outputFile, outputParam, parsedParams, command));
                     }
                 }
             }
@@ -215,7 +213,7 @@ public class XmlParser {
      * @param input
      * @return
      */
-    private static String[] parseInputsString(String input) {
+    public static String[] parseInputsString(String input) {
         input = input.trim();
         String trimmedInput = input.substring(1, input.length() - 1);
         String[] inputs = trimmedInput.split(",");

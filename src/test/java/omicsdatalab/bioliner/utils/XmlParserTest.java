@@ -1,7 +1,6 @@
 package omicsdatalab.bioliner.utils;
 
-import omicsdatalab.bioliner.DefinedModule;
-import omicsdatalab.bioliner.Module;
+import omicsdatalab.bioliner.Modules;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -41,18 +40,30 @@ class XmlParserTest {
         String module3OutputFile = "C/Desktop/output3.txt";
         String[] module3Params = {"-param1", "value1", "-param2", "value2", "-param3", "value3"};
 
-        Module step1 = new Module("M1", module1InputFile, module1OutputFile, module1Params);
-        Module step2 = new Module("M2", module2InputFile, module2OutputFile, module2Params);
-        Module step3 = new Module("M3", module3InputFile, module3OutputFile, module3Params);
+        Modules step1 = new Modules("M1", module1InputFile, module1OutputFile, module1Params);
+        Modules step2 = new Modules("M2", module2InputFile, module2OutputFile, module2Params);
+        Modules step3 = new Modules("M3", module3InputFile, module3OutputFile, module3Params);
 
-        ArrayList<Module> actualModules = XmlParser.parseModulesFromInputFile(validInputXMLFile);
+        ArrayList<Modules> actualModules = XmlParser.parseModulesFromInputFile(validInputXMLFile);
 
-        ArrayList<Module> expectedModules = new ArrayList<>();
+        ArrayList<Modules> expectedModules = new ArrayList<>();
 
         expectedModules.add(step1);
         expectedModules.add(step2);
         expectedModules.add(step3);
+        System.out.println("ACTUAL M'S");
+        for (Modules m: actualModules) {
+            System.out.println("START M");
+            printModuleDetails(m);
+            System.out.println("END M");
+        }
 
+        System.out.println("EXPECTED M's");
+        for (Modules m: expectedModules) {
+            System.out.println("START M");
+            printModuleDetails(m);
+            System.out.println("END M");
+        }
         assertEquals(expectedModules, actualModules);
     }
 
@@ -81,25 +92,43 @@ class XmlParserTest {
     @Test
     void parseModulesFromConfigFile() {
         File modulesFile = new File(XmlParserTest.class.getResource("/FileUtils/validModules.xml").getFile());
-        ArrayList<DefinedModule> actualModules = XmlParser.parseModulesFromConfigFile(modulesFile);
+        ArrayList<Modules> actualModules = XmlParser.parseModulesFromConfigFile(modulesFile);
 
-        ArrayList<DefinedModule> expectedModules = new ArrayList<>();
-        DefinedModule m1 = new DefinedModule("M1", "description1", "input1.txt", "-inputFile",
-                true, "output1.txt", "-outputFile","-param 1 param2 -param2 param2",
+        ArrayList<Modules> expectedModules = new ArrayList<>();
+        String[] m1Params = {"-param1", "value1", "-param2", "value2"};
+        Modules m1 = new Modules("M1", "description1", "input1.txt", "-inputFile",
+                true, "output1.txt", "-outputFile", m1Params,
                 "example1");
 
-        DefinedModule m2 = new DefinedModule("M2", "description2", "input2.txt", "-input",
-                true, "output2.txt", "-output", "-param 1 param2 -param2 param2",
+        String[] m2Params = {"-param1", "value1", "-param2", "value2"};
+        Modules m2 = new Modules("M2", "description2", "input2.txt", "-input",
+                true, "output2.txt", "-output", m2Params,
                 "example2");
 
-        DefinedModule m3 = new DefinedModule("M3", "description3", "input3.txt", "",
-                false,"-param 1 param2 -param2 param2", "example3");
+        String[] m3Params = {"-param1", "value1", "-param2", "value2"};
+        Modules m3 = new Modules("M3", "description3", "input3.txt", "",
+                false, m3Params, "example3");
 
         expectedModules.add(m1);
         expectedModules.add(m2);
         expectedModules.add(m3);
 
         assertEquals(expectedModules, actualModules);
+    }
+
+    private void printModuleDetails(Modules m) {
+        System.out.println(m.getName());
+        System.out.println(m.getDescription());
+        System.out.println(m.getInputFile());
+        System.out.println(m.getInputParam());
+        System.out.println(m.isOutputFileRequired());
+        System.out.println(m.getOutputFile());
+        System.out.println(m.getOutputParam());
+        String[] params = m.getParams();
+        for (int i=0; i < params.length; i++ ) {
+            System.out.println(params[i]);
+        }
+        System.out.println(m.getCommand());
     }
 
 }

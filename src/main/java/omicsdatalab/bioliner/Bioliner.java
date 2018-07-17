@@ -22,8 +22,8 @@ public class Bioliner {
     private static File inputFile;
     private static File modulesFile;
     private static ArrayList<String> workflow;
-    private static ArrayList<Module> modules;
-    private static ArrayList<DefinedModule> definedModules;
+    private static ArrayList<Modules> inputModules;
+    private static ArrayList<Modules> modulesFromModulesXML;
 
     private static final Logger LOGGER = Logger.getLogger(Bioliner.class.getName() );
 
@@ -40,13 +40,13 @@ public class Bioliner {
         inputFile = new File(modulesFilePath);
 
 
-        definedModules = XmlParser.parseModulesFromConfigFile(modulesFile);
-        if(definedModules.size() == 0) {
+        modulesFromModulesXML = XmlParser.parseModulesFromConfigFile(modulesFile);
+        if(modulesFromModulesXML.size() == 0) {
             System.exit(1);
         }
 
         MessageUtils.printWelcomeMessage();
-        MessageUtils.printModuleOptions(definedModules);
+        MessageUtils.printModuleOptions(modulesFromModulesXML);
 
         LOGGER.log(Level.INFO, "Validating XML files...");
         validModulesFile = FileUtils.validateModulesFile(modulesFilePath);
@@ -72,10 +72,10 @@ public class Bioliner {
             Path toolsDir = p1.getParent().resolve("tools");
 
 
-            for (Module m: modules) {
+            for (Modules m: inputModules) {
                 populateMissingModuleFields(m);
 
-                String logMsg = String.format("Starting Module %s", m.getModuleName());
+                String logMsg = String.format("Starting Module %s", m.getName());
                 LOGGER.log(Level.INFO, logMsg);
 
                 File inputFile = new File(m.getInputFile());
@@ -108,12 +108,12 @@ public class Bioliner {
                         if(p != null) {
                             p.destroy();
                         }
-                        String errMsg = String.format("Module %s has encountered an error.", m.getModuleName());
+                        String errMsg = String.format("Module %s has encountered an error.", m.getName());
                         LOGGER.log(Level.SEVERE, errMsg, e);
                         break;
                     }
                 } catch (IOException e) {
-                    String errMsg = String.format("Module %s has encountered an error.", m.getModuleName());
+                    String errMsg = String.format("Module %s has encountered an error.", m.getName());
                     LOGGER.log(Level.SEVERE, errMsg, e);
                     break;
                 }
@@ -126,7 +126,7 @@ public class Bioliner {
                         LOGGER.log(Level.INFO, msg);
                     }
                 }
-                String msg = String.format("Module %s has finished", m.getModuleName());
+                String msg = String.format("Module %s has finished", m.getName());
                 LOGGER.log(Level.INFO, msg);
             }
 
@@ -136,21 +136,21 @@ public class Bioliner {
     private static void parseInputFile(File inputFile) {
         workflow = XmlParser.parseWorkflowFromInputFile(inputFile);
         outputFolderPath = XmlParser.parseOutputFolderPath(inputFile);
-        modules = XmlParser.parseModulesFromInputFile(inputFile);
+        inputModules = XmlParser.parseModulesFromInputFile(inputFile);
         uniqueRunName = XmlParser.parseUniqueId(inputFile);
     }
 
-    private static void populateMissingModuleFields(Module m) {
-        for (int i = 0; i < definedModules.size(); i++) {
-            if(m.getModuleName().equals(definedModules.get(i).getName())) {
-                m.setInputParam(definedModules.get(i).getInputParam());
-                m.setModuleExecutable(definedModules.get(i).getCommand());
-                if (definedModules.get(i).isOutputFileRequired()) {
+    private static void populateMissingModuleFields(Modules m) {
+        for (int i = 0; i < modulesFromModulesXML.size(); i++) {
+            if(m.getName().equals(modulesFromModulesXML.get(i).getName())) {
+                m.setInputParam(modulesFromModulesXML.get(i).getInputParam());
+                m.setCommand(modulesFromModulesXML.get(i).getCommand());
+                if (modulesFromModulesXML.get(i).isOutputFileRequired()) {
                     m.setOutputFileRequired(true);
-                    m.setOutputParam(definedModules.get(i).getOutputParam());
+                    m.setOutputParam(modulesFromModulesXML.get(i).getOutputParam());
                 } else {
                     m.setOutputFileRequired(false);
-                    m.setOutputParam(definedModules.get(i).getOutputParam());
+                    m.setOutputParam(modulesFromModulesXML.get(i).getOutputParam());
                 }
                 break;
             }

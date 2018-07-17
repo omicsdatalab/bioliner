@@ -1,6 +1,8 @@
 package omicsdatalab.bioliner;
 
-public class DefinedModule {
+import java.util.Arrays;
+
+public class Modules {
     private String name;
     private String description;
     private String inputFile;
@@ -8,11 +10,24 @@ public class DefinedModule {
     private boolean outputFileRequired;
     private String outputFile;
     private String outputParam;
-    private String params;
+    private String[] params;
     private String command;
 
-    public DefinedModule(String name, String description, String inputFile, String inputParam, boolean outputFileRequired,
-                         String outputFile, String outputParam, String params, String command) {
+    // this is from Module.java
+    public Modules(String name, String inputFile, String outputFile, String[] params) {
+        this.name = name;
+        this.inputFile = inputFile;
+        this.outputFile = outputFile;
+        this.params = params;
+        this.description = "";
+        this.inputParam = "";
+        this.outputFileRequired = true;
+        this.outputParam = "";
+        this.command = "";
+    }
+
+    public Modules(String name, String description, String inputFile, String inputParam, boolean outputFileRequired,
+                         String outputFile, String outputParam, String[] params, String command) {
         this.name = name;
         this.description = description;
         this.inputFile = inputFile;
@@ -24,8 +39,8 @@ public class DefinedModule {
         this.command = command;
     }
 
-    public DefinedModule(String name, String description, String inputFile, String inputParam, boolean outputFileRequired, String params,
-                         String command) {
+    public Modules(String name, String description, String inputFile, String inputParam, boolean outputFileRequired,
+                   String[] params, String command) {
         this.name = name;
         this.description = description;
         this.inputFile = inputFile;
@@ -36,7 +51,6 @@ public class DefinedModule {
         this.params = params;
         this.command = command;
     }
-
 
     public String getName() {
         return name;
@@ -62,6 +76,14 @@ public class DefinedModule {
         this.inputFile = inputFile;
     }
 
+    public String getInputParam() {
+        return inputParam;
+    }
+
+    public void setInputParam(String inputParam) {
+        this.inputParam = inputParam;
+    }
+
     public boolean isOutputFileRequired() {
         return outputFileRequired;
     }
@@ -78,11 +100,19 @@ public class DefinedModule {
         this.outputFile = outputFile;
     }
 
-    public String getParams() {
+    public String getOutputParam() {
+        return outputParam;
+    }
+
+    public void setOutputParam(String outputParam) {
+        this.outputParam = outputParam;
+    }
+
+    public String[] getParams() {
         return params;
     }
 
-    public void setParams(String params) {
+    public void setParams(String[] params) {
         this.params = params;
     }
 
@@ -94,40 +124,26 @@ public class DefinedModule {
         this.command = command;
     }
 
-    public String getInputParam() {
-        return inputParam;
-    }
-
-    public void setInputParam(String inputParam) {
-        this.inputParam = inputParam;
-    }
-
-    public String getOutputParam() {
-        return outputParam;
-    }
-
-    public void setOutputParam(String outputParam) {
-        this.outputParam = outputParam;
-    }
-
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof DefinedModule)) {
+        if (!(other instanceof Modules)) {
             return false;
         }
 
-        DefinedModule moduleToCompare = (DefinedModule) other;
+        Modules moduleToCompare = (Modules) other;
 
         boolean nameEqual = this.name.equals(moduleToCompare.name);
         boolean descriptionEqual = this.description.equals(moduleToCompare.description);
         boolean inputFileEqualEqual = this.inputFile.equals(moduleToCompare.inputFile);
         boolean outputFileRequiredEqual = this.outputFileRequired == moduleToCompare.outputFileRequired;
         boolean outputFileEqual = this.outputFile.equals(moduleToCompare.outputFile);
-        boolean paramsEqual = this.params.equals(moduleToCompare.params);
+        boolean paramsEqual = Arrays.equals(this.params, moduleToCompare.params);
         boolean commandEqual = this.command.equals(moduleToCompare.command);
+        boolean inputParamEqual = this.inputParam.equals(moduleToCompare.inputParam);
+        boolean outputParamEqual = this.outputParam.equals(moduleToCompare.outputParam);
 
         boolean modulesEqual = nameEqual && descriptionEqual && inputFileEqualEqual && outputFileRequiredEqual
-                && outputFileEqual && paramsEqual && commandEqual;
+                && outputFileEqual && paramsEqual && commandEqual && inputParamEqual && outputParamEqual;
         return modulesEqual;
     }
 }

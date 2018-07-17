@@ -1,6 +1,6 @@
 package omicsdatalab.bioliner.utils;
 
-import omicsdatalab.bioliner.Module;
+import omicsdatalab.bioliner.Modules;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -14,8 +14,8 @@ public class BiolinerUtils {
      * @param m
      * @return Command String ready for a process to execute.
      */
-    public static String getCommandString(Module m, Path toolsDir, String outputFolderPath) {
-        String command = m.getModuleExecutable();
+    public static String getCommandString(Modules m, Path toolsDir, String outputFolderPath) {
+        String command = m.getCommand();
         String[] params = m.getParams();
         String inputParam = m.getInputParam();
         String outputParam = m.getOutputParam();
