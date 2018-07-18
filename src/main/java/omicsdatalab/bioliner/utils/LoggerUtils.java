@@ -1,7 +1,6 @@
 package omicsdatalab.bioliner.utils;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -14,13 +13,13 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
- * Created by Josh on 30/05/2018.
+ * Solely contains static utility methods related to logging.
  */
 public class LoggerUtils {
     private static final Logger LOGGER = Logger.getLogger( LoggerUtils.class.getName() );
 
     /**
-     * Configures the logger from the logger properties file
+     * Configures the logger from the logger properties file.
      */
     public static void configureLoggerFromConfigFile() {
         try {
@@ -28,7 +27,8 @@ public class LoggerUtils {
             InputStream loggerFile = LoggerUtils.class.getResourceAsStream("/config/logger.properties");
             manager.readConfiguration(loggerFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            String msg = "Error configuring logger from config file.";
+            LOGGER.log(Level.INFO, msg, e);
         }
     }
 
@@ -43,6 +43,10 @@ public class LoggerUtils {
         LOGGER.getLogger("").addHandler(fh);
     }
 
+    /**
+     * Creates a timestamp dated to when the method is called.
+     * @return string timestamp in the format yyyyMMddhhmmss
+     */
     public static String getTimeStamp() {
         DateFormat timestampSDF = new SimpleDateFormat("yyyyMMddhhmmss");
         String timestamp = timestampSDF.format(new Date());
@@ -60,6 +64,14 @@ public class LoggerUtils {
         return uniqueRunName;
     }
 
+    /**
+     * Takes an input stream and writes it to a log file with the name format
+     *  "<unqiueRunName>_moduleOutput_<timestamp>.log".
+     * @param input the input stream to be written to file.
+     * @param outputFolderPath string containing the output folder path.
+     * @param uniqueRunName the unique run name specified by the user in a input xml file.
+     * @param timestamp timestamp for when the workflow was started.
+     */
     public static void writeOutputToLogFile(InputStream input, String outputFolderPath, String uniqueRunName, String timestamp) {
         InputStream inputStream = null;
         OutputStream outputStream = null;
@@ -78,26 +90,28 @@ public class LoggerUtils {
             }
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            String msg = "Error writing module output to log file.";
+            LOGGER.log(Level.SEVERE, msg, e);
         } catch (IOException e) {
-            e.printStackTrace();
+            String msg = "Error writing module output to log file.";
+            LOGGER.log(Level.SEVERE, msg, e);
         } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    String msg = "Error closing output module input stream to log file.";
+                    LOGGER.log(Level.SEVERE, msg, e);
                 }
             }
             if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    String msg = "Error closing output module output stream to log file.";
+                    LOGGER.log(Level.SEVERE, msg, e);
                 }
-
             }
-
         }
     }
 }

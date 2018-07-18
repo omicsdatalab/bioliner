@@ -148,10 +148,6 @@ public class XmlParser {
      */
     public static ArrayList<Modules> parseModulesFromConfigFile(File input) {
 
-//        InputStream input = XmlParser.class.getClass().getResourceAsStream(resourceFilePath);
-//        System.out.println(new File("."). getAbsolutePath());
-//        InputStream input = XmlParser.class.getClass().getClassLoader().getResourceAsStream(resourceFilePath);
-
         try {
             ArrayList<Modules> modules = new ArrayList<>();
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();

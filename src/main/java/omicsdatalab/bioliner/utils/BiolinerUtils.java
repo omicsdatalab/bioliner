@@ -5,13 +5,15 @@ import omicsdatalab.bioliner.Modules;
 import java.io.File;
 import java.nio.file.Path;
 
-
+/**
+ * Class to contain utility methods for Bioliner.java.
+ */
 public class BiolinerUtils {
 
     /**
      * Takes a Module and generates a command string to be executed by ProcessBuilder. String generated is
      *  based on the module's inputParam, outputParam and outputRequired.
-     * @param m
+     * @param m module for which to generate a command string.
      * @return Command String ready for a process to execute.
      */
     public static String getCommandString(Modules m, Path toolsDir, String outputFolderPath) {
@@ -87,6 +89,12 @@ public class BiolinerUtils {
         return commandString;
     }
 
+    /**
+     * This method prepends the path to an module's executable command so that the full path is available.
+     * @param executable the executable file from a module's command
+     * @param toolsDir the directory that the executable is stored in.
+     * @return full path to the executable.
+     */
     private static String addPathToExecutable(String executable, Path toolsDir) {
         String executableWithPath;
         if(executable.startsWith("\"") && executable.endsWith("\"")) {
@@ -99,6 +107,12 @@ public class BiolinerUtils {
         return executableWithPath;
     }
 
+    /**
+     * Prepends the user's specified output folder path to the output file, with the system specific file separator.
+     * @param outputFile
+     * @param outputFolderPath
+     * @return
+     */
     private static String addOutputFolderPathToOutputFileName(String outputFile, String outputFolderPath) {
         String fullPath = outputFolderPath + File.separator + outputFile;
         return fullPath;

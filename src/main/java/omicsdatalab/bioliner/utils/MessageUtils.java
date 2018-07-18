@@ -5,6 +5,9 @@ import omicsdatalab.bioliner.Modules;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+/**
+ * This class contains utility methods used to print bulky messages to the console.
+ */
 public class MessageUtils {
     private static final Logger LOGGER = Logger.getLogger( MessageUtils.class.getName() );
     public static void printWelcomeMessage() {

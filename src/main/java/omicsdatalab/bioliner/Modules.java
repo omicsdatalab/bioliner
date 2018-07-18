@@ -1,5 +1,9 @@
 package omicsdatalab.bioliner;
 
+import omicsdatalab.bioliner.utils.XmlParser;
+
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -227,6 +231,11 @@ public class Modules {
      */
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    public static ArrayList<Modules> getModulesFromModulesFile(File modulesFile) {
+        ArrayList<Modules> modulesFromModulesXML = XmlParser.parseModulesFromConfigFile(modulesFile);
+        return modulesFromModulesXML;
     }
 
     @Override
