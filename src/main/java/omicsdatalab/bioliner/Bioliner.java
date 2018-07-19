@@ -5,7 +5,6 @@ import omicsdatalab.bioliner.utils.*;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,18 +13,35 @@ import java.util.logging.Logger;
  *  details and executes each module with ProcessBuilder.
  */
 public class Bioliner {
-    private static String inputFilePath;
-    private static String modulesFilePath;
-    private static String timeStamp;
-    private static boolean validInputFile;
-    private static boolean validModulesFile;
-    private static File inputFile;
-    private static File modulesFile;
 
-    private static ArrayList<Module> modulesFromModulesXML;
+    /**
+     * String to hold the file path of the input xml file.
+     */
+    private static String inputFilePath;
+    /**
+     * String to hold the file path of the modules xml file.
+     */
+    private static String modulesFilePath;
+    /**
+     * Timestamp for the start of the current bioliner run.
+     */
+    private static String timeStamp;
+    /**
+     * Input file created from the input file path.
+     */
+    private static File inputFile;
+    /**
+     * Modules file created from the modules file path.
+     */
+    private static File modulesFile;
 
     private static final Logger LOGGER = Logger.getLogger(Bioliner.class.getName() );
 
+    /**
+     * Entry point for the application. Args contain the bioliner command and any additional params.
+     * Typically run input.xml modules.xml
+     * @param args params to be used.
+     */
     public static void main(String[] args) {
         String command;
         if (args.length == 1 || args.length == 3) {
@@ -63,45 +79,43 @@ public class Bioliner {
         timeStamp = LoggerUtils.getTimeStamp();
         LoggerUtils.configureLoggerFromConfigFile();
 
+        inputFile = new File(inputFilePath);
         modulesFile = new File(modulesFilePath);
-        inputFile = new File(modulesFilePath);
 
-        modulesFromModulesXML = Module.getModulesFromModulesFile(modulesFile);
+        Module.parseModulesFromModulesFile(modulesFile);
 
-        if(modulesFromModulesXML.size() == 0) {
+        if(Module.getModulesFromModuleXML().size() == 0) {
             String errMsg = String.format("Unable to parse modules file at path %s", modulesFilePath);
             LOGGER.log(Level.SEVERE, errMsg);
             System.exit(1);
         }
 
         MessageUtils.printWelcomeMessage();
-        MessageUtils.printModuleOptions(modulesFromModulesXML);
+        MessageUtils.printModuleOptions(Module.getModulesFromModuleXML());
 
         LOGGER.log(Level.INFO, "Validating XML files...");
-        validModulesFile = ModuleUtils.validateModuleFile(modulesFilePath);
-        validInputFile = InputUtils.validateInputFile(inputFilePath);
+        Module.validateModuleFile(modulesFile);
+        Input.validateInputFile(inputFile);
 
-        if (validInputFile && validModulesFile) {
+        if (Input.isValid() && Module.isValid()) {
             LOGGER.log(Level.INFO, "Parsing input file...");
-            inputFile = new File(inputFilePath);
             Input input = new Input();
 
             Input.parseInputFile(inputFile);
             Input.setOutputFolderPath(timeStamp);
-
 
             Path p1 = Paths.get(BiolinerProcessBuilder.getModulesPath());
             Path toolsDir = p1.getParent().resolve("tools");
 
 
             for (Module m: input.getInputModules()) {
-                InputUtils.populateMissingModuleFields(modulesFromModulesXML, m);
+                InputUtils.populateMissingModuleFields(Module.getModulesFromModuleXML(), m);
 
                 String logMsg = String.format("Starting Module %s", m.getName());
                 LOGGER.log(Level.INFO, logMsg);
 
                 File moduleInputFile = new File(m.getInputFile());
-                boolean moduleInputFileExists = input.validateInputFile(moduleInputFile);
+                boolean moduleInputFileExists = Module.validateModuleIOFile(moduleInputFile);
 
                 if(moduleInputFileExists) {
                     String msg = String.format("Input file is a valid input file. Filepath: %s",
@@ -127,7 +141,7 @@ public class Bioliner {
                 if (processSuccessful) {
                     if(m.isOutputFileRequired()) {
                         File outputFile = new File(m.getOutputFile());
-                        boolean outputFileWasCreated = InputUtils.validateFileExists(outputFile);
+                        boolean outputFileWasCreated = Module.validateModuleIOFile(outputFile);
                         if(outputFileWasCreated) {
                             String msg = String.format("Output File %s has been successfully created.", m.getOutputFile());
                             LOGGER.log(Level.INFO, msg);

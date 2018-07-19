@@ -6,10 +6,11 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.InputStream;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by Josh on 24/05/2018.
+ * Class that contains a single static method to validate a XML file against a given schema.
  */
 public class XmlValidator {
 
@@ -17,10 +18,8 @@ public class XmlValidator {
 
     /**
      *  Method validates xml against a given xsd schema.
-     *  Unsure if I should just inform the user that their xml is invalid, or
-     *  give full details.
-     * @param xml the xml file to be validated.
-     * @param xsd the schema to compare to against.
+     * @param xml InputSteam of the xml file to be validated.
+     * @param xsd InputStream of the the schema to compare to against.
      * @return boolean indicating if the schema is valid.
      */
     public static boolean validateAgainstXSD(InputStream xml, InputStream xsd)
@@ -36,7 +35,8 @@ public class XmlValidator {
         }
         catch(Exception ex)
         {
-
+            String msg = String.format("Error attempting to validate XML file.");
+            LOGGER.log(Level.SEVERE, msg, ex);
             return false;
         }
     }

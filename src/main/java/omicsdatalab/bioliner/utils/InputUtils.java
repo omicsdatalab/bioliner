@@ -1,15 +1,9 @@
 package omicsdatalab.bioliner.utils;
 
-import omicsdatalab.bioliner.Bioliner;
 import omicsdatalab.bioliner.Module;
-import omicsdatalab.bioliner.validators.XmlValidator;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -17,27 +11,6 @@ import java.util.logging.Logger;
  */
 public class InputUtils {
     private static final Logger LOGGER = Logger.getLogger( InputUtils.class.getName() );
-    
-    /**
-     * Creates input streams for the given input file and input schema. XML Validator is then used to
-     * check validity and the result is returned.
-     * @param filePath An absolute or relative path to the input file
-     * @return a boolean stating whether the specified input xml file is valid or not.
-     */
-    public static boolean validateInputFile(String filePath) {
-        boolean validInputFile;
-        try {
-            InputStream inputXmlStream = new FileInputStream(filePath);
-            InputStream inputXsdStream = Bioliner.class.getResourceAsStream("/schemas/inputSchema.xsd");
-            validInputFile = XmlValidator.validateAgainstXSD(inputXmlStream, inputXsdStream);
-            LOGGER.log(Level.INFO, "Valid input XML file.");
-            return validInputFile;
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Invalid input XML file.", e);
-            validInputFile = false;
-            return validInputFile;
-        }
-    }
 
     /**
      * This method takes the current module in the user's workflow and finds the equivalent module from
@@ -61,16 +34,6 @@ public class InputUtils {
                 break;
             }
         }
-    }
-
-    /**
-     * Validates that the file exists and is a file, not a directory.
-     * @param file file to be validated.
-     * @return true if file exists and is not a directory.
-     */
-    public static boolean validateFileExists(File file) {
-        boolean fileExists = file.exists() && file.isFile();
-        return fileExists;
     }
 
     /**

@@ -72,7 +72,8 @@ public class BiolinerProcessBuilder {
 
     /**
      * Configures process builder and starts a process for the current module. Standard output and error streams are
-     *  merged and logged/appended to the module output log file. This method always returns
+     *  merged and logged/appended to the module output log file. This method always returns true and will need to be
+     *  refactored further.
      * @return boolean indicating if the process was successful.
      */
     public boolean startProcess() {

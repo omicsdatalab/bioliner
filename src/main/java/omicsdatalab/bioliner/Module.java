@@ -1,24 +1,70 @@
 package omicsdatalab.bioliner;
 
 import omicsdatalab.bioliner.utils.XmlParser;
+import omicsdatalab.bioliner.validators.XmlValidator;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * The Module class consists exclusively of variables related to a Bioliner Module.
+ * The Module class consists of variables and helper functions related to a Bioliner Module.
+ *  It also stores the static ArrayList of modules generate from a module XML file, as well as a boolean to indicate
+ *  whether that file is valid.
  */
 public class Module {
+    private static final Logger LOGGER = Logger.getLogger(Module.class.getName() );
+
+    /**
+     * Module name
+     */
     private String name;
+    /**
+     * Module description
+     */
     private String description;
+    /**
+     * Module input file name
+     */
     private String inputFile;
+    /**
+     * Name of the input file parameter, if the module requires input as parameter.
+     */
     private String inputParam;
+    /**
+     * Boolean indicating whether the module requires an output file name.
+     */
     private boolean outputFileRequired;
+    /**
+     * Module output file name.
+     */
     private String outputFile;
+    /**
+     * Name of the output file parameter, if the module requires output as parameter.
+     */
     private String outputParam;
+    /**
+     * String[] to hold the module parameters.
+     */
     private String[] params;
+    /**
+     * String representing the command to be executed by a module.
+     */
     private String command;
+
+    /**
+     * ArrayList<Module> to hold modules generated from the module XML file.
+     */
+    private static ArrayList<Module> modulesFromModuleXML;
+    /**
+     * Boolean to indicate whether the module XML file is valid.
+     */
+    private static boolean valid;
 
     /**
      * Class constructor used when parsing modules from an input file.
@@ -87,6 +133,56 @@ public class Module {
         this.outputFile = "N/A";
         this.params = params;
         this.command = command;
+    }
+
+    /**
+     * Takes in a modules file and uses the XML parser to parse module data, generate ArrayList of modules.
+     * These generated modules are stored in the static member modulesFromModuleXML.
+     * @param modulesFile module file to parse
+     */
+    public static void parseModulesFromModulesFile(File modulesFile) {
+        ArrayList<Module> modulesFromModulesXML = XmlParser.parseModulesFromConfigFile(modulesFile);
+        setModulesFromModuleXML(modulesFromModulesXML);
+    }
+
+    /**
+     * Takes a module xml file and checks it exists, and if so, checks validity.
+     * @param modulesFile module file to validate.
+     */
+    public static void validateModuleFile(File modulesFile ) {
+        boolean fileExists = modulesFile.exists() && modulesFile.isFile();
+        if (fileExists) {
+            boolean validModuleFile;
+            try {
+                InputStream inputXmlStream = new FileInputStream(modulesFile);
+                InputStream inputXsdStream = Bioliner.class.getResourceAsStream("/schemas/modulesSchema.xsd");
+                validModuleFile = XmlValidator.validateAgainstXSD(inputXmlStream, inputXsdStream);
+                setValid(validModuleFile);
+                if (validModuleFile) {
+                    LOGGER.log(Level.INFO, "Valid module XML file.");
+                } else {
+                    LOGGER.log(Level.WARNING, "Invalid module XML file.");
+                }
+            } catch (IOException e) {
+                LOGGER.log(Level.WARNING, "Error while validating module XML file.", e);
+                validModuleFile = false;
+                setValid(validModuleFile);
+            }
+        } else {
+            String msg = String.format("Module XML file not found at path %s.", modulesFile.getAbsolutePath());
+            LOGGER.log(Level.WARNING, msg);
+            setValid(false);
+        }
+    }
+
+    /**
+     * Validates that the input/output file of a module exists and is a file.
+     * @param file file to be validated.
+     * @return true if file exists and is not a directory.
+     */
+    public static boolean validateModuleIOFile(File file) {
+        boolean fileExists = file.exists() && file.isFile();
+        return fileExists;
     }
 
     /**
@@ -233,9 +329,28 @@ public class Module {
         this.command = command;
     }
 
-    public static ArrayList<Module> getModulesFromModulesFile(File modulesFile) {
-        ArrayList<Module> modulesFromModulesXML = XmlParser.parseModulesFromConfigFile(modulesFile);
-        return modulesFromModulesXML;
+    /**
+     *
+     * @return Arraylist of all modules from modules XML file.
+     */
+    public static ArrayList<Module> getModulesFromModuleXML() {
+        return modulesFromModuleXML;
+    }
+
+    /**
+     *
+     * @param modulesFromModuleXML modules from modules XML file to set.
+     */
+    public static void setModulesFromModuleXML(ArrayList<Module> modulesFromModuleXML) {
+        Module.modulesFromModuleXML = modulesFromModuleXML;
+    }
+
+    public static boolean isValid() {
+        return valid;
+    }
+
+    private static void setValid(boolean valid) {
+        Module.valid = valid;
     }
 
     @Override

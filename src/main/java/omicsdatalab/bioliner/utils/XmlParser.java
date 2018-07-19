@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 /**
  * This class contains exclusively static methods that parse various element values
- * from an Input XML file.
+ * from an input or modules XML file.
  * @author Joshua Hazlewood
  */
 public class XmlParser {
@@ -50,7 +50,6 @@ public class XmlParser {
             return new ArrayList<>();
         }
     }
-
 
     /**
      * Accepts a input xml file and parses out the contents of any Module elements.
@@ -221,6 +220,12 @@ public class XmlParser {
         return inputs;
     }
 
+    /**
+     * Parses a file path from a string found in the <input> element of a input xml file.
+     * String is in the format "Inputfile:<name>"
+     * @param input string to parse.
+     * @return input file path from the whole string.
+     */
     private static String parseFilePath(String input) {
         String[] parts = input.split(":", 2);
         String inputFilePath;
@@ -234,6 +239,11 @@ public class XmlParser {
         return inputFilePath;
     }
 
+    /**
+     * Parses the parameters from the <input> element in an input xml file.
+     * @param paramString string containing all the parameters to parse out.
+     * @return the parameters in a String[].
+     */
     private static String[] parseParams(String paramString) {
         String[] params = paramString.split(" ");
         return params;

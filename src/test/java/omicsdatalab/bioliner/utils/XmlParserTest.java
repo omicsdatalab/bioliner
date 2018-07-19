@@ -12,7 +12,7 @@ class XmlParserTest {
 
     @Test
     void parseWorkflowFromInputFile() {
-        String validInputXMLPath = XmlParserTest.class.getResource("/InputUtils/validInput.xml").getFile();
+        String validInputXMLPath = XmlParserTest.class.getResource("/Input/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
         ArrayList<String> sequenceFromFile = XmlParser.parseWorkflowFromInputFile(validInputXMLFile);
         ArrayList<String> expectedSequence = new ArrayList<>();
@@ -25,7 +25,7 @@ class XmlParserTest {
 
     @Test
     void parseModulesFromInputFile() {
-        String validInputXMLPath = XmlParserTest.class.getResource("/InputUtils/validInput.xml").getFile();
+        String validInputXMLPath = XmlParserTest.class.getResource("/Input/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
 
         String module1InputFile = "C/Desktop/file.txt";
@@ -57,7 +57,7 @@ class XmlParserTest {
 
     @Test
     void parseOutputFolderPathFromInputFile() {
-        String validInputXMLPath = XmlParserTest.class.getResource("/InputUtils/validInput.xml").getFile();
+        String validInputXMLPath = XmlParserTest.class.getResource("/Input/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
 
         String expectedOutputFolderPath = "C:\\Users\\Josh\\Desktop\\biolinerOutput";
@@ -68,7 +68,7 @@ class XmlParserTest {
 
     @Test
     void parseUniqueIdFromInputFile() {
-        String validInputXMLPath = XmlParserTest.class.getResource("/InputUtils/validInput.xml").getFile();
+        String validInputXMLPath = XmlParserTest.class.getResource("/Input/validInput.xml").getFile();
         File validInputXMLFile = new File(validInputXMLPath);
 
         String expectedUniqueId = "testRun1";
@@ -79,7 +79,7 @@ class XmlParserTest {
 
     @Test
     void parseModulesFromConfigFile() {
-        File modulesFile = new File(XmlParserTest.class.getResource("/ModulesUtils/validModules.xml").getFile());
+        File modulesFile = new File(XmlParserTest.class.getResource("/Module/validModules.xml").getFile());
         ArrayList<Module> actualModules = XmlParser.parseModulesFromConfigFile(modulesFile);
 
         ArrayList<Module> expectedModules = new ArrayList<>();

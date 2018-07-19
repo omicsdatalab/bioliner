@@ -13,8 +13,15 @@ import java.util.logging.Logger;
  */
 public class ModuleValidators {
     private static final Logger LOGGER = Logger.getLogger( ModuleValidators.class.getName() );
+
+    /**
+     * Sole instance of ModuleValidators.
+     */
     private static ModuleValidators instance;
 
+    /**
+     * Class constructor.
+     */
     private ModuleValidators() {}
 
     /**
