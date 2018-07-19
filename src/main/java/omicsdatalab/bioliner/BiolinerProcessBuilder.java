@@ -13,11 +13,11 @@ import java.util.logging.Logger;
  * Class to handle the execution of a module via the ProcessBuilder class. The ProcessBuilder has error and
  *  standard out streams merged. This is then logged/appended to a separate log file.
  */
-public class ProcessBuilderBioliner {
+public class BiolinerProcessBuilder {
 
-    private static final Logger LOGGER = Logger.getLogger(ProcessBuilderBioliner.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger(BiolinerProcessBuilder.class.getName() );
 
-    private Modules module;
+    private Module module;
     private Path toolsDir;
     private String outputFolderPath;
     private String uniqueRunName;
@@ -33,7 +33,7 @@ public class ProcessBuilderBioliner {
      * @param timestamp timestamp captured at the start of the current workflow.
      * @param command command to be executed by process builder.
      */
-    public ProcessBuilderBioliner(Modules module, Path toolsDir, String outputFolderPath, String uniqueRunName,
+    public BiolinerProcessBuilder(Module module, Path toolsDir, String outputFolderPath, String uniqueRunName,
                                   String timestamp, String[] command) {
         this.module = module;
         this.toolsDir = toolsDir;
@@ -55,7 +55,7 @@ public class ProcessBuilderBioliner {
 
         try {
             Process p = pb.start();
-            LoggerUtils.writeOutputToLogFile(p.getInputStream(), outputFolderPath, uniqueRunName, timestamp);
+            LoggerUtils.writeToLog(p.getInputStream(), outputFolderPath, uniqueRunName, timestamp);
             try {
                 p.waitFor();
             } catch (InterruptedException e) { // THIS ISN'T CATCHING INTERRUPTEDEXCEPTION WHEN JAR FILE IS MISSING;
@@ -78,7 +78,7 @@ public class ProcessBuilderBioliner {
      * Gets the directory of where the Bioliner jar is stored.
      * @return directory that holds the Bioliner jar.
      */
-    public static String getDirectoryOfJar() {
+    public static String getModulesPath() {
         try {
             return new File(Bioliner.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
         } catch (URISyntaxException e) {

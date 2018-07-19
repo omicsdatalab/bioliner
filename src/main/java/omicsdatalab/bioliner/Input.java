@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class Input {
     private static final Logger LOGGER = Logger.getLogger( Input.class.getName() );
 
-    private static ArrayList<Modules> inputModules;
+    private static ArrayList<Module> inputModules;
     private static ArrayList<String> workflow;
     private static String uniqueRunName;
     private static String outputFolderPath;
@@ -47,7 +47,7 @@ public class Input {
             boolean createdOrExists = InputUtils.setOutputDirectory(outputFolderPath);
             if (createdOrExists) {
                 try{
-                    LoggerUtils.setUniqueLogName(uniqueRunName, outputFolderPath, timeStamp);
+                    LoggerUtils.setUniqueID(uniqueRunName, outputFolderPath, timeStamp);
                 } catch (IOException e) {
                     String msg = "Error setting the unique log name for the file.";
                     LOGGER.log(Level.SEVERE, msg, e);
@@ -70,14 +70,14 @@ public class Input {
     /**
      * @return ArrayList of modules generated from the input xml file.
      */
-    public ArrayList<Modules> getInputModules() {
+    public ArrayList<Module> getInputModules() {
         return inputModules;
     }
 
     /**
      * @param inputModules input modules to set.
      */
-    public void setInputModules(ArrayList<Modules> inputModules) {
+    public void setInputModules(ArrayList<Module> inputModules) {
         this.inputModules = inputModules;
     }
 

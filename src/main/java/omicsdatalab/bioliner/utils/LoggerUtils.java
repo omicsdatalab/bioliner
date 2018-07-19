@@ -37,7 +37,7 @@ public class LoggerUtils {
      * @param logName the name of the log
      * @throws IOException if the FileHandler fails to create the log file.
      */
-    public static void setUniqueLogName(String logName, String filepath, String timeStamp) throws IOException {
+    public static void setUniqueID(String logName, String filepath, String timeStamp) throws IOException {
         String formattedLogName = String.format("%s\\%s_%s.log", filepath, logName, timeStamp);
         FileHandler fh = new FileHandler(formattedLogName);
         LOGGER.getLogger("").addHandler(fh);
@@ -57,7 +57,7 @@ public class LoggerUtils {
      * Prompts the user to enter a unique name for the log file for the current program run.
      * @return the name of the log file
      */
-    public static String getUniqueRunName() {
+    public static String getUniqueID() {
         System.out.println("Please enter a name for the log of the current run.");
         Scanner scanner = new Scanner(System.in);
         String uniqueRunName = scanner.nextLine();
@@ -72,7 +72,7 @@ public class LoggerUtils {
      * @param uniqueRunName the unique run name specified by the user in a input xml file.
      * @param timestamp timestamp for when the workflow was started.
      */
-    public static void writeOutputToLogFile(InputStream input, String outputFolderPath, String uniqueRunName, String timestamp) {
+    public static void writeToLog(InputStream input, String outputFolderPath, String uniqueRunName, String timestamp) {
         InputStream inputStream = null;
         OutputStream outputStream = null;
 

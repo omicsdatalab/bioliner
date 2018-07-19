@@ -9,14 +9,14 @@ class ModulesUtilsTest {
     @Test
     void validateValidModulesFile() {
         String validModulesXMLFilePath = ModulesUtilsTest.class.getResource("/ModulesUtils/validModules.xml").getFile();
-        boolean modulesXmlValid = ModulesUtils.validateModulesFile(validModulesXMLFilePath);
+        boolean modulesXmlValid = ModuleUtils.validateModuleFile(validModulesXMLFilePath);
         assertTrue(modulesXmlValid);
     }
 
     @Test
     void validateInvalidModulesFile() {
         String invalidModulesXMLFilePath = ModulesUtilsTest.class.getResource("/ModulesUtils/invalidModules.xml").getFile();
-        boolean modulesXmlValid = ModulesUtils.validateModulesFile(invalidModulesXMLFilePath);
+        boolean modulesXmlValid = ModuleUtils.validateModuleFile(invalidModulesXMLFilePath);
         assertFalse(modulesXmlValid);
     }
 }

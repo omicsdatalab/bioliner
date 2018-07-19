@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * The Modules class consists exclusively of variables related to a Bioliner Module.
+ * The Module class consists exclusively of variables related to a Bioliner Module.
  */
-public class Modules {
+public class Module {
     private String name;
     private String description;
     private String inputFile;
@@ -27,7 +27,7 @@ public class Modules {
      * @param outputFile The filepath for a module's output file. Can be relative or absolute.
      * @param params The module's parameters.
      */
-    public Modules(String name, String inputFile, String outputFile, String[] params) {
+    public Module(String name, String inputFile, String outputFile, String[] params) {
         this.name = name;
         this.inputFile = inputFile;
         this.outputFile = outputFile;
@@ -52,7 +52,7 @@ public class Modules {
      * @param params The module's parameters.
      * @param command The command used to execute a module via process builder.
      */
-    public Modules(String name, String description, String inputFile, String inputParam, boolean outputFileRequired,
+    public Module(String name, String description, String inputFile, String inputParam, boolean outputFileRequired,
                          String outputFile, String outputParam, String[] params, String command) {
         this.name = name;
         this.description = description;
@@ -76,7 +76,7 @@ public class Modules {
      * @param params The module's parameters.
      * @param command The command used to execute a module via process builder.
      */
-    public Modules(String name, String description, String inputFile, String inputParam, boolean outputFileRequired,
+    public Module(String name, String description, String inputFile, String inputParam, boolean outputFileRequired,
                    String[] params, String command) {
         this.name = name;
         this.description = description;
@@ -233,8 +233,8 @@ public class Modules {
         this.command = command;
     }
 
-    public static ArrayList<Modules> getModulesFromModulesFile(File modulesFile) {
-        ArrayList<Modules> modulesFromModulesXML = XmlParser.parseModulesFromConfigFile(modulesFile);
+    public static ArrayList<Module> getModulesFromModulesFile(File modulesFile) {
+        ArrayList<Module> modulesFromModulesXML = XmlParser.parseModulesFromConfigFile(modulesFile);
         return modulesFromModulesXML;
     }
 
@@ -243,11 +243,11 @@ public class Modules {
      * Checks if this module is equal to another module.
      */
     public boolean equals(Object other) {
-        if (!(other instanceof Modules)) {
+        if (!(other instanceof Module)) {
             return false;
         }
 
-        Modules moduleToCompare = (Modules) other;
+        Module moduleToCompare = (Module) other;
 
         boolean nameEqual = this.name.equals(moduleToCompare.name);
         boolean descriptionEqual = this.description.equals(moduleToCompare.description);

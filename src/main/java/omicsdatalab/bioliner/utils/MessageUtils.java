@@ -1,6 +1,6 @@
 package omicsdatalab.bioliner.utils;
 
-import omicsdatalab.bioliner.Modules;
+import omicsdatalab.bioliner.Module;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -17,9 +17,9 @@ public class MessageUtils {
 
     }
 
-    public static void printModuleOptions(ArrayList<Modules> modules) {
+    public static void printModuleOptions(ArrayList<Module> modules) {
         System.out.println("Modules: ");
-        for (Modules module: modules) {
+        for (Module module: modules) {
             System.out.println(String.format("%s:", module.getName()));
             System.out.println(String.format("  Input: %s", module.getInputFile()));
             System.out.println(String.format("  Description: %s", module.getDescription()));

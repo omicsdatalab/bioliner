@@ -1,6 +1,6 @@
 package omicsdatalab.bioliner.utils;
 
-import omicsdatalab.bioliner.Modules;
+import omicsdatalab.bioliner.Module;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -40,13 +40,13 @@ class XmlParserTest {
         String module3OutputFile = "C/Desktop/output3.txt";
         String[] module3Params = {"-param1", "value1", "-param2", "value2", "-param3", "value3"};
 
-        Modules step1 = new Modules("M1", module1InputFile, module1OutputFile, module1Params);
-        Modules step2 = new Modules("M2", module2InputFile, module2OutputFile, module2Params);
-        Modules step3 = new Modules("M3", module3InputFile, module3OutputFile, module3Params);
+        Module step1 = new Module("M1", module1InputFile, module1OutputFile, module1Params);
+        Module step2 = new Module("M2", module2InputFile, module2OutputFile, module2Params);
+        Module step3 = new Module("M3", module3InputFile, module3OutputFile, module3Params);
 
-        ArrayList<Modules> actualModules = XmlParser.parseModulesFromInputFile(validInputXMLFile);
+        ArrayList<Module> actualModules = XmlParser.parseModulesFromInputFile(validInputXMLFile);
 
-        ArrayList<Modules> expectedModules = new ArrayList<>();
+        ArrayList<Module> expectedModules = new ArrayList<>();
 
         expectedModules.add(step1);
         expectedModules.add(step2);
@@ -80,21 +80,21 @@ class XmlParserTest {
     @Test
     void parseModulesFromConfigFile() {
         File modulesFile = new File(XmlParserTest.class.getResource("/ModulesUtils/validModules.xml").getFile());
-        ArrayList<Modules> actualModules = XmlParser.parseModulesFromConfigFile(modulesFile);
+        ArrayList<Module> actualModules = XmlParser.parseModulesFromConfigFile(modulesFile);
 
-        ArrayList<Modules> expectedModules = new ArrayList<>();
+        ArrayList<Module> expectedModules = new ArrayList<>();
         String[] m1Params = {"-param1", "value1", "-param2", "value2"};
-        Modules m1 = new Modules("M1", "description1", "input1.txt", "-inputFile",
+        Module m1 = new Module("M1", "description1", "input1.txt", "-inputFile",
                 true, "output1.txt", "-outputFile", m1Params,
                 "example1");
 
         String[] m2Params = {"-param1", "value1", "-param2", "value2"};
-        Modules m2 = new Modules("M2", "description2", "input2.txt", "-input",
+        Module m2 = new Module("M2", "description2", "input2.txt", "-input",
                 true, "output2.txt", "-output", m2Params,
                 "example2");
 
         String[] m3Params = {"-param1", "value1", "-param2", "value2"};
-        Modules m3 = new Modules("M3", "description3", "input3.txt", "",
+        Module m3 = new Module("M3", "description3", "input3.txt", "",
                 false, m3Params, "example3");
 
         expectedModules.add(m1);

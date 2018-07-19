@@ -1,6 +1,6 @@
 package omicsdatalab.bioliner.utils;
 
-import omicsdatalab.bioliner.Modules;
+import omicsdatalab.bioliner.Module;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -13,7 +13,7 @@ class BiolinerUtilsTest {
     @Test
     void getCommandStringNoIOParamAndOutputReq() {
         String[] params = {"-param1", "value1", "-param2", "value2"};
-        Modules m = new Modules("M1", "input.txt", "output.txt",
+        Module m = new Module("M1", "input.txt", "output.txt",
                 params);
         m.setCommand("java -jar \"example1.jar\" inputTest.txt outputTest.txt -param1 value1 -param2 value2");
         m.setInputParam("");
@@ -30,7 +30,7 @@ class BiolinerUtilsTest {
     @Test
     void getCommandStringNoInputParamAndOutputReq() {
         String[] params = {"-param1", "value1", "-output", "output.txt"};
-        Modules m = new Modules("M1", "input.txt", "output.txt",
+        Module m = new Module("M1", "input.txt", "output.txt",
                 params);
         m.setCommand("java -jar \"example1.jar\" inputTest.txt -param1 value1 -output value2");
         m.setInputParam("");
@@ -47,7 +47,7 @@ class BiolinerUtilsTest {
     @Test
     void getCommandStringNoOutputParamAndOutputReq() {
         String[] params = {"-input", "input.txt", "-param2", "value2"};
-        Modules m = new Modules("M1", "input.txt", "output.txt",
+        Module m = new Module("M1", "input.txt", "output.txt",
                 params);
         m.setCommand("java -jar \"example1.jar\" outputTest.txt -input value1 -param2 value2");
         m.setInputParam("-input");
@@ -64,7 +64,7 @@ class BiolinerUtilsTest {
     @Test
     void getCommandStringNoInputParamAndOutputNotReq() {
         String[] params = {"-param1", "value1", "-param2", "value2"};
-        Modules m = new Modules("M1", "input.txt", "",
+        Module m = new Module("M1", "input.txt", "",
                 params);
         m.setCommand("java -jar \"example1.jar\" inputTest.txt -param1 value1 -param2 value2");
         m.setInputParam("");
@@ -81,7 +81,7 @@ class BiolinerUtilsTest {
     @Test
     void getCommandStringIOParam() {
         String[] params = {"-input", "input.txt", "-output", "output.txt", "-param3", "value3"};
-        Modules m = new Modules("M1", "input.txt", "output.txt",
+        Module m = new Module("M1", "input.txt", "output.txt",
                 params);
         m.setCommand("java -jar \"example1.jar\" -input inputTest.txt -output outputTest.txt -param3 value3");
         m.setInputParam("-input");

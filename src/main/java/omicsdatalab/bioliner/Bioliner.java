@@ -22,7 +22,7 @@ public class Bioliner {
     private static File inputFile;
     private static File modulesFile;
 
-    private static ArrayList<Modules> modulesFromModulesXML;
+    private static ArrayList<Module> modulesFromModulesXML;
 
     private static final Logger LOGGER = Logger.getLogger(Bioliner.class.getName() );
 
@@ -66,7 +66,7 @@ public class Bioliner {
         modulesFile = new File(modulesFilePath);
         inputFile = new File(modulesFilePath);
 
-        modulesFromModulesXML = Modules.getModulesFromModulesFile(modulesFile);
+        modulesFromModulesXML = Module.getModulesFromModulesFile(modulesFile);
 
         if(modulesFromModulesXML.size() == 0) {
             String errMsg = String.format("Unable to parse modules file at path %s", modulesFilePath);
@@ -78,7 +78,7 @@ public class Bioliner {
         MessageUtils.printModuleOptions(modulesFromModulesXML);
 
         LOGGER.log(Level.INFO, "Validating XML files...");
-        validModulesFile = ModulesUtils.validateModulesFile(modulesFilePath);
+        validModulesFile = ModuleUtils.validateModuleFile(modulesFilePath);
         validInputFile = InputUtils.validateInputFile(inputFilePath);
 
         if (validInputFile && validModulesFile) {
@@ -90,11 +90,11 @@ public class Bioliner {
             Input.setOutputFolderPath(timeStamp);
 
 
-            Path p1 = Paths.get(ProcessBuilderBioliner.getDirectoryOfJar());
+            Path p1 = Paths.get(BiolinerProcessBuilder.getModulesPath());
             Path toolsDir = p1.getParent().resolve("tools");
 
 
-            for (Modules m: input.getInputModules()) {
+            for (Module m: input.getInputModules()) {
                 InputUtils.populateMissingModuleFields(modulesFromModulesXML, m);
 
                 String logMsg = String.format("Starting Module %s", m.getName());
@@ -120,7 +120,7 @@ public class Bioliner {
                 String command = BiolinerUtils.getCommandString(m, toolsDir, outputFolderPath);
                 String[] commandArray = command.split(" ");
 
-                ProcessBuilderBioliner pb = new ProcessBuilderBioliner(m, toolsDir, outputFolderPath,
+                BiolinerProcessBuilder pb = new BiolinerProcessBuilder(m, toolsDir, outputFolderPath,
                         uniqueRunName, timeStamp, commandArray);
                 boolean processSuccessful = pb.startProcess();
 

@@ -12,16 +12,16 @@ import java.util.logging.Logger;
 /**
  * This class contains utility methods related to Modules.
  */
-public class ModulesUtils {
+public class ModuleUtils {
 
-    private static final Logger LOGGER = Logger.getLogger(ModulesUtils.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger(ModuleUtils.class.getName() );
     /**
      * Creates input streams for the given input file and input schema. XML Validator is then used to
      * check validity and the result is returned.
      * @param filePath An absolute or relative path to the input file
      * @return a boolean stating whether the specified input xml file is valid or not.
      */
-    public static boolean validateModulesFile(String filePath) {
+    public static boolean validateModuleFile(String filePath) {
         boolean validModulesFile;
         try {
             InputStream inputXmlStream = new FileInputStream(filePath);

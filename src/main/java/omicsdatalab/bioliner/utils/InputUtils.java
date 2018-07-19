@@ -1,7 +1,7 @@
 package omicsdatalab.bioliner.utils;
 
 import omicsdatalab.bioliner.Bioliner;
-import omicsdatalab.bioliner.Modules;
+import omicsdatalab.bioliner.Module;
 import omicsdatalab.bioliner.validators.XmlValidator;
 
 import java.io.File;
@@ -46,7 +46,7 @@ public class InputUtils {
      * @param modulesFromModulesXML the modules generated from the modules xml file.
      * @param module the module that is about to executed in the workflow.
      */
-    public static void populateMissingModuleFields(ArrayList<Modules> modulesFromModulesXML, Modules module) {
+    public static void populateMissingModuleFields(ArrayList<Module> modulesFromModulesXML, Module module) {
         for (int i = 0; i < modulesFromModulesXML.size(); i++) {
             if(module.getName().equals(modulesFromModulesXML.get(i).getName())) {
                 module.setInputParam(modulesFromModulesXML.get(i).getInputParam());
