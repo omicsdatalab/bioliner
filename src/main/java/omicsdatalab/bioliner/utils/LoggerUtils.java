@@ -64,6 +64,13 @@ public class LoggerUtils {
         return uniqueRunName;
     }
 
+    public static String getLogFilePath(String outputFolderPath, String uniqueRunName, String timestamp) {
+        Path outputPath = Paths.get(outputFolderPath).resolve(uniqueRunName + "_" + "moduleOutput" + "_"
+                + timestamp + ".log");
+        return outputPath.toString();
+
+    }
+
     /**
      * Takes an input stream and writes it to a log file with the name format
      *  "<unqiueRunName>_moduleOutput_<timestamp>.log".

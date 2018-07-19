@@ -99,7 +99,6 @@ public class BiolinerUtils {
         String executableWithPath;
         if(executable.startsWith("\"") && executable.endsWith("\"")) {
             executable = executable.substring(1, executable.length() - 1);
-            System.out.println(executable);
             executableWithPath = "\"" + toolsDir.resolve(executable).toString() + "\"";
         } else {
             executableWithPath = "\"" + toolsDir.resolve(executable).toString() + "\"";

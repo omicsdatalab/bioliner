@@ -2,8 +2,7 @@ package omicsdatalab.bioliner;
 
 import omicsdatalab.bioliner.utils.LoggerUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.logging.Level;
@@ -17,11 +16,39 @@ public class BiolinerProcessBuilder {
 
     private static final Logger LOGGER = Logger.getLogger(BiolinerProcessBuilder.class.getName() );
 
+    /**
+     * The process builder.
+     */
+    private ProcessBuilder pb;
+
+    /**
+     * The process.
+     */
+    private Process p;
+
+    /**
+     * The module to run.
+     */
     private Module module;
+    /**
+     * The path to the directory containing module executables.
+     */
     private Path toolsDir;
+    /**
+     * The path to the user specific output folder.
+     */
     private String outputFolderPath;
+    /**
+     * Unique name for the bioliner run.
+     */
     private String uniqueRunName;
+    /**
+     * Timestamp for the start of the run.
+     */
     private String timestamp;
+    /**
+     * The process to be executed.
+     */
     private String[] command;
 
     /**
@@ -45,33 +72,62 @@ public class BiolinerProcessBuilder {
 
     /**
      * Configures process builder and starts a process for the current module. Standard output and error streams are
-     *  merged and logged/appended to the module output log file.
+     *  merged and logged/appended to the module output log file. This method always returns
      * @return boolean indicating if the process was successful.
      */
     public boolean startProcess() {
-        ProcessBuilder pb = new ProcessBuilder();
+        pb = new ProcessBuilder();
         pb.redirectErrorStream(true);
         pb.command(command);
 
+        p = null;
         try {
-            Process p = pb.start();
-            LoggerUtils.writeToLog(p.getInputStream(), outputFolderPath, uniqueRunName, timestamp);
+            p = pb.start();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error starting process.", e);
+        }
+
+        InputStream inputStream = p.getInputStream();
+
+        try {
+            //gets log file name, then creates/appends each line to the file.
+            String moduleLogPath = LoggerUtils.getLogFilePath(outputFolderPath, uniqueRunName, timestamp);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            FileWriter fw = new FileWriter(moduleLogPath, true);
+            BufferedWriter outputStream = new BufferedWriter(fw);
+            String line;
+
+            while((line = bufferedReader.readLine()) != null) {
+                outputStream.write(line);
+                outputStream.newLine();
+                if(line.startsWith("Error")) {
+                    String msg = String.format("Error starting process.");
+                    LOGGER.log(Level.SEVERE, msg);
+                    outputStream.close();
+                    bufferedReader.close();
+                    inputStream.close();
+                    return false;
+                }
+            }
+            inputStream.close();
+            bufferedReader.close();
+        } catch (IOException e) {
+            String msg = String.format("Error trying to write module output to log file.");
+            LOGGER.log(Level.SEVERE, msg, e);
+            return false;
+        } finally {
             try {
                 p.waitFor();
-            } catch (InterruptedException e) { // THIS ISN'T CATCHING INTERRUPTEDEXCEPTION WHEN JAR FILE IS MISSING;
-                if(p != null) {
+                return true;
+            } catch (InterruptedException e) {
+                if (p != null) {
                     p.destroy();
                 }
                 String errMsg = String.format("Module %s has encountered an error.", module.getName());
                 LOGGER.log(Level.SEVERE, errMsg, e);
                 return false;
             }
-        } catch (IOException e) {
-            String errMsg = String.format("Module %s has encountered an error.", module.getName());
-            LOGGER.log(Level.SEVERE, errMsg, e);
-            return false;
         }
-        return true;
     }
 
     /**

@@ -138,6 +138,8 @@ public class Bioliner {
                     }
                     String msg = String.format("Module %s has finished", m.getName());
                     LOGGER.log(Level.INFO, msg);
+                } else {
+                    System.exit(1);
                 }
             }
         }
