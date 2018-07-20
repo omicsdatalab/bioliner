@@ -147,15 +147,15 @@ public class Module {
 
     /**
      * Takes a module xml file and checks it exists, and if so, checks validity.
-     * @param modulesFile module file to validate.
+     * @param moduleFile module file to validate.
      */
-    public static void validateModuleFile(File modulesFile ) {
-        boolean fileExists = modulesFile.exists() && modulesFile.isFile();
+    public static void validateModuleFile(File moduleFile ) {
+        boolean fileExists = moduleFile.exists() && moduleFile.isFile();
         if (fileExists) {
             boolean validModuleFile;
             try {
-                InputStream inputXmlStream = new FileInputStream(modulesFile);
-                InputStream inputXsdStream = Bioliner.class.getResourceAsStream("/schemas/modulesSchema.xsd");
+                InputStream inputXmlStream = new FileInputStream(moduleFile);
+                InputStream inputXsdStream = Bioliner.class.getResourceAsStream("/schemas/moduleSchema.xsd");
                 validModuleFile = XmlValidator.validateAgainstXSD(inputXmlStream, inputXsdStream);
                 setValid(validModuleFile);
                 if (validModuleFile) {
@@ -169,20 +169,10 @@ public class Module {
                 setValid(validModuleFile);
             }
         } else {
-            String msg = String.format("Module XML file not found at path %s.", modulesFile.getAbsolutePath());
+            String msg = String.format("Module XML file not found at path %s.", moduleFile.getAbsolutePath());
             LOGGER.log(Level.WARNING, msg);
             setValid(false);
         }
-    }
-
-    /**
-     * Validates that the input/output file of a module exists and is a file.
-     * @param file file to be validated.
-     * @return true if file exists and is not a directory.
-     */
-    public static boolean validateModuleIOFile(File file) {
-        boolean fileExists = file.exists() && file.isFile();
-        return fileExists;
     }
 
     /**

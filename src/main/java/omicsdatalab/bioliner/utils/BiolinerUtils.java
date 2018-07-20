@@ -90,6 +90,19 @@ public class BiolinerUtils {
     }
 
     /**
+     * Validates that the input/output file of a module exists and is a file.
+     * This function will be expanded in the future to link file format specific validation methods in
+     *  ModuleValidators.java
+     * @see omicsdatalab.bioliner.validators.ModuleValidators
+     * @param file file to be validated.
+     * @return true if file exists and is not a directory.
+     */
+    public static boolean validateModuleIOFile(File file) {
+        boolean fileExists = file.exists() && file.isFile();
+        return fileExists;
+    }
+
+    /**
      * This method prepends the path to an module's executable command so that the full path is available.
      * @param executable the executable file from a module's command
      * @param toolsDir the directory that the executable is stored in.
@@ -108,9 +121,9 @@ public class BiolinerUtils {
 
     /**
      * Prepends the user's specified output folder path to the output file, with the system specific file separator.
-     * @param outputFile
-     * @param outputFolderPath
-     * @return
+     * @param outputFile the output file name for the path to be prepended to.
+     * @param outputFolderPath the path to prepend to file name.
+     * @return the full path to a output file located in the user specific output directory.
      */
     private static String addOutputFolderPathToOutputFileName(String outputFile, String outputFolderPath) {
         String fullPath = outputFolderPath + File.separator + outputFile;

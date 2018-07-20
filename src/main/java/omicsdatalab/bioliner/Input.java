@@ -65,21 +65,28 @@ public class Input {
      * @return a boolean stating whether the specified input xml file is valid or not.
      */
     public static void validateInputFile(File inputFile) {
-        boolean validInputFile;
-        try {
-            InputStream inputXmlStream = new FileInputStream(inputFile);
-            InputStream inputXsdStream = Bioliner.class.getResourceAsStream("/schemas/inputSchema.xsd");
-            validInputFile = XmlValidator.validateAgainstXSD(inputXmlStream, inputXsdStream);
-            setValid(validInputFile);
-            if (validInputFile) {
-                LOGGER.log(Level.INFO, "Valid input XML file.");
-            } else {
-                LOGGER.log(Level.WARNING, "Invalid input XML file.");
+        boolean fileExists = inputFile.exists() && inputFile.isFile();
+        if (fileExists) {
+            boolean validInputFile;
+            try {
+                InputStream inputXmlStream = new FileInputStream(inputFile);
+                InputStream inputXsdStream = Bioliner.class.getResourceAsStream("/schemas/inputSchema.xsd");
+                validInputFile = XmlValidator.validateAgainstXSD(inputXmlStream, inputXsdStream);
+                setValid(validInputFile);
+                if (validInputFile) {
+                    LOGGER.log(Level.INFO, "Valid input XML file.");
+                } else {
+                    LOGGER.log(Level.WARNING, "Invalid input XML file.");
+                }
+            } catch (IOException e) {
+                LOGGER.log(Level.WARNING, "Error validating input XML file.", e);
+                validInputFile = false;
+                setValid(validInputFile);
             }
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Error validating input XML file.", e);
-            validInputFile = false;
-            setValid(validInputFile);
+        } else {
+            String msg = String.format("Module XML file not found at path %s.", inputFile.getAbsolutePath());
+            LOGGER.log(Level.WARNING, msg);
+            setValid(false);
         }
     }
 

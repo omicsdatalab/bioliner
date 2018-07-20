@@ -115,7 +115,7 @@ public class Bioliner {
                 LOGGER.log(Level.INFO, logMsg);
 
                 File moduleInputFile = new File(m.getInputFile());
-                boolean moduleInputFileExists = Module.validateModuleIOFile(moduleInputFile);
+                boolean moduleInputFileExists = BiolinerUtils.validateModuleIOFile(moduleInputFile);
 
                 if(moduleInputFileExists) {
                     String msg = String.format("Input file is a valid input file. Filepath: %s",
@@ -141,7 +141,7 @@ public class Bioliner {
                 if (processSuccessful) {
                     if(m.isOutputFileRequired()) {
                         File outputFile = new File(m.getOutputFile());
-                        boolean outputFileWasCreated = Module.validateModuleIOFile(outputFile);
+                        boolean outputFileWasCreated = BiolinerUtils.validateModuleIOFile(outputFile);
                         if(outputFileWasCreated) {
                             String msg = String.format("Output File %s has been successfully created.", m.getOutputFile());
                             LOGGER.log(Level.INFO, msg);
