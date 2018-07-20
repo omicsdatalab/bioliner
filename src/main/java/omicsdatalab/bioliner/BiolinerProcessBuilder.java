@@ -135,7 +135,7 @@ public class BiolinerProcessBuilder {
      * Gets the directory of where the Bioliner jar is stored.
      * @return directory that holds the Bioliner jar.
      */
-    public static String getModulesPath() {
+    public static String getModulePath() {
         try {
             return new File(Bioliner.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
         } catch (URISyntaxException e) {

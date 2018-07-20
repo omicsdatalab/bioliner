@@ -82,7 +82,7 @@ public class Bioliner {
         inputFile = new File(inputFilePath);
         modulesFile = new File(modulesFilePath);
 
-        Module.parseModulesFromModulesFile(modulesFile);
+        Module.parseModuleFile(modulesFile);
 
         if(Module.getModulesFromModuleXML().size() == 0) {
             String errMsg = String.format("Unable to parse modules file at path %s", modulesFilePath);
@@ -104,7 +104,7 @@ public class Bioliner {
             Input.parseInputFile(inputFile);
             Input.setOutputFolderPath(timeStamp);
 
-            Path p1 = Paths.get(BiolinerProcessBuilder.getModulesPath());
+            Path p1 = Paths.get(BiolinerProcessBuilder.getModulePath());
             Path toolsDir = p1.getParent().resolve("tools");
 
 

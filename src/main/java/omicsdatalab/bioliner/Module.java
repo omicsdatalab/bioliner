@@ -140,7 +140,7 @@ public class Module {
      * These generated modules are stored in the static member modulesFromModuleXML.
      * @param modulesFile module file to parse
      */
-    public static void parseModulesFromModulesFile(File modulesFile) {
+    public static void parseModuleFile(File modulesFile) {
         ArrayList<Module> modulesFromModulesXML = XmlParser.parseModulesFromConfigFile(modulesFile);
         setModulesFromModuleXML(modulesFromModulesXML);
     }
