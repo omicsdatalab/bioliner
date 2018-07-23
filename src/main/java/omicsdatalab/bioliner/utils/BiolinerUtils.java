@@ -29,7 +29,7 @@ public class BiolinerUtils {
         jarName = addPathToExecutable(jarName, toolsDir);
         commandArray[2] = jarName;
         commandOnly = String.join(" ", commandArray);
-        String fullOutputFilePath = addOutputFolderPathToOutputFileName(m.getOutputFile(), outputFolderPath);
+        String fullOutputFilePath = addOutputFolderPathToFileName(m.getOutputFile(), outputFolderPath);
         m.setOutputFile(fullOutputFilePath);
 
         if (inputParam.equals("") && outputParam.equals("") && m.isOutputFileRequired()) {
@@ -125,7 +125,7 @@ public class BiolinerUtils {
      * @param outputFolderPath the path to prepend to file name.
      * @return the full path to a output file located in the user specific output directory.
      */
-    private static String addOutputFolderPathToOutputFileName(String outputFile, String outputFolderPath) {
+    public static String addOutputFolderPathToFileName(String outputFile, String outputFolderPath) {
         String fullPath = outputFolderPath + File.separator + outputFile;
         return fullPath;
     }

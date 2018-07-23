@@ -107,12 +107,30 @@ public class Bioliner {
             Path p1 = Paths.get(BiolinerProcessBuilder.getModulePath());
             Path toolsDir = p1.getParent().resolve("tools");
 
+            SaveState stateSaver = new SaveState(Input.getUniqueRunName(), Input.getOutputFolderPath());
+            stateSaver.checkForExistingSaveFile(Input.getWorkflow());
 
-            for (Module m: input.getInputModules()) {
+            String currentModuleString = SaveState.getCurrentModuleFromSaveFile();
+            int currentModuleIndex = SaveState.getIndexOfCurrentModuleInWorkflow(currentModuleString);
+
+            /**
+             * Iterates over a list of the modules in the workflow, starting from the first element or
+             * the module stored in <current_module> from savestate.xml file. A sublist is used in the latter case.
+             */
+            for (Module m: input.getInputModules().subList(currentModuleIndex, input.getInputModules().size())) {
                 InputUtils.populateMissingModuleFields(Module.getModulesFromModuleXML(), m);
 
                 String logMsg = String.format("Starting Module %s", m.getName());
                 LOGGER.log(Level.INFO, logMsg);
+
+                /**
+                 * If the current M is not the first in the workflow, add the full path to the input file name.
+                 */
+                if (!m.getName().equals(Input.getWorkflow().get(0))) {
+                    String fullInputFilePath = BiolinerUtils.addOutputFolderPathToFileName(m.getInputFile(),
+                            Input.getOutputFolderPath());
+                    m.setInputFile(fullInputFilePath);
+                }
 
                 File moduleInputFile = new File(m.getInputFile());
                 boolean moduleInputFileExists = BiolinerUtils.validateModuleIOFile(moduleInputFile);
@@ -150,6 +168,7 @@ public class Bioliner {
                             LOGGER.log(Level.SEVERE, msg);
                         }
                     }
+                    stateSaver.updateCurrentModule(m.getName());
                     String msg = String.format("Module %s has finished", m.getName());
                     LOGGER.log(Level.INFO, msg);
                 } else {

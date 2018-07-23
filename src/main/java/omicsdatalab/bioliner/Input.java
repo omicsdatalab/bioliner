@@ -158,4 +158,20 @@ public class Input {
     private static void setValid(boolean valid) {
         Input.valid = valid;
     }
+
+    /**
+     *
+     * @return Arraylist of strings representing the workflow of the current bioliner run.
+     */
+    public static ArrayList<String> getWorkflow() {
+        return workflow;
+    }
+
+    /**
+     *
+     * @param workflow workflow to set.
+     */
+    public static void setWorkflow(ArrayList<String> workflow) {
+        Input.workflow = workflow;
+    }
 }

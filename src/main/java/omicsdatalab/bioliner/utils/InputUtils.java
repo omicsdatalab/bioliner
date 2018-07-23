@@ -38,7 +38,7 @@ public class InputUtils {
 
     /**
      * This method checks if the specified directory exists, and creates it if not.
-     * @param folderPath
+     * @param folderPath the path of the folder to check exists/create.
      * @return boolean returning true if the directory already exists, or was created.
      *  False if the directory doesn't exist and wasn't able to be created.
      */
@@ -51,5 +51,26 @@ public class InputUtils {
         }
 
         return createdOrAlreadyExists;
+    }
+
+    /**
+     * Creates a string representation of a workflow. Takes in an ArrayList of strings and appends each to
+     * a new string, with a comma between. The final comma is trimmed from the string.
+     * For example, a workflow of M1 -> M2 -> M3 will return "M1,M2,M3".
+     * @param workflow the workflow arraylist to get a string representation of.
+     * @return the string representation of a workflow array list.
+     */
+    public static String getWorkflowAsString(ArrayList<String> workflow) {
+        String workflowString;
+        StringBuilder sb = new StringBuilder();
+        for (String s : workflow)
+        {
+            sb.append(s);
+            sb.append(",");
+        }
+
+        workflowString = sb.toString();
+        workflowString = workflowString.substring(0, workflowString.length() - 1);
+        return workflowString;
     }
 }
