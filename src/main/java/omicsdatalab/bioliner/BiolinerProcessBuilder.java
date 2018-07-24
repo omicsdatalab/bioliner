@@ -90,12 +90,15 @@ public class BiolinerProcessBuilder {
 
         InputStream inputStream = p.getInputStream();
 
+        BufferedReader bufferedReader = null;
+        FileWriter fw = null;
+        BufferedWriter outputStream = null;
         try {
             //gets log file name, then creates/appends each line to the file.
             String moduleLogPath = LoggerUtils.getLogFilePath(outputFolderPath, uniqueRunName, timestamp);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            FileWriter fw = new FileWriter(moduleLogPath, true);
-            BufferedWriter outputStream = new BufferedWriter(fw);
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            fw = new FileWriter(moduleLogPath, true);
+            outputStream = new BufferedWriter(fw);
             String line;
 
             while((line = bufferedReader.readLine()) != null) {
@@ -104,9 +107,6 @@ public class BiolinerProcessBuilder {
                 if(line.startsWith("Error")) {
                     String msg = String.format("Error starting process.");
                     LOGGER.log(Level.SEVERE, msg);
-                    outputStream.close();
-                    bufferedReader.close();
-                    inputStream.close();
                     return false;
                 }
             }
@@ -119,6 +119,13 @@ public class BiolinerProcessBuilder {
         } finally {
             try {
                 p.waitFor();
+                try {
+                    outputStream.close();
+                    bufferedReader.close();
+                    inputStream.close();
+                } catch (IOException e) {
+                    LOGGER.log(Level.WARNING, "Error close streams.", e);
+                }
                 return true;
             } catch (InterruptedException e) {
                 if (p != null) {

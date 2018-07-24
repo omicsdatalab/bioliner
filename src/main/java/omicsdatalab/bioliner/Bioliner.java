@@ -150,6 +150,7 @@ public class Bioliner {
                 String uniqueRunName = input.getUniqueRunName();
 
                 String command = BiolinerUtils.getCommandString(m, toolsDir, outputFolderPath);
+                System.out.println(command);
                 String[] commandArray = command.split(" ");
 
                 BiolinerProcessBuilder pb = new BiolinerProcessBuilder(m, toolsDir, outputFolderPath,
@@ -159,6 +160,9 @@ public class Bioliner {
                 if (processSuccessful) {
                     if(m.isOutputFileRequired()) {
                         File outputFile = new File(m.getOutputFile());
+
+                        BiolinerUtils.modifyOutputFileName(m.getOutputFile());
+
                         boolean outputFileWasCreated = BiolinerUtils.validateModuleIOFile(outputFile);
                         if(outputFileWasCreated) {
                             String msg = String.format("Output File %s has been successfully created.", m.getOutputFile());
