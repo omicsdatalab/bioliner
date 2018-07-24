@@ -5,6 +5,7 @@ import omicsdatalab.bioliner.utils.*;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -105,6 +106,7 @@ public class Bioliner {
             Input.setOutputFolderPath(timeStamp);
 
             Path p1 = Paths.get(BiolinerProcessBuilder.getModulePath());
+            BiolinerUtils.getMappingsFromFile(p1);
             Path toolsDir = p1.getParent().resolve("tools");
 
             SaveState stateSaver = new SaveState(Input.getUniqueRunName(), Input.getOutputFolderPath());

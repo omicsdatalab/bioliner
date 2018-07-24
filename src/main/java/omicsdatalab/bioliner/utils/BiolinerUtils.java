@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,7 +38,7 @@ public class BiolinerUtils {
         String commandString = "";
         String[] commandArray = commandOnly.split(" ");
         String jarName = commandArray[2];
-        jarName = addPathToExecutable(jarName, toolsDir);
+        jarName = addPathToExecutable(jarName, toolsDir, m.getName());
         commandArray[2] = jarName;
         commandOnly = String.join(" ", commandArray);
         String fullOutputFilePath = addOutputFolderPathToFileName(m.getOutputFile(), outputFolderPath);
@@ -119,13 +120,16 @@ public class BiolinerUtils {
      * @param toolsDir the directory that the executable is stored in.
      * @return full path to the executable.
      */
-    private static String addPathToExecutable(String executable, Path toolsDir) {
+    private static String addPathToExecutable(String executable, Path toolsDir, String moduleName) {
+        HashMap<String, String> mapping = Module.getModuleToToolMap();
+        String subDir = mapping.get(moduleName);
+
         String executableWithPath;
         if(executable.startsWith("\"") && executable.endsWith("\"")) {
             executable = executable.substring(1, executable.length() - 1);
-            executableWithPath = "\"" + toolsDir.resolve(executable).toString() + "\"";
+            executableWithPath = "\"" + toolsDir.resolve(subDir).resolve(executable).toString() + "\"";
         } else {
-            executableWithPath = "\"" + toolsDir.resolve(executable).toString() + "\"";
+            executableWithPath = "\"" + toolsDir.resolve(subDir).resolve(executable).toString() + "\"";
         }
         return executableWithPath;
     }
@@ -185,6 +189,17 @@ public class BiolinerUtils {
                 }
             }
         }
+    }
+
+    /**
+     * Parses module_tool_mapping.xml file and places the data in a HashMap. The HashMap is then stored as a static
+     * variable in Module.java.
+     * @param jarPath the full path of the bioliner jar, used to get the mapping xml file.
+     */
+    public static void getMappingsFromFile(Path jarPath) {
+        Path pathToMappingFile = jarPath.getParent().resolve("config").resolve("module_tool_mapping.xml");
+        File mappingFile = new File(pathToMappingFile.toString());
+        Module.setModuleToToolMap(XmlParser.parseModuleToolMappingFile(mappingFile));
     }
 
     /**

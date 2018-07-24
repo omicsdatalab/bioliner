@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,6 +66,10 @@ public class Module {
      * Boolean to indicate whether the module XML file is valid.
      */
     private static boolean valid;
+    /**
+     * Hashmap to contain key/value pairs for module -> tools/subdir_name.
+     */
+    private static HashMap<String, String> moduleToToolMap;
 
     /**
      * Class constructor used when parsing modules from an input file.
@@ -335,12 +340,36 @@ public class Module {
         Module.modulesFromModuleXML = modulesFromModuleXML;
     }
 
+    /**
+     *
+     * @return boolean to indicate whether the module xml file is valid.
+     */
     public static boolean isValid() {
         return valid;
     }
 
+    /**
+     *
+     * @param valid boolean to indicate whether the module xml file is valid to set.
+     */
     private static void setValid(boolean valid) {
         Module.valid = valid;
+    }
+
+    /**
+     *
+     * @return HashMap<String,String> of modules and subdir name.
+     */
+    public static HashMap<String, String> getModuleToToolMap() {
+        return moduleToToolMap;
+    }
+
+    /**
+     *
+     * @param moduleToToolMap HashMap<String,String> of modules and subdir name to set.
+     */
+    public static void setModuleToToolMap(HashMap<String, String> moduleToToolMap) {
+        Module.moduleToToolMap = moduleToToolMap;
     }
 
     @Override

@@ -1,14 +1,23 @@
 package omicsdatalab.bioliner.utils;
 
 import omicsdatalab.bioliner.Module;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BiolinerUtilsTest {
+
+    @BeforeAll
+    public static void setup() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("M1", "m1_subdir");
+        Module.setModuleToToolMap(map);
+    }
 
     @Test
     void getCommandStringNoIOParamAndOutputReq() {
@@ -21,8 +30,9 @@ class BiolinerUtilsTest {
         m.setOutputFileRequired(true);
         Path dir = Paths.get("C:\\test\\dir");
         String outputFolderPath = "C:\\outputFolder";
+
         String actualCommandString = BiolinerUtils.getCommandString(m, dir, outputFolderPath);
-        String expectedCommandString = "java -jar \"C:\\test\\dir\\example1.jar\" input.txt C:\\outputFolder\\output.txt -param1 value1 -param2 value2";
+        String expectedCommandString = "java -jar \"C:\\test\\dir\\m1_subdir\\example1.jar\" input.txt C:\\outputFolder\\output.txt -param1 value1 -param2 value2";
 
         assertEquals(expectedCommandString, actualCommandString);
     }
@@ -39,7 +49,7 @@ class BiolinerUtilsTest {
         Path dir = Paths.get("C:\\test\\dir");
         String outputFolderPath = "C:\\outputFolder";
         String actualCommandString = BiolinerUtils.getCommandString(m, dir, outputFolderPath);
-        String expectedCommandString = "java -jar \"C:\\test\\dir\\example1.jar\" input.txt -param1 value1 -output C:\\outputFolder\\output.txt";
+        String expectedCommandString = "java -jar \"C:\\test\\dir\\m1_subdir\\example1.jar\" input.txt -param1 value1 -output C:\\outputFolder\\output.txt";
 
         assertEquals(expectedCommandString, actualCommandString);
     }
@@ -56,7 +66,7 @@ class BiolinerUtilsTest {
         Path dir = Paths.get("C:\\test\\dir");
         String outputFolderPath = "C:\\outputFolder";
         String actualCommandString = BiolinerUtils.getCommandString(m, dir, outputFolderPath);
-        String expectedCommandString = "java -jar \"C:\\test\\dir\\example1.jar\" C:\\outputFolder\\output.txt -input input.txt -param2 value2";
+        String expectedCommandString = "java -jar \"C:\\test\\dir\\m1_subdir\\example1.jar\" C:\\outputFolder\\output.txt -input input.txt -param2 value2";
 
         assertEquals(expectedCommandString, actualCommandString);
     }
@@ -73,7 +83,7 @@ class BiolinerUtilsTest {
         Path dir = Paths.get("C:\\test\\dir");
         String outputFolderPath = "C:\\outputFolder";
         String actualCommandString = BiolinerUtils.getCommandString(m, dir, outputFolderPath);
-        String expectedCommandString = "java -jar \"C:\\test\\dir\\example1.jar\" input.txt -param1 value1 -param2 value2";
+        String expectedCommandString = "java -jar \"C:\\test\\dir\\m1_subdir\\example1.jar\" input.txt -param1 value1 -param2 value2";
 
         assertEquals(expectedCommandString, actualCommandString);
     }
@@ -90,7 +100,7 @@ class BiolinerUtilsTest {
         Path dir = Paths.get("C:\\test\\dir");
         String outputFolderPath = "C:\\outputFolder";
         String actualCommandString = BiolinerUtils.getCommandString(m, dir, outputFolderPath);
-        String expectedCommandString = "java -jar \"C:\\test\\dir\\example1.jar\" -input input.txt -output C:\\outputFolder\\output.txt -param3 value3";
+        String expectedCommandString = "java -jar \"C:\\test\\dir\\m1_subdir\\example1.jar\" -input input.txt -output C:\\outputFolder\\output.txt -param3 value3";
 
         assertEquals(expectedCommandString, actualCommandString);
     }

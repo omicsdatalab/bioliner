@@ -10,6 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -199,6 +200,42 @@ public class XmlParser {
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             LOGGER.log(Level.SEVERE, "Error parsing modules from input XML File!", ex);
             return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Accepts a path to a module to tool mapping xml file and parses out the contents of any Module elements.
+     * @param mappingFile the file path of the mapping file to be parsed
+     * @return A HashMap<String, String> containing module names and tool subdirectory names found in the file,
+     *         or an empty HashMap if none are found.
+     */
+    public static HashMap<String, String> parseModuleToolMappingFile(File mappingFile) {
+        try {
+            HashMap<String, String> modulesMap = new HashMap<>();
+            DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document mappingFileAsDoc = dBuilder.parse(mappingFile);
+            mappingFileAsDoc.getDocumentElement().normalize();
+
+            NodeList modulesList = mappingFileAsDoc.getElementsByTagName("module");
+
+            for ( int i = 0; i < modulesList.getLength(); i++) {
+                Node moduleNode = modulesList.item(i);
+
+                if (moduleNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element moduleElement = (Element) moduleNode;
+                    moduleElement.normalize();
+                    String moduleName = moduleElement.getElementsByTagName("name").item(0).getTextContent();
+                    String toolSubFolder = moduleElement.getElementsByTagName("tool_subfolder").item(0).getTextContent();
+
+                    modulesMap.put(moduleName, toolSubFolder);
+                }
+            }
+
+            LOGGER.log(Level.INFO, "Modules correctly parsed from module_tool_mapping XML file.");
+            return modulesMap;
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            LOGGER.log(Level.SEVERE, "Error parsing modules from module_tool_mapping XML File!", ex);
+            return new HashMap<>();
         }
     }
 
