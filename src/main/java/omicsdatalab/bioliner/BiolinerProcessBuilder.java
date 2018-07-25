@@ -76,7 +76,7 @@ public class BiolinerProcessBuilder {
      *  refactored further.
      * @return boolean indicating if the process was successful.
      */
-    public boolean startProcess() {
+    public void startProcess() {
         pb = new ProcessBuilder();
         pb.redirectErrorStream(true);
         pb.command(command);
@@ -104,10 +104,12 @@ public class BiolinerProcessBuilder {
             while((line = bufferedReader.readLine()) != null) {
                 outputStream.write(line);
                 outputStream.newLine();
-                if(line.startsWith("Error")) {
-                    String msg = String.format("Error starting process.");
+                if(line.startsWith("Error:")) {
+                    String msg = String.format("Error starting process. Please see module log file for details.");
                     LOGGER.log(Level.SEVERE, msg);
-                    return false;
+                    p.waitFor();
+                    closeStreams(inputStream, outputStream, bufferedReader);
+                    System.exit(1);
                 }
             }
             inputStream.close();
@@ -115,29 +117,45 @@ public class BiolinerProcessBuilder {
         } catch (IOException e) {
             String msg = String.format("Error trying to write module output to log file.");
             LOGGER.log(Level.SEVERE, msg, e);
-            return false;
+            closeStreams(inputStream, outputStream, bufferedReader);
+            System.exit(1);
+        } catch (InterruptedException e) {
+            String errMsg = String.format("Module %s has encountered an error.", module.getName());
+            LOGGER.log(Level.SEVERE, errMsg, e);
+            closeStreams(inputStream, outputStream, bufferedReader);
+            System.exit(1);
         } finally {
             try {
                 p.waitFor();
-                try {
-                    outputStream.close();
-                    bufferedReader.close();
-                    inputStream.close();
-                } catch (IOException e) {
-                    LOGGER.log(Level.WARNING, "Error close streams.", e);
-                }
-                return true;
             } catch (InterruptedException e) {
                 if (p != null) {
                     p.destroy();
                 }
                 String errMsg = String.format("Module %s has encountered an error.", module.getName());
                 LOGGER.log(Level.SEVERE, errMsg, e);
-                return false;
+                System.exit(1);
+            } finally {
+                closeStreams(inputStream, outputStream, bufferedReader);
             }
         }
     }
 
+    /**
+     * This method tries to close the readers and writers used during startProcess().
+     * @param is the input stream to close.
+     * @param os the buffered writer to close.
+     * @param br the buffered reader to close.
+     */
+    private void closeStreams(InputStream is, BufferedWriter os, BufferedReader br) {
+        try {
+            os.flush();
+            is.close();
+            os.close();
+            br.close();
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Error closing streams.", e);
+        }
+    }
     /**
      * Gets the directory of where the Bioliner jar is stored.
      * @return directory that holds the Bioliner jar.

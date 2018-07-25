@@ -123,6 +123,12 @@ public class BiolinerUtils {
     private static String addPathToExecutable(String executable, Path toolsDir, String moduleName) {
         HashMap<String, String> mapping = Module.getModuleToToolMap();
         String subDir = mapping.get(moduleName);
+        if (subDir == null) {
+            String msg = String.format("Tool subdirectory for module %s was not " +
+                    "found in module_tool_mapping.xml", moduleName);
+            LOGGER.log(Level.SEVERE, msg);
+            System.exit(0);
+        }
 
         String executableWithPath;
         if(executable.startsWith("\"") && executable.endsWith("\"")) {
@@ -136,11 +142,17 @@ public class BiolinerUtils {
 
     /**
      * Prepends the user's specified output folder path to the output file, with the system specific file separator.
+     * If the file is already absolute, it will simply return the outputFile String unmodified.
      * @param outputFile the output file name for the path to be prepended to.
      * @param outputFolderPath the path to prepend to file name.
      * @return the full path to a output file located in the user specific output directory.
      */
     public static String addOutputFolderPathToFileName(String outputFile, String outputFolderPath) {
+        File file = new File(outputFile);
+        if (file.isAbsolute()) {
+            return outputFile;
+        }
+
         String fullPath = outputFolderPath + File.separator + outputFile;
         return fullPath;
     }
