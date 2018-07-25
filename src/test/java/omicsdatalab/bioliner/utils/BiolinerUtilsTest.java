@@ -25,8 +25,8 @@ class BiolinerUtilsTest {
         Module m = new Module("M1", "input.txt", "output.txt",
                 params);
         m.setCommand("java -jar \"example1.jar\" inputTest.txt outputTest.txt -param1 value1 -param2 value2");
-        m.setInputParam("");
-        m.setOutputParam("");
+        m.setInputParamRequired(false);
+        m.setOutputParamRequired(false);
         m.setOutputFileRequired(true);
         Path dir = Paths.get("C:\\test\\dir");
         String outputFolderPath = "C:\\outputFolder";
@@ -39,12 +39,12 @@ class BiolinerUtilsTest {
 
     @Test
     void getCommandStringNoInputParamAndOutputReq() {
-        String[] params = {"-param1", "value1", "-output", "output.txt"};
+        String[] params = {"-param1", "value1", "-output", "C:\\outputFolder\\output.txt"};
         Module m = new Module("M1", "input.txt", "output.txt",
                 params);
         m.setCommand("java -jar \"example1.jar\" inputTest.txt -param1 value1 -output value2");
-        m.setInputParam("");
-        m.setOutputParam("-output");
+        m.setInputParamRequired(false);
+        m.setOutputParamRequired(true);
         m.setOutputFileRequired(true);
         Path dir = Paths.get("C:\\test\\dir");
         String outputFolderPath = "C:\\outputFolder";
@@ -60,8 +60,8 @@ class BiolinerUtilsTest {
         Module m = new Module("M1", "input.txt", "output.txt",
                 params);
         m.setCommand("java -jar \"example1.jar\" outputTest.txt -input value1 -param2 value2");
-        m.setInputParam("-input");
-        m.setOutputParam("");
+        m.setInputParamRequired(true);
+        m.setOutputParamRequired(false);
         m.setOutputFileRequired(true);
         Path dir = Paths.get("C:\\test\\dir");
         String outputFolderPath = "C:\\outputFolder";
@@ -77,8 +77,8 @@ class BiolinerUtilsTest {
         Module m = new Module("M1", "input.txt", "",
                 params);
         m.setCommand("java -jar \"example1.jar\" inputTest.txt -param1 value1 -param2 value2");
-        m.setInputParam("");
-        m.setOutputParam("");
+        m.setInputParamRequired(false);
+        m.setOutputParamRequired(false);
         m.setOutputFileRequired(false);
         Path dir = Paths.get("C:\\test\\dir");
         String outputFolderPath = "C:\\outputFolder";
@@ -90,12 +90,12 @@ class BiolinerUtilsTest {
 
     @Test
     void getCommandStringIOParam() {
-        String[] params = {"-input", "input.txt", "-output", "output.txt", "-param3", "value3"};
+        String[] params = {"-input", "input.txt", "-output", "C:\\outputFolder\\output.txt", "-param3", "value3"};
         Module m = new Module("M1", "input.txt", "output.txt",
                 params);
         m.setCommand("java -jar \"example1.jar\" -input inputTest.txt -output outputTest.txt -param3 value3");
-        m.setInputParam("-input");
-        m.setOutputParam("-output");
+        m.setInputParamRequired(true);
+        m.setOutputParamRequired(true);
         m.setOutputFileRequired(true);
         Path dir = Paths.get("C:\\test\\dir");
         String outputFolderPath = "C:\\outputFolder";

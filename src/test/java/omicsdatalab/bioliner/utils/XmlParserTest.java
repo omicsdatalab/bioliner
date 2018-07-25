@@ -84,17 +84,17 @@ class XmlParserTest {
 
         ArrayList<Module> expectedModules = new ArrayList<>();
         String[] m1Params = {"-param1", "value1", "-param2", "value2"};
-        Module m1 = new Module("M1", "description1", "input1.txt", "-inputFile",
-                true, "output1.txt", "-outputFile", m1Params,
+        Module m1 = new Module("M1", "description1", "input1.txt", true,
+                true, "output1.txt", true, m1Params,
                 "example1");
 
         String[] m2Params = {"-param1", "value1", "-param2", "value2"};
-        Module m2 = new Module("M2", "description2", "input2.txt", "-input",
-                true, "output2.txt", "-output", m2Params,
+        Module m2 = new Module("M2", "description2", "input2.txt", true,
+                true, "output2.txt", true, m2Params,
                 "example2");
 
         String[] m3Params = {"-param1", "value1", "-param2", "value2"};
-        Module m3 = new Module("M3", "description3", "input3.txt", "",
+        Module m3 = new Module("M3", "description3", "input3.txt", false,
                 false, m3Params, "example3");
 
         expectedModules.add(m1);

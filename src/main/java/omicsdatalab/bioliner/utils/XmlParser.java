@@ -165,21 +165,24 @@ public class XmlParser {
                     String name = moduleElement.getElementsByTagName("name").item(0).getTextContent();
                     String description = moduleElement.getElementsByTagName("description").item(0).getTextContent();
                     String inputFile = moduleElement.getElementsByTagName("inputFile").item(0).getTextContent();
-                    String inputParam = moduleElement.getElementsByTagName("inputParam").item(0).getTextContent();
+                    String inputParamStr = moduleElement.getElementsByTagName("inputParam").item(0).getTextContent();
+                    Boolean inputParam = Boolean.parseBoolean(inputParamStr);
                     String outputFileRequiredStr = moduleElement.getElementsByTagName("outputFile_required")
                             .item(0).getTextContent();
                     boolean outputFileRequired = Boolean.parseBoolean(outputFileRequiredStr);
                     boolean outputFileExists = moduleElement.getElementsByTagName("outputFile").getLength() > 0;
 
                     String outputFile;
-                    String outputParam;
+                    String outputParamStr;
+                    Boolean outputParam;
 
                     if (outputFileExists) {
                         outputFile = moduleElement.getElementsByTagName("outputFile").item(0).getTextContent();
-                        outputParam = moduleElement.getElementsByTagName("outputParam").item(0).getTextContent();
+                        outputParamStr = moduleElement.getElementsByTagName("outputParam").item(0).getTextContent();
+                        outputParam = Boolean.parseBoolean(outputParamStr);
                     } else {
                         outputFile = null;
-                        outputParam = "";
+                        outputParam = false;
                     }
 
                     String rawParams = moduleElement.getElementsByTagName("params").item(0).getTextContent();

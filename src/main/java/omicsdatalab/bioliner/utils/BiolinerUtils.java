@@ -4,10 +4,7 @@ import omicsdatalab.bioliner.Input;
 import omicsdatalab.bioliner.Module;
 
 import java.io.File;
-import java.nio.file.FileSystem;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,8 +28,8 @@ public class BiolinerUtils {
     public static String getCommandString(Module m, Path toolsDir, String outputFolderPath) {
         String command = m.getCommand();
         String[] params = m.getParams();
-        String inputParam = m.getInputParam();
-        String outputParam = m.getOutputParam();
+        Boolean inputParamReq = m.isInputParamRequired();
+        Boolean outputParamReq = m.isOutputParamRequired();
         String[] commandWithParamsArray = command.split(params[0]);
         String commandOnly = commandWithParamsArray[0];
         String commandString = "";
@@ -44,60 +41,39 @@ public class BiolinerUtils {
         String fullOutputFilePath = addOutputFolderPathToFileName(m.getOutputFile(), outputFolderPath);
         m.setOutputFile(fullOutputFilePath);
 
-        if (inputParam.equals("") && outputParam.equals("") && m.isOutputFileRequired()) {
+        if (m.isOutputFileRequired() && !inputParamReq && !outputParamReq) {
             String[] commandOnlyArray = commandOnly.split(" ");
             commandOnlyArray[commandOnlyArray.length - 2] = m.getInputFile();
             commandOnlyArray[commandOnlyArray.length - 1] = m.getOutputFile();
             commandString = String.join(" ", commandOnlyArray);
             String paramString = String.join(" ", params);
             commandString = commandString + " " + paramString;
-        } else if (inputParam.equals("") && m.isOutputFileRequired()) {
-            for (int i = 0; i < params.length; i++) {
-                if (params[i].equals(outputParam)) {
-                    params[i + 1] = m.getOutputFile();
-                    break;
-                }
-            }
-            String[] commandOnlyArray = commandOnly.split(" ");
-            commandOnlyArray[commandOnlyArray.length - 1] = m.getInputFile();
-            commandString = String.join(" ", commandOnlyArray);
-            String paramString = String.join(" ", params);
-            commandString = commandString + " " + paramString;
-        } else if (outputParam.equals("") && m.isOutputFileRequired()) {
-            for (int i = 0; i < params.length; i++) {
-                if (params[i].equals(inputParam)) {
-                    params[i + 1] = m.getInputFile();
-                    break;
-                }
-            }
+        } else if (m.isOutputFileRequired() && inputParamReq && !outputParamReq) {
             String[] commandOnlyArray = commandOnly.split(" ");
             commandOnlyArray[commandOnlyArray.length - 1] = m.getOutputFile();
             commandString = String.join(" ", commandOnlyArray);
             String paramString = String.join(" ", params);
             commandString = commandString + " " + paramString;
-        } else if (inputParam.equals("") && !m.isOutputFileRequired()) {
+        }
+        else if (m.isOutputFileRequired() && inputParamReq && outputParamReq) {
+            String[] commandOnlyArray = commandOnly.split(" ");
+            commandString = String.join(" ", commandOnlyArray);
+            String paramString = String.join(" ", params);
+            commandString = commandString + " " + paramString;
+        } else if ((!m.isOutputFileRequired() && !inputParamReq) ||
+                (m.isOutputFileRequired() && !inputParamReq && outputParamReq) ) {
             String[] commandOnlyArray = commandOnly.split(" ");
             commandOnlyArray[commandOnlyArray.length - 1] = m.getInputFile();
             commandString = String.join(" ", commandOnlyArray);
             String paramString = String.join(" ", params);
             commandString = commandString + " " + paramString;
-        } else if (!inputParam.equals("") && !outputParam.equals("")) {
-            for (int i = 0; i < params.length; i++) {
-                if (params[i].equals(inputParam)) {
-                    params[i + 1] = m.getInputFile();
-                    break;
-                }
-            }
-
-            for (int i = 0; i < params.length; i++) {
-                if (params[i].equals(outputParam)) {
-                    params[i + 1] = m.getOutputFile();
-                    break;
-                }
-            }
+        } else if (!m.isOutputFileRequired() && inputParamReq) {
+            String[] commandOnlyArray = commandOnly.split(" ");
+            commandString = String.join(" ", commandOnlyArray);
             String paramString = String.join(" ", params);
-            commandString = commandOnly + " " + paramString;
+            commandString = commandString + " " + paramString;
         }
+
         return commandString;
     }
 

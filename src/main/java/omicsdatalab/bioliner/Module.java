@@ -34,9 +34,9 @@ public class Module {
      */
     private String inputFile;
     /**
-     * Name of the input file parameter, if the module requires input as parameter.
+     * Boolean to indicate that input file is required as a parameter.
      */
-    private String inputParam;
+    private Boolean inputParam;
     /**
      * Boolean indicating whether the module requires an output file name.
      */
@@ -46,9 +46,9 @@ public class Module {
      */
     private String outputFile;
     /**
-     * Name of the output file parameter, if the module requires output as parameter.
+     * Boolean to indicate that output file is required as a parameter.
      */
-    private String outputParam;
+    private Boolean outputParam;
     /**
      * String[] to hold the module parameters.
      */
@@ -84,9 +84,9 @@ public class Module {
         this.outputFile = outputFile;
         this.params = params;
         this.description = "";
-        this.inputParam = "";
+        this.inputParam = false;
         this.outputFileRequired = true;
-        this.outputParam = "";
+        this.outputParam = false;
         this.command = "";
     }
 
@@ -103,8 +103,8 @@ public class Module {
      * @param params The module's parameters.
      * @param command The command used to execute a module via process builder.
      */
-    public Module(String name, String description, String inputFile, String inputParam, boolean outputFileRequired,
-                         String outputFile, String outputParam, String[] params, String command) {
+    public Module(String name, String description, String inputFile, boolean inputParam, boolean outputFileRequired,
+                         String outputFile, boolean outputParam, String[] params, String command) {
         this.name = name;
         this.description = description;
         this.inputFile = inputFile;
@@ -127,14 +127,14 @@ public class Module {
      * @param params The module's parameters.
      * @param command The command used to execute a module via process builder.
      */
-    public Module(String name, String description, String inputFile, String inputParam, boolean outputFileRequired,
+    public Module(String name, String description, String inputFile, boolean inputParam, boolean outputFileRequired,
                    String[] params, String command) {
         this.name = name;
         this.description = description;
         this.inputFile = inputFile;
         this.inputParam = inputParam;
         this.outputFileRequired = outputFileRequired;
-        this.outputParam = "";
+        this.outputParam = false;
         this.outputFile = "N/A";
         this.params = params;
         this.command = command;
@@ -230,17 +230,17 @@ public class Module {
 
     /**
      *
-     * @return Module's input param.
+     * @return Boolean to indicate if a Module has input as a parameter.
      */
-    public String getInputParam() {
+    public boolean isInputParamRequired() {
         return inputParam;
     }
 
     /**
      *
-     * @param inputParam Input param to set.
+     * @param inputParam Module's input parameter required to set.
      */
-    public void setInputParam(String inputParam) {
+    public void setInputParamRequired(Boolean inputParam) {
         this.inputParam = inputParam;
     }
 
@@ -278,17 +278,17 @@ public class Module {
 
     /**
      *
-     * @return Module's output parameter.
+     * @return Boolean to indicate if a Module has output as a parameter
      */
-    public String getOutputParam() {
+    public Boolean isOutputParamRequired() {
         return outputParam;
     }
 
     /**
      *
-     * @param outputParam Module's output parameter to set.
+     * @param outputParam Module's output parameter required to set.
      */
-    public void setOutputParam(String outputParam) {
+    public void setOutputParamRequired(Boolean outputParam) {
         this.outputParam = outputParam;
     }
 
@@ -390,8 +390,8 @@ public class Module {
         boolean outputFileEqual = this.outputFile.equals(moduleToCompare.outputFile);
         boolean paramsEqual = Arrays.equals(this.params, moduleToCompare.params);
         boolean commandEqual = this.command.equals(moduleToCompare.command);
-        boolean inputParamEqual = this.inputParam.equals(moduleToCompare.inputParam);
-        boolean outputParamEqual = this.outputParam.equals(moduleToCompare.outputParam);
+        boolean inputParamEqual = this.inputParam == moduleToCompare.inputParam;
+        boolean outputParamEqual = this.outputParam == moduleToCompare.outputParam;
 
         boolean modulesEqual = nameEqual && descriptionEqual && inputFileEqualEqual && outputFileRequiredEqual
                 && outputFileEqual && paramsEqual && commandEqual && inputParamEqual && outputParamEqual;

@@ -5,10 +5,10 @@
         <category>cat1</category>
         <description>description1</description>
         <inputFile>input1.txt</inputFile>
-        <inputParam>-inputFile</inputParam>
+        <inputParam>true</inputParam>
         <outputFile_required>true</outputFile_required>
         <outputFile>output1.txt</outputFile>
-        <outputParam>-outputFile</outputParam>
+        <outputParam>true</outputParam>
         <params>-param1 value1 -param2 value2</params>
         <command>example1</command>
     </module>
@@ -17,10 +17,10 @@
         <category>cat2</category>
         <description>description2</description>
         <inputFile>input2.txt</inputFile>
-        <inputParam>-input</inputParam>
+        <inputParam>true</inputParam>
         <outputFile_required>true</outputFile_required>
         <outputFile>output2.txt</outputFile>
-        <outputParam>-output</outputParam>
+        <outputParam>true</outputParam>
         <params>-param1 value1 -param2 value2</params>
         <command>example2</command>
     </module>
@@ -29,9 +29,9 @@
         <category>cat3</category>
         <description>description3</description>
         <inputFile>input3.txt</inputFile>
-        <inputParam></inputParam>
+        <inputParam>false</inputParam>
         <outputFile_required>false</outputFile_required>
-        <outputParam></outputParam>
+        <outputParam>false</outputParam>
         <params>-param1 value1 -param2 value2</params>
         <command>example3</command>
     </module>

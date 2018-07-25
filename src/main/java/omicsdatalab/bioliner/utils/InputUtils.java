@@ -22,14 +22,14 @@ public class InputUtils {
     public static void populateMissingModuleFields(ArrayList<Module> modulesFromModulesXML, Module module) {
         for (int i = 0; i < modulesFromModulesXML.size(); i++) {
             if(module.getName().equals(modulesFromModulesXML.get(i).getName())) {
-                module.setInputParam(modulesFromModulesXML.get(i).getInputParam());
+                module.setInputParamRequired(modulesFromModulesXML.get(i).isInputParamRequired());
                 module.setCommand(modulesFromModulesXML.get(i).getCommand());
                 if (modulesFromModulesXML.get(i).isOutputFileRequired()) {
                     module.setOutputFileRequired(true);
-                    module.setOutputParam(modulesFromModulesXML.get(i).getOutputParam());
+                    module.setOutputParamRequired(modulesFromModulesXML.get(i).isOutputParamRequired());
                 } else {
                     module.setOutputFileRequired(false);
-                    module.setOutputParam(modulesFromModulesXML.get(i).getOutputParam());
+                    module.setOutputParamRequired(modulesFromModulesXML.get(i).isOutputParamRequired());
                 }
                 break;
             }
