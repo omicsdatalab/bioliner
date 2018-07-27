@@ -134,26 +134,32 @@ public class Bioliner {
                     m.setInputFile(fullInputFilePath);
                 }
 
-                File moduleInputFile = new File(m.getInputFile());
-                boolean moduleInputFileExists = BiolinerUtils.validateModuleIOFile(moduleInputFile);
+                if (!m.isInputParamRequired()) {
+                    File moduleInputFile = new File(m.getInputFile());
+                    boolean moduleInputFileExists = BiolinerUtils.validateModuleIOFile(moduleInputFile);
 
-                if(moduleInputFileExists) {
-                    String msg = String.format("Input file is a valid input file. Filepath: %s",
-                            m.getInputFile());
-                    LOGGER.log(Level.INFO, msg);
+                    if(moduleInputFileExists) {
+                        String msg = String.format("Input file is a valid input file. Filepath: %s",
+                                m.getInputFile());
+                        LOGGER.log(Level.INFO, msg);
+                    } else {
+                        String errMsg = String.format("Input file is not a valid input file. Filepath: %s",
+                                m.getInputFile());
+                        LOGGER.log(Level.SEVERE, errMsg);
+                        break;
+                    }
                 } else {
-                    String errMsg = String.format("Input file is not a valid input file. Filepath: %s",
-                            m.getInputFile());
-                    LOGGER.log(Level.SEVERE, errMsg);
-                    break;
+                    String msg = String.format("Input file is a parameter for module %s. Skipping validation.", m.getName());
+                    LOGGER.log(Level.INFO, msg);
                 }
+
 
                 String outputFolderPath = input.getOutputFolderPath();
                 String uniqueRunName = input.getUniqueRunName();
 
                 String command = BiolinerUtils.getCommandString(m, toolsDir, outputFolderPath);
-                LOGGER.log(Level.INFO, command);
-                System.out.println(command);
+                String cmdMsg = String.format("Running Module with command %s", command);
+                LOGGER.log(Level.INFO, cmdMsg);
                 String[] commandArray = command.split(" ");
 
                 BiolinerProcessBuilder pb = new BiolinerProcessBuilder(m, toolsDir, outputFolderPath,
@@ -161,17 +167,23 @@ public class Bioliner {
                 pb.startProcess();
 
                 if(m.isOutputFileRequired()) {
-                    File outputFile = new File(m.getOutputFile());
+                    if (!m.isOutputParamRequired()) {
+                        File outputFile = new File(m.getOutputFile());
 
-                    BiolinerUtils.modifyOutputFileName(m.getOutputFile());
+                        BiolinerUtils.modifyOutputFileName(m.getOutputFile());
 
-                    boolean outputFileWasCreated = BiolinerUtils.validateModuleIOFile(outputFile);
-                    if(outputFileWasCreated) {
-                        String msg = String.format("Output File %s has been successfully created.", m.getOutputFile());
-                        LOGGER.log(Level.INFO, msg);
+                        boolean outputFileWasCreated = BiolinerUtils.validateModuleIOFile(outputFile);
+                        if(outputFileWasCreated) {
+                            String msg = String.format("Output File %s has been successfully created.", m.getOutputFile());
+                            LOGGER.log(Level.INFO, msg);
+                        } else {
+                            String msg = String.format("Output File %s has failed to be created.", m.getOutputFile());
+                            LOGGER.log(Level.SEVERE, msg);
+                            break;
+                        }
                     } else {
-                        String msg = String.format("Output File %s has failed to be created.", m.getOutputFile());
-                        LOGGER.log(Level.SEVERE, msg);
+                        String msg = String.format("Output file is a parameter for module %s. Skipping validation.", m.getName());
+                        LOGGER.log(Level.INFO, msg);
                     }
                 }
 
