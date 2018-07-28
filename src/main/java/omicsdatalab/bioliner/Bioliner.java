@@ -115,6 +115,12 @@ public class Bioliner {
             String currentModuleString = SaveState.getCurrentModuleFromSaveFile();
             int currentModuleIndex = SaveState.getIndexOfCurrentModuleInWorkflow(currentModuleString);
 
+            if (currentModuleIndex == -1) {
+                String logMsg = String.format("Unable to find module %s in workflow", currentModuleString);
+               LOGGER.log(Level.SEVERE, logMsg);
+               System.exit(0);
+            }
+
             /**
              * Iterates over a list of the modules in the workflow, starting from the first element or
              * the module stored in <current_module> from savestate.xml file. A sublist is used in the latter case.

@@ -96,6 +96,7 @@ public class BiolinerProcessBuilder {
         try {
             //gets log file name, then creates/appends each line to the file.
             String moduleLogPath = LoggerUtils.getLogFilePath(outputFolderPath, uniqueRunName, timestamp);
+            LoggerUtils.addStartingMessageToLog(moduleLogPath, module.getName());
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             fw = new FileWriter(moduleLogPath, true);
             outputStream = new BufferedWriter(fw);

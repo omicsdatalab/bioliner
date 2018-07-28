@@ -64,11 +64,44 @@ public class LoggerUtils {
         return uniqueRunName;
     }
 
+    /**
+     * This method returns the full file path for the module output log file. Creates a unique name
+     * in the format <output_folder>/<unique_run_name>_moduleOutput_<timestamp>.log.
+     * @param outputFolderPath The path to the user specified output folder.
+     * @param uniqueRunName The unique name for the Bioliner run.
+     * @param timestamp timestamp created at start of Bioliner run.
+     * @return full file path of module output log file.
+     */
     public static String getLogFilePath(String outputFolderPath, String uniqueRunName, String timestamp) {
         Path outputPath = Paths.get(outputFolderPath).resolve(uniqueRunName + "_" + "moduleOutput" + "_"
                 + timestamp + ".log");
         return outputPath.toString();
+    }
 
+    /**
+     * This method simply writes a message to the module output log file, indicating that a module has started.
+     * @param filename name of module output log file to write to.
+     * @param moduleName name of the module that is about to be executed.
+     */
+    public static void addStartingMessageToLog(String filename, String moduleName) {
+        String line1 = "======================================================================";
+        String line2 = String.format("              Starting module %s            ", moduleName);
+        String line3 = "======================================================================";
+
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true));
+            bw.newLine();
+            bw.append(line1);
+            bw.newLine();
+            bw.append(line2);
+            bw.newLine();
+            bw.append(line3);
+            bw.newLine();
+            bw.close();
+        } catch (IOException e) {
+            String msg = "Error attempting to write to module output log file.";
+            LOGGER.log(Level.WARNING, msg, e);
+        }
     }
 
     /**
