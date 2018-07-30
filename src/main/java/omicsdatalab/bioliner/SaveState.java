@@ -70,8 +70,6 @@ public class SaveState {
         } else {
             // check if current M is not last M in workflow
             String currentM = getCurrentModule();
-            System.out.println(currentM);
-            System.out.println(workflow.get(workflow.size() - 1));
             if (!currentM.equals("") && currentM.equals(workflow.get(workflow.size() - 1))) {
                 LOGGER.log(Level.SEVERE, "You cannot start a workflow with the same run name and output folder.");
                 System.exit(1);
@@ -203,6 +201,10 @@ public class SaveState {
             currentModuleIndex = 0;
         } else {
             currentModuleIndex = Input.getWorkflow().indexOf(currentModuleString);
+            /*
+                Add one to the index because this will be resuming a workflow.
+             */
+            currentModuleIndex += 1;
         }
 
         return currentModuleIndex;

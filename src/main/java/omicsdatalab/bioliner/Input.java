@@ -61,8 +61,7 @@ public class Input {
     /**
      * Creates input streams for the given input file and input schema. XML Validator is then used to
      * check validity and the result is returned.
-     * @param inputFile An absolute or relative path to the input file
-     * @return a boolean stating whether the specified input xml file is valid or not.
+     * @param inputFile An absolute or relative path to the input file.
      */
     public static void validateInputFile(File inputFile) {
         boolean fileExists = inputFile.exists() && inputFile.isFile();

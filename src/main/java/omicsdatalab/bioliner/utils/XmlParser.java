@@ -93,7 +93,7 @@ public class XmlParser {
 
     /**
      * Accepts a input xml file and parses out the contents of a outputFolderPath element.
-     * @param inputFile
+     * @param inputFile the file to input
      * @return A String containing the contents of the <outputFolder> element from an input xml file.
      */
     public static String parseOutputFolderPath(File inputFile) {
