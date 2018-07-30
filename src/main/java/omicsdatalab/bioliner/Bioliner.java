@@ -110,10 +110,10 @@ public class Bioliner {
             Path toolsDir = p1.getParent().resolve("tools");
 
             SaveState stateSaver = new SaveState(Input.getUniqueRunName(), Input.getOutputFolderPath());
-            stateSaver.checkForExistingSaveFile(Input.getWorkflow());
+            stateSaver.checkFileExists(Input.getWorkflow());
 
-            String currentModuleString = SaveState.getCurrentModuleFromSaveFile();
-            int currentModuleIndex = SaveState.getIndexOfCurrentModuleInWorkflow(currentModuleString);
+            String currentModuleString = SaveState.getCurrentModule();
+            int currentModuleIndex = SaveState.getCurrentModuleIndex(currentModuleString);
 
             if (currentModuleIndex == -1) {
                 String logMsg = String.format("Unable to find module %s in workflow", currentModuleString);

@@ -53,23 +53,23 @@ public class SaveState {
     }
 
     /**
-     * Checks if a savestate file already exists in the output folder, calling createSaveStateFile() it if not.
+     * Checks if a savestate file already exists in the output folder, calling createFile() it if not.
      * Will be expanded in the future to also resume the bioliner run from the last successfully
      * executed module.
      * This method is still a work in process.
      * @param workflow workflow to add to savestate file.
      */
-    public void checkForExistingSaveFile(ArrayList<String> workflow) {
+    public void checkFileExists(ArrayList<String> workflow) {
         String fullFilePath = outputFolderPath + File.separator + "savestate.xml";
         saveStateFilePath = fullFilePath;
 
         File saveFile = new File(fullFilePath);
         boolean fileExists = saveFile.exists() && saveFile.isFile();
         if (!fileExists) {
-            createSaveStateFile(fullFilePath, workflow);
+            createFile(fullFilePath, workflow);
         } else {
             // check if current M is not last M in workflow
-            String currentM = getCurrentModuleFromSaveFile();
+            String currentM = getCurrentModule();
             System.out.println(currentM);
             System.out.println(workflow.get(workflow.size() - 1));
             if (!currentM.equals("") && currentM.equals(workflow.get(workflow.size() - 1))) {
@@ -124,7 +124,7 @@ public class SaveState {
      * @param fullFilePath the full file path of the save state file.
      * @param workflow the workflow add in the file.
      */
-    private static void createSaveStateFile(String fullFilePath, ArrayList<String> workflow) {
+    private static void createFile(String fullFilePath, ArrayList<String> workflow) {
         try {
             String workflowString = InputUtils.getWorkflowAsString(workflow);
 
@@ -173,7 +173,7 @@ public class SaveState {
      * @return String containing the name of the current module from save state file.
      *  Returns an empty string if not found.
      */
-    public static String getCurrentModuleFromSaveFile() {
+    public static String getCurrentModule() {
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder;
@@ -196,7 +196,7 @@ public class SaveState {
      * @param currentModuleString name of the module to find.
      * @return the index of a given module name in the workflow.
      */
-    public static int getIndexOfCurrentModuleInWorkflow(String currentModuleString) {
+    public static int getCurrentModuleIndex(String currentModuleString) {
         int currentModuleIndex;
 
         if (currentModuleString.equals("")) {
