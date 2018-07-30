@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inputConfig>
+    <!-- <workflow>FalseDiscoveryRateGlobal,Threshold,Mzid2Csv</workflow> -->
+    <workflow>Omssa2mzid,FalseDiscoveryRateGlobal,ProteoGrouper,Mzid2Csv</workflow>
+    <outputFolder>./target/bioOutput</outputFolder>
+    <uniqueId>testRun1</uniqueId>
+    <modules>
+        <module>
+            <name>Omssa2mzid</name>
+            <input>
+                ["Inputfile:./target/55merge_omssa.omx","outputfile:o2m-result.mzid","-outputFragmentation false -decoyRegex Rev_ -compress false"]
+            </input>
+        </module>
+        <module>
+            <name>FalseDiscoveryRateGlobal</name>
+            <input>
+                ["Inputfile:o2m-result.mzid","outputfile:fdr-result.mzid","-decoyValue 1 -decoyRegex REVERSED -cvTerm MS:1002356 -betterScoresAreLower true -fdrLevel Peptide -proteinLevel PAG -compress false"]
+            </input>
+        </module>
+        <module>
+            <name>ProteoGrouper</name>
+            <input>
+                ["Inputfile:fdr-result.mzid","outputfile:pgr-result.mzid","-requireSIIsToPassThreshold true -verboseOutput false -cvAccForSIIScore MS:1002360 -logTransScore true -version1_1 true -useProteoAnnotator true -compress false"]
+            </input>
+        </module>
+        <module>
+            <name>Mzid2Csv</name>
+            <input>
+                ["Inputfile:pgr-result.mzid","outputfile:final-result.csv","-exportType exportPSMs -verboseOutput false -compress false"]
+            </input>
+        </module>
+    </modules>
+</inputConfig>

@@ -17,10 +17,10 @@
         <category>Grouper</category>
         <description>This tool can perform sequence-based protein inference, based on a set of PSMs. It should be parameterized with the CV accession for the PSM score used to create a protein score. The tool also needs to know whether the score should be log transformed (true for e/p-values etc) to create a positive protein score.</description>
         <inputFile>[input].mzid or [input].mzid.gz</inputFile>
-        <inputParam></inputParam>
+        <inputParam>false</inputParam>
         <outputFile_required>true</outputFile_required>
-        <outputFile>output2.txt</outputFile>
-        <outputParam></outputParam>
+        <outputFile>[input].mzid or [input].mzid.gz</outputFile>
+        <outputParam>false</outputParam>
         <params>-requireSIIsToPassThreshold true -verboseOutput false -cvAccForSIIScore \"MS:1001171\" -logTransScore false -version1_1 true -compress true</params>
         <command>java -jar "mzidlib-1.7.jar" ProteoGrouper mydata_fdr_threshold.mzid.gz mydata_fdr_threshold_groups.mzid.gz -requireSIIsToPassThreshold true -verboseOutput false -cvAccForSIIScore \"MS:1001171\" -logTransScore false -version1_1 true -compress true</command>
     </module>
@@ -83,5 +83,17 @@
         <outputParam>false</outputParam>
         <params>-exportType exportProteinGroups|exportPSMs|exportProteinsOnly|exportRepProteinPerPAGOnly|exportProteoAnnotator  [-verboseOutput true|false] [-compress true|false]</params>
         <command>java -jar "mzidlib-1.7.jar" Mzid2Csv mydata_fdr.mzid.gz mydata.csv -exportType exportProteinGroups -verboseOutput false -compress false</command>
+    </module>
+    <module>
+        <name>MzIdentMLToMzTab</name>
+        <category>n/a</category>
+        <description>Convert mzidentml file to mztab file.</description>
+        <inputFile>[input].mzid or [input].mzid.gz</inputFile>
+        <inputParam>false</inputParam>
+        <outputFile_required>true</outputFile_required>
+        <outputFile>[output]. mztab or [output]. mztab.gz</outputFile>
+        <outputParam>false</outputParam>
+        <params>Parameters: [-compress true|false]</params>
+        <command>java -jar "mzidlib-1.7.jar" MzIdentMLToMzTab 55merge_mascot_plus_fragment_ions.mzid 55merge_mascot_plus_fragment_ions.mzTab -compress false</command>
     </module>
 </modules>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modules>
+    <module>
+        <name>ProteoGrouper</name>
+        <tool_subfolder>mzidlib</tool_subfolder>
+    </module>
+    <module>
+        <name>Omssa2mzid</name>
+        <tool_subfolder>mzidlib</tool_subfolder>
+    </module>
+    <module>
+        <name>Tandem2mzid</name>
+        <tool_subfolder>mzidlib</tool_subfolder>
+    </module>
+    <module>
+        <name>FalseDiscoveryRate</name>
+        <tool_subfolder>mzidlib</tool_subfolder>
+    </module>
+    <module>
+        <name>FalseDiscoveryRateGlobal</name>
+        <tool_subfolder>mzidlib</tool_subfolder>
+    </module>
+    <module>
+        <name>Threshold</name>
+        <tool_subfolder>mzidlib</tool_subfolder>
+    </module>
+    <module>
+        <name>Mzid2Csv</name>
+        <tool_subfolder>mzidlib</tool_subfolder>
+    </module>
+</modules>
