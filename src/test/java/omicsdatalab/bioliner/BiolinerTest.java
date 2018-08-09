@@ -1,6 +1,5 @@
 package omicsdatalab.bioliner;
 
-import omicsdatalab.bioliner.utils.BiolinerUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

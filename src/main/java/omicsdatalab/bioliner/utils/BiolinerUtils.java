@@ -30,45 +30,42 @@ public class BiolinerUtils {
         String[] params = m.getParams();
         Boolean inputParamReq = m.isInputParamRequired();
         Boolean outputParamReq = m.isOutputParamRequired();
-        String[] commandWithParamsArray = command.split(params[0]);
-        String commandOnly = commandWithParamsArray[0];
         String commandString = "";
-        String[] commandArray = commandOnly.split(" ");
+        String[] commandArray = command.split(" ");
         String jarName = commandArray[2];
         jarName = addPathToExecutable(jarName, toolsDir, m.getName());
         commandArray[2] = jarName;
-        commandOnly = String.join(" ", commandArray);
+        command = String.join(" ", commandArray);
         String fullOutputFilePath = addOutputFolderPathToFileName(m.getOutputFile(), outputFolderPath);
         m.setOutputFile(fullOutputFilePath);
 
         if (m.isOutputFileRequired() && !inputParamReq && !outputParamReq) {
-            String[] commandOnlyArray = commandOnly.split(" ");
+            String[] commandOnlyArray = command.split(" ");
             commandOnlyArray[commandOnlyArray.length - 2] = m.getInputFile();
             commandOnlyArray[commandOnlyArray.length - 1] = m.getOutputFile();
             commandString = String.join(" ", commandOnlyArray);
             String paramString = String.join(" ", params);
             commandString = commandString + " " + paramString;
         } else if (m.isOutputFileRequired() && inputParamReq && !outputParamReq) {
-            String[] commandOnlyArray = commandOnly.split(" ");
+            String[] commandOnlyArray = command.split(" ");
             commandOnlyArray[commandOnlyArray.length - 1] = m.getOutputFile();
             commandString = String.join(" ", commandOnlyArray);
             String paramString = String.join(" ", params);
             commandString = commandString + " " + paramString;
-        }
-        else if (m.isOutputFileRequired() && inputParamReq && outputParamReq) {
-            String[] commandOnlyArray = commandOnly.split(" ");
+        } else if (m.isOutputFileRequired() && inputParamReq && outputParamReq) {
+            String[] commandOnlyArray = command.split(" ");
             commandString = String.join(" ", commandOnlyArray);
             String paramString = String.join(" ", params);
             commandString = commandString + " " + paramString;
         } else if ((!m.isOutputFileRequired() && !inputParamReq) ||
                 (m.isOutputFileRequired() && !inputParamReq && outputParamReq) ) {
-            String[] commandOnlyArray = commandOnly.split(" ");
+            String[] commandOnlyArray = command.split(" ");
             commandOnlyArray[commandOnlyArray.length - 1] = m.getInputFile();
             commandString = String.join(" ", commandOnlyArray);
             String paramString = String.join(" ", params);
             commandString = commandString + " " + paramString;
         } else if (!m.isOutputFileRequired() && inputParamReq) {
-            String[] commandOnlyArray = commandOnly.split(" ");
+            String[] commandOnlyArray = command.split(" ");
             commandString = String.join(" ", commandOnlyArray);
             String paramString = String.join(" ", params);
             commandString = commandString + " " + paramString;
