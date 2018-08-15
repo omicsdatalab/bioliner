@@ -5,6 +5,8 @@ import omicsdatalab.bioliner.utils.LoggerUtils;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,6 +52,10 @@ public class BiolinerProcessBuilder {
      * The process to be executed.
      */
     private String[] command;
+    /**
+     * Keywords for possible error outputs.
+     */
+    private ArrayList<String> errorKeywords = new ArrayList<>(Arrays.asList("error", "invalid"));
 
     /**
      * Constructor for ProcessBuilderBioliner.
@@ -105,12 +111,14 @@ public class BiolinerProcessBuilder {
             while((line = bufferedReader.readLine()) != null) {
                 outputStream.write(line);
                 outputStream.newLine();
-                if(line.startsWith("Error:")) {
-                    String msg = String.format("Error starting process. Please see module log file for details.");
-                    LOGGER.log(Level.SEVERE, msg);
-                    p.waitFor();
-                    closeStreams(inputStream, outputStream, bufferedReader);
-                    System.exit(1);
+                for (String error : errorKeywords) {
+                    if (line.toLowerCase().startsWith(error)) {
+                        String msg = String.format("Error starting process. Please see module log file for details.");
+                        LOGGER.log(Level.SEVERE, msg);
+                        p.waitFor();
+                        closeStreams(inputStream, outputStream, bufferedReader);
+                        System.exit(1);
+                    }
                 }
             }
             inputStream.close();

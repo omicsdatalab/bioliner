@@ -32,9 +32,17 @@ public class BiolinerUtils {
         Boolean outputParamReq = m.isOutputParamRequired();
         String commandString = "";
         String[] commandArray = command.split(" ");
-        String jarName = commandArray[2];
-        jarName = addPathToExecutable(jarName, toolsDir, m.getName());
-        commandArray[2] = jarName;
+
+        if(command.toLowerCase().startsWith("java")) {
+            String jarName = commandArray[2];
+            jarName = addPathToExecutable(jarName, toolsDir, m.getName());
+            commandArray[2] = jarName;
+        } else {
+            String exeName = commandArray[0];
+            exeName = addPathToExecutable(exeName, toolsDir, m.getName());
+            commandArray[0] = exeName;
+        }
+
         command = String.join(" ", commandArray);
         String fullOutputFilePath = addOutputFolderPathToFileName(m.getOutputFile(), outputFolderPath);
         m.setOutputFile(fullOutputFilePath);
@@ -58,7 +66,8 @@ public class BiolinerUtils {
             String paramString = String.join(" ", params);
             commandString = commandString + " " + paramString;
         } else if ((!m.isOutputFileRequired() && !inputParamReq) ||
-                (m.isOutputFileRequired() && !inputParamReq && outputParamReq) ) {
+                (m.isOutputFileRequired() && !inputParamReq && outputParamReq) ||
+                (!m.isOutputFileRequired() && !inputParamReq && !outputParamReq)) {
             String[] commandOnlyArray = command.split(" ");
             commandOnlyArray[commandOnlyArray.length - 1] = m.getInputFile();
             commandString = String.join(" ", commandOnlyArray);

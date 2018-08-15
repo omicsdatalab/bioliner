@@ -152,6 +152,7 @@ public class Bioliner {
                         String errMsg = String.format("Input file is not a valid input file. Filepath: %s",
                                 m.getInputFile());
                         LOGGER.log(Level.SEVERE, errMsg);
+                        stateSaver.rollBack(Input.getWorkflow(), m);
                         break;
                     }
                 } else {

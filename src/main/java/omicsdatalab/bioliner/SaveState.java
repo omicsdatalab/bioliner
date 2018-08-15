@@ -209,4 +209,30 @@ public class SaveState {
 
         return currentModuleIndex;
     }
+
+    /**
+     * Takes in an ArrayList for the workflow and the current M in the workflow. This method rolls back the
+     * <current_module> element in the save_state.xml file. If the current module in the workflow is at index 2 or above,
+     * then it will roll back to module-2. If it is at index 1 or 0, then it will revert to an empty <current_module> element.
+     * @param workflow the workflow that is being executed.
+     * @param currentM the current module in the workflow.
+     */
+    public void rollBack(ArrayList<String> workflow, Module currentM) {
+        String currentMName = currentM.getName();
+        if (workflow.size() >= 2 && workflow.contains(currentMName)) {
+            if (workflow.indexOf(currentMName) > 1) {
+                int mToRollBackToIndex = workflow.indexOf(currentMName) - 2;
+                String mToRollBackToStr = workflow.get(mToRollBackToIndex);
+                updateCurrentModule(mToRollBackToStr);
+
+                String msg = String.format("Rolling back last successful module to %s.", mToRollBackToStr);
+                LOGGER.log(Level.INFO, msg);
+            } else if (workflow.indexOf(currentMName) <= 1) {
+                updateCurrentModule("");
+                
+                String msg = "Rolling back current module in save file to be empty.";
+                LOGGER.log(Level.INFO, msg);
+            }
+        }
+    }
 }
