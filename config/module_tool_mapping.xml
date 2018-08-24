@@ -28,4 +28,72 @@
         <name>Mzid2Csv</name>
         <tool_subfolder>mzidlib</tool_subfolder>
     </module>
+    <module>
+        <name>AddRetentionTimeToMzid</name>
+        <tool_subfolder>mzidlib</tool_subfolder>
+    </module>
+    <module>
+        <name>msconvert</name>
+        <tool_subfolder>ProteoWizard_3.0.18222.f1612a955</tool_subfolder>
+    </module>
+    <module>
+        <name>msaccess</name>
+        <tool_subfolder>ProteoWizard_3.0.18222.f1612a955</tool_subfolder>
+    </module>
+    <module>
+        <name>idconvert</name>
+        <tool_subfolder>ProteoWizard_3.0.18222.f1612a955</tool_subfolder>
+    </module>
+    <module>
+        <name>mspicture</name>
+        <tool_subfolder>ProteoWizard_3.0.18222.f1612a955</tool_subfolder>
+    </module>
+    <module>
+        <name>qtofpeakpicker</name>
+        <tool_subfolder>ProteoWizard_3.0.18222.f1612a955</tool_subfolder>
+    </module>
+    <module>
+        <name></name>
+        <tool_subfolder>blast-2.7.1+</tool_subfolder>
+    </module>
+    <module>
+        <name>blastn</name>
+        <tool_subfolder>blast-2.7.1+</tool_subfolder>
+    </module>
+    <module>
+        <name>blastp</name>
+        <tool_subfolder>blast-2.7.1+</tool_subfolder>
+    </module>
+    <module>
+        <name>blastx</name>
+        <tool_subfolder>blast-2.7.1+</tool_subfolder>
+    </module>
+    <module>
+        <name>tblastn</name>
+        <tool_subfolder>blast-2.7.1+</tool_subfolder>
+    </module>
+    <module>
+        <name>tblastx</name>
+        <tool_subfolder>blast-2.7.1+</tool_subfolder>
+    </module>
+    <module>
+        <name>Makeblastdb</name>
+        <tool_subfolder>blast-2.7.1+</tool_subfolder>
+    </module>
+    <module>
+        <name>Makeprofiledb</name>
+        <tool_subfolder>blast-2.7.1+</tool_subfolder>
+    </module>
+    <module>
+        <name>Blastdbcmd</name>
+        <tool_subfolder>blast-2.7.1+</tool_subfolder>
+    </module>
+    <module>
+        <name>Makembindex</name>
+        <tool_subfolder>blast-2.7.1+</tool_subfolder>
+    </module>
+    <!-- <module>
+        <name></name>
+        <tool_subfolder></tool_subfolder>
+    </module> -->
 </modules>
