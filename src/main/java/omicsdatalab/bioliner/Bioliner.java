@@ -5,7 +5,6 @@ import omicsdatalab.bioliner.utils.*;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,7 +49,6 @@ public class Bioliner {
             executeCommand(command, args);
         } else {
             MessageUtils.showUsage();
-            System.exit(1);
         }
     }
 
@@ -105,9 +103,9 @@ public class Bioliner {
             Input.parseInputFile(inputFile);
             Input.setOutputFolderPath(timeStamp);
 
-            Path p1 = Paths.get(BiolinerProcessBuilder.getModulePath());
-            BiolinerUtils.getMappingsFromFile(p1);
-            Path toolsDir = p1.getParent().resolve("tools");
+            Path biolinerJarPath = Paths.get(BiolinerProcessBuilder.getModulePath());
+            BiolinerUtils.getMappingsFromFile(biolinerJarPath);
+            Path toolsDir = biolinerJarPath.getParent().resolve("tools");
 
             SaveState stateSaver = new SaveState(Input.getUniqueRunName(), Input.getOutputFolderPath());
             stateSaver.checkFileExists(Input.getWorkflow());

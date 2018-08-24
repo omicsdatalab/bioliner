@@ -118,7 +118,7 @@ public class Module {
 
     /**
      * Class constructor used when parsing modules from a modules file.
-     * This is used when a modules output file is required.
+     * This is used when a modules output file is not required.
      * @param name The name of the module.
      * @param description The module's description.
      * @param inputFile The filepath for a module's input file. Can be relative or absolute.

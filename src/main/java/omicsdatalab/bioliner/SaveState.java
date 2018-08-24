@@ -24,7 +24,6 @@ import java.util.logging.Logger;
  *  specified output folder, creating one if not. If it does exist, then it can be used to restart bioliner from the
  *  last successfully executed module in the workflow.
  *
- *  This class is still a work in progress.
  */
 public class SaveState {
 

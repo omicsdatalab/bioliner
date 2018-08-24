@@ -10,11 +10,11 @@ import java.util.logging.Logger;
  */
 public class MessageUtils {
     private static final Logger LOGGER = Logger.getLogger( MessageUtils.class.getName() );
+
     public static void printWelcomeMessage() {
         System.out.println("-----------------------------------------");
         System.out.println("-----------Welcome to Bioliner-----------");
         System.out.println("-----------------------------------------");
-
     }
 
     public static void printModuleOptions(ArrayList<Module> modules) {
@@ -30,11 +30,15 @@ public class MessageUtils {
         }
     }
 
+    /**
+     * Shows the usage for the program and then exits.
+     */
     public static void showUsage() {
         System.out.println("Usage:");
         System.out.println("Start a workflow:");
         System.out.println("\t" + "java -jar bioliner.jar run <input file> <modules file>");
         System.out.println("List modules:");
         System.out.println("\t" + "java -jar bioliner.jar modules");
+        System.exit(0);
     }
 }
