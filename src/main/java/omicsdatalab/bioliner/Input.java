@@ -110,7 +110,7 @@ public class Input {
     /**
      * @return ArrayList of modules generated from the input xml file.
      */
-    public ArrayList<Module> getInputModules() {
+    public static ArrayList<Module> getInputModules() {
         return inputModules;
     }
 

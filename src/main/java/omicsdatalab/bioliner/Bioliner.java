@@ -102,6 +102,7 @@ public class Bioliner {
 
             Input.parseInputFile(inputFile);
             Input.setOutputFolderPath(timeStamp);
+            InputUtils.sortWorkflow(Input.getWorkflow(), Input.getInputModules());
 
             Path biolinerJarPath = Paths.get(BiolinerProcessBuilder.getModulePath());
             BiolinerUtils.getMappingsFromFile(biolinerJarPath);

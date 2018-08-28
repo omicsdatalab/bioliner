@@ -4,6 +4,8 @@ import omicsdatalab.bioliner.Module;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.logging.Logger;
 
 /**
@@ -72,5 +74,15 @@ public class InputUtils {
         workflowString = sb.toString();
         workflowString = workflowString.substring(0, workflowString.length() - 1);
         return workflowString;
+    }
+
+    /**
+     * This method sorts a list of modules to match the order defined in the workflow.
+     * @param workflow the ArrayList representing the workflow of a Bioliner run.
+     * @param modules the ArrayList of modules to sort.
+     */
+    public static void sortWorkflow(ArrayList<String> workflow, ArrayList<Module> modules) {
+        Collections.sort(modules,
+                Comparator.comparing(module -> workflow.indexOf(module.getName())));
     }
 }
