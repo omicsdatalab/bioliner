@@ -104,4 +104,21 @@ class BiolinerUtilsTest {
 
         assertEquals(expectedCommandString, actualCommandString);
     }
+
+    @Test
+    void getCommandStringForWindowsExe() {
+        String[] params = {"-input", "input.txt", "-output", "C:\\outputFolder\\output.txt", "-param3", "value3"};
+        Module m = new Module("M1", "input.txt", "output.txt",
+                params);
+        m.setCommand("msconvert.exe");
+        m.setInputParamRequired(true);
+        m.setOutputParamRequired(true);
+        m.setOutputFileRequired(true);
+        Path dir = Paths.get("C:\\test\\dir");
+        String outputFolderPath = "C:\\outputFolder";
+        String actualCommandString = BiolinerUtils.getCommandString(m, dir, outputFolderPath);
+        String expectedCommandString = "\"C:\\test\\dir\\m1_subdir\\msconvert.exe\" -input input.txt -output C:\\outputFolder\\output.txt -param3 value3";
+
+        assertEquals(expectedCommandString, actualCommandString);
+    }
 }
