@@ -44,7 +44,9 @@ public class Input {
     /**
      * Class constructor.
      */
-    public Input() { }
+    public Input() {
+        workflow = new ArrayList<String>();
+    }
 
 
     /**

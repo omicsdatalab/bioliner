@@ -4,7 +4,7 @@
   <groupId>uk.ac.mmu.fawaz</groupId>
   <artifactId>bioliner</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>bioliner</name>
   <url>http://maven.apache.org</url>
   <properties>
