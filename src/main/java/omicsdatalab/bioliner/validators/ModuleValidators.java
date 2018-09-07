@@ -19,9 +19,7 @@ public class ModuleValidators {
      */
     private static ModuleValidators instance;
 
-    /**
-     * Class constructor.
-     */
+   
     private ModuleValidators() {}
 
     /**

@@ -46,7 +46,7 @@ public class BiolinerUtils {
         command = String.join(" ", commandArray);
         String fullOutputFilePath = addOutputFolderPathToFileName(m.getOutputFile(), outputFolderPath);
         m.setOutputFile(fullOutputFilePath);
-
+        // Some tools have the output file name as a paramter, other tools do not have this option.
         if (m.isOutputFileRequired() && !inputParamReq && !outputParamReq) {
             String[] commandOnlyArray = command.split(" ");
             commandOnlyArray[commandOnlyArray.length - 2] = m.getInputFile();
